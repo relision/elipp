@@ -12,7 +12,7 @@ reserved, and is distributed under the BSD two-clause license (see the
 LICENSE file).
 
 The original Elision project source was donated to Oak Ridge National
-Laboratory for use in their Hyperion system, but this code has //not//
+Laboratory for use in their Hyperion system, but this code has **not**
 been donated and is not for such use.
 
 So that's it.
