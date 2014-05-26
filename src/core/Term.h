@@ -22,6 +22,7 @@
  */
 
 #include <string>
+#include <memory>
 
 namespace elision {
 namespace term {
