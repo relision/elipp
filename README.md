@@ -26,9 +26,9 @@ This project builds with [CMake][cmake].  Building is pretty simple.
 
 Here are some common examples.
 
-**Build on Linux with make**  `cmake -G "Unix Makefiles" ; make`
-**Build on Mac with Eclipse and/or make**  `cmake -G "Eclipse CDT4 - Unix Makefiles" ; make` (plus this creates an Eclipse project you can open and build)
-**Build on Windows with Visual Studio 9**  `cmake -G "Visual Studio 9 2008 Win64"` (open the new project in Visual Studio)
+  - **Build on Linux with make**  `cmake -G "Unix Makefiles" ; make`
+  - **Build on Mac with Eclipse and/or make**  `cmake -G "Eclipse CDT4 - Unix Makefiles" ; make` (plus this creates an Eclipse project you can open and build)
+  - **Build on Windows with Visual Studio 9**  `cmake -G "Visual Studio 9 2008 Win64"` (open the new project in Visual Studio)
 
 You can build documentation with Doxygen using `make doc`.  You can run the unit tests with `make check`.
 
