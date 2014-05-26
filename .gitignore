@@ -5,3 +5,4 @@ CMakeCache.txt
 libelision.dylib
 loc_test
 test.log*
+doc/api
