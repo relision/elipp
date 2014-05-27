@@ -1,4 +1,5 @@
 # README
+[![Build Status](https://drone.io/github.com/sprowell/elipp/status.png)](https://drone.io/github.com/sprowell/elipp/latest)
 
 ## About
 This is an experimental project to re-develop the Elision term rewriter
