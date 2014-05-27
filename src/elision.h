@@ -25,7 +25,6 @@
 #include <iostream>
 #include <memory>
 #include <sstream>
-#include <string.h>
 #include <stdint.h>
 #include <boost/multiprecision/cpp_int.hpp>
 

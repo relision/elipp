@@ -1,8 +1,8 @@
 /**
  * @file
- * TODO: Describe purpose of file.
+ * Implementation of the core elements of all terms.
  *
- * @author ysp
+ * @author sprowell@gmail.com
  *
  * @section LICENSE
  * @verbatim

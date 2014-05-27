@@ -2,7 +2,7 @@
  * @file
  * Utilities and common functions for the Elision project.
  *
- * @author ysp
+ * @author sprowell@gmail.com
  *
  * @section LICENSE
  * This program is Copyright (C) by UT-Battelle, LLC.
