@@ -33,7 +33,7 @@ if( NOT CMAKE_BUILD_TYPE )
 endif( NOT CMAKE_BUILD_TYPE )
 
 # Compiler flags.
-set( CMAKE_CXX_FLAGS "-g -Wall -std=c++11" )
+set( CMAKE_CXX_FLAGS "-g -Wall -std=c++0x" )
 
 # Modify the include path so we can find our own files.
 include_directories( AFTER SYSTEM src src/core )
