@@ -3,6 +3,8 @@ Makefile
 cmake_install.cmake
 CMakeCache.txt
 libelision.dylib
+libelision.so
+libelision.dll
 loc_test
 test.log*
 doc/api
