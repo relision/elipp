@@ -1,9 +1,10 @@
+# Build using CMake.
 language: cpp
 compiler:
   - gcc
   - clang
 script:
   - cmake . && make && make check
-before_install:
-  - sudo apt-get install doxygen
+#before_install:
+#  - sudo apt-get install doxygen
   
