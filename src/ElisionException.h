@@ -74,7 +74,7 @@ public:
 	  * Get the prior exception that caused this exception, if any.
 	  * @return	The prior exception, if any.
 	  */
-	 boost::optional<ElisionException> const& get_cause() const {
+	 boost::optional<ElisionException const&> const& get_cause() const {
 		 return cause_;
 	 }
 
@@ -88,14 +88,14 @@ public:
 
 	 /**
 	  * Get the location associated with this exception.
-	  * @return	The location assocaited with this exception.
+	  * @return	The location associated with this exception.
 	  */
 	 Loc const& get_loc() const;
 
 private:
 	 Loc const& loc_;
 	 std::string const& message_;
-	 boost::optional<ElisionException> cause_;
+	 boost::optional<ElisionException const&> cause_;
 };
 
 } /* namespace elision */

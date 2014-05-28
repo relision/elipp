@@ -22,19 +22,14 @@
 
 namespace elision {
 
-ElisionException const&
-ElisionException::get_cause() const {
-	return cause_;
+Loc const&
+ElisionException::get_loc() const {
+	return loc_;
 }
 
 std::string const&
 ElisionException::get_message() const {
 	return message_;
-}
-
-bool
-ElisionException::has_cause() const {
-	return (&cause_ != this);
 }
 
 } /* namespace elision */

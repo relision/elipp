@@ -12,9 +12,6 @@ SET( ELI_VERSION ${ELI_MAJOR}.${ELI_MINOR} )
 SET( ELI_DIST_NAME "elision-${ELI_VERSION}" )
 
 # Specify the list of source files to use for the core library here.
-# We could use a glob, but that's not recommended, since cmake won't
-# detect (thanks to evil caching) when files are added or removed.
-#FILE( GLOB lib_sources "core/*.cpp" )
 FILE(GLOB_RECURSE lib_sources RELATIVE ${CMAKE_HOME_DIRECTORY} src/*.cpp)
 
 # Someday we will have tests.
@@ -22,10 +19,6 @@ FILE(GLOB_RECURSE tests RELATIVE ${CMAKE_HOME_DIRECTORY} test/*_test.cpp)
 
 # Someday we will have examples.
 #FILE(GLOB_RECURSE lib_examples RELATIVE ${CMAKE_HOME_DIRECTORY} src/*_ex.cpp)
-
-# Remove the "other" files from the source files.
-#list(REMOVE_ITEM lib_sources ${lib_tests})
-#list(REMOVE_ITEM lib_sources ${lib_examples})
 
 # Figure out if this is a debug or release.
 if( NOT CMAKE_BUILD_TYPE )
@@ -36,7 +29,7 @@ endif( NOT CMAKE_BUILD_TYPE )
 set( CMAKE_CXX_FLAGS "-g -Wall -std=c++11" )
 
 # Modify the include path so we can find our own files.
-include_directories( AFTER SYSTEM src src/core )
+include_directories( AFTER SYSTEM src src/term )
 
 # Build the core library.
 add_library( elision SHARED ${lib_sources} )
