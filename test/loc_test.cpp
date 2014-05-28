@@ -19,12 +19,12 @@
  */
 
 #include "test_frame.h"
-#include "Term.h"
+#include "Loc.h"
 
 START_TEST
 
 START_ITEM(simple)
-    namespace et = elision::term;
+    namespace et = elision;
 	try {
 	    // Try the console location.
         HANG("Getting console")

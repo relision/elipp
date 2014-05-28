@@ -88,13 +88,14 @@ typedef std::string estr_t;
 /// Define the big integer implementation used by Elision.
 typedef boost::multiprecision::cpp_int eint_t;
 
- /**
-  * A stream manipulator to insert the current date and time in a stream.
-  * Use this just like you would use std::endl.
-  * @param out	The output stream.
-  * @return	The output stream.
-  */
- std::ostream& timestamp(std::ostream& out);
+/**
+ * A stream manipulator to insert the current date and time in a stream.
+ * Use this just like you would use std::endl.
+ * @param out	The output stream.
+ * @return	The output stream.
+ */
+std::ostream& timestamp(std::ostream& out);
+
 }
 
 #endif /* ELISION_H_ */

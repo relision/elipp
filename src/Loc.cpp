@@ -1,6 +1,6 @@
 /**
  * @file
- * Implementation of the core elements of all terms.
+ * TODO: Describe purpose of file.
  *
  * @author sprowell@gmail.com
  *
@@ -13,16 +13,15 @@
  *  \___|_|_|___/_|\___/|_| |_|
  * The Elision Term Rewriter
  *
- * Copyright (c) 2014 by Stacy Prowell (sprowell@gmail.com).
+ * Copyright (c) 2014 by Stacy Prowell (sprowell@gmail.com)
  * All rights reserved.
  * @endverbatim
  */
 
-#include "Term.h"
+#include "Loc.h"
 #include <sstream>
 
 namespace elision {
-namespace term {
 
 struct Loc::Impl {
     std::string source_{""};
@@ -86,5 +85,4 @@ Loc::get_internal() {
     return internal;
 }
 
-} /* namespace term */
 } /* namespace elision */
