@@ -23,6 +23,7 @@
 
 #include <memory>
 #include "Loc.h"
+#include "elision.h"
 
 namespace elision {
 namespace term {
