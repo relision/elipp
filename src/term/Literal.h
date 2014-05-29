@@ -31,13 +31,13 @@ namespace term {
 /**
  * The common base class for all literals.
  */
-class Literal : Term {
+class Literal : public Term {
 	// Nothing to see.
 };
 
 
 /// A symbol literal.
-class SymbolLiteral : Literal {
+class SymbolLiteral : public Literal {
 public:
 	/**
 	 * Get the name of this symbol.
@@ -48,7 +48,7 @@ public:
 
 
 /// A string literal.
-class StringLiteral : Literal {
+class StringLiteral : public Literal {
 public:
 	/**
 	 * Get the string value of this literal.
@@ -59,7 +59,7 @@ public:
 
 
 /// An integer literal.
-class IntegerLiteral : Literal {
+class IntegerLiteral : public Literal {
 public:
 	/**
 	 * Get the integer value of this literal.
@@ -77,7 +77,7 @@ public:
  *     v = s \times {r^e}
  * @f]
  */
-class FloatLiteral : Literal {
+class FloatLiteral : public Literal {
 public:
 	/**
 	 * Get the significand of this literal.
@@ -106,7 +106,7 @@ public:
 
 
 /// A bit string literal.
-class BitStringLiteral : Literal {
+class BitStringLiteral : public Literal {
 public:
 	/**
 	 * Get the bit value of this bit string.
@@ -123,7 +123,7 @@ public:
 
 
 /// A Boolean literal.
-class BooleanLiteral : Literal {
+class BooleanLiteral : public Literal {
 public:
 	/**
 	 * Get this literal as a @c bool value.
@@ -134,7 +134,7 @@ public:
 
 
 /// A term literal.
-class TermLiteral : Literal {
+class TermLiteral : public Literal {
 public:
 	/**
 	 * Get the underlying term value.
