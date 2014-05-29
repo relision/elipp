@@ -21,6 +21,8 @@
 #include "BasicLiteral.h"
 #include "Term.h"
 
+using elision::eint_t;
+
 namespace elision {
 namespace term {
 namespace basic {
