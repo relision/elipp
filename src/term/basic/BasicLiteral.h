@@ -22,6 +22,7 @@
  */
 
 #include "Literal.h"
+#include "BasicTerm.h"
 
 namespace elision {
 namespace term {
