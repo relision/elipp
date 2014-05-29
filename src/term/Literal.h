@@ -134,7 +134,7 @@ public:
 
 
 /// A term literal.
-class TermLitearl : Literal {
+class TermLiteral : Literal {
 public:
 	/**
 	 * Get the underlying term value.
