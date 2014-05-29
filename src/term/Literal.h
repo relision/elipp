@@ -65,7 +65,7 @@ public:
 	 * Get the integer value of this literal.
 	 * @return	The integer value of this literal.
 	 */
-	virtual eint_t const& get_value() const = 0;
+	virtual elision::eint_t const& get_value() const = 0;
 };
 
 
@@ -83,13 +83,13 @@ public:
 	 * Get the significand of this literal.
 	 * @return	The significand.
 	 */
-	virtual eint_t const& get_significand() const = 0;
+	virtual elision::eint_t const& get_significand() const = 0;
 
 	/**
 	 * Get the exponent of this literal.
 	 * @return	The exponent.
 	 */
-	virtual eint_t const& get_exponent() const = 0;
+	virtual elision::eint_t const& get_exponent() const = 0;
 
 	/**
 	 * Get the radix, which determines how the exponent is interpreted.
@@ -112,7 +112,7 @@ public:
 	 * Get the bit value of this bit string.
 	 * @return	The bit value part of the bit string.
 	 */
-	virtual eint_t const get_bits() const = 0;
+	virtual elision::eint_t const get_bits() const = 0;
 
 	/**
 	 * Get the length of this bit string.
