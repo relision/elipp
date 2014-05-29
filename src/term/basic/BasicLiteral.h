@@ -30,7 +30,7 @@ namespace basic {
 /**
  * Provide a basic implementation of a symbol literal.
  */
-class BasicSymbolLiteral : public elision::term::SymbolLiteral, BasicTerm {
+class BasicSymbolLiteral : public elision::term::SymbolLiteral, public BasicTerm {
 public:
 	BasicSymbolLiteral(Loc const& loc, std::string const& name,
 			Term const& type);
@@ -46,7 +46,7 @@ private:
 /**
  * Provide a basic implementation of a string literal.
  */
-class BasicStringLiteral : public elision::term::StringLiteral, BasicTerm {
+class BasicStringLiteral : public elision::term::StringLiteral, public BasicTerm {
 public:
 	BasicStringLiteral(Loc const& loc, std::string const& value,
 			Term const& type);
@@ -62,7 +62,7 @@ private:
 /**
  * Provide a basic implementation of a integer literal.
  */
-class BasicIntegerLiteral : public elision::term::IntegerLiteral, BasicTerm {
+class BasicIntegerLiteral : public elision::term::IntegerLiteral, public BasicTerm {
 public:
 	BasicIntegerLiteral(Loc const& loc, eint_t const& value, Term const& type);
 	virtual ~BasicIntegerLiteral() = default;
@@ -77,7 +77,7 @@ private:
 /**
  * Provide a basic implementation of a float literal.
  */
-class BasicFloatLiteral : public elision::term::FloatLiteral, BasicTerm {
+class BasicFloatLiteral : public elision::term::FloatLiteral, public BasicTerm {
 public:
 	BasicFloatLiteral(Loc const& loc, eint_t const& significand,
 			eint_t const& exponent, uint16_t radix, Term const& type);
@@ -104,7 +104,7 @@ private:
 /**
  * Provide a basic implementation of a bit string literal.
  */
-class BasicBitStringLiteral : public elision::term::BitStringLiteral, BasicTerm {
+class BasicBitStringLiteral : public elision::term::BitStringLiteral, public BasicTerm {
 public:
 	BasicBitStringLiteral(Loc const& loc, eint_t const& bits, uint16_t length,
 			Term const& type);
@@ -124,7 +124,7 @@ private:
 /**
  * Provide a basic implementation of a Boolean literal.
  */
-class BasicBooleanLiteral : public elision::term::BooleanLiteral, BasicTerm {
+class BasicBooleanLiteral : public elision::term::BooleanLiteral, public BasicTerm {
 public:
 	BasicBooleanLiteral(Loc const& loc, bool value, Term const& type);
 	virtual ~BasicBooleanLiteral() = default;
@@ -139,7 +139,7 @@ private:
 /**
  * Provide a basic implementation of a term literal.
  */
-class BasicTermLiteral : public elision::term::TermLiteral, BasicTerm {
+class BasicTermLiteral : public elision::term::TermLiteral, public BasicTerm {
 public:
 	BasicTermLiteral(Loc const& loc, Term const& value, Term const& type);
 	virtual ~BasicTermLiteral() = default;
