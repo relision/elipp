@@ -43,8 +43,10 @@ public:
     virtual Term const& get_type() const = 0;
 
     /**
-     * Generate a primitive string representation of this term.  This is used
-     * solely for debugging, as it cannot exploit any semantic information.
+     * Produce a string representation of this term.  Since no enclosing
+     * semantic information is available, this will not be optimum, but is
+     * needed for debugging.
+     * @return	The string representation of this term.
      */
     virtual operator std::string() const = 0;
 

@@ -39,6 +39,7 @@ public:
 	virtual std::string const& get_name() const {
 		return name_;
 	}
+	virtual operator std::string() const;
 private:
 	std::string const& name_;
 };
@@ -55,6 +56,7 @@ public:
 	virtual std::string const& get_value() const {
 		return value_;
 	}
+	virtual operator std::string() const;
 private:
 	std::string const& value_;
 };
@@ -70,6 +72,7 @@ public:
 	virtual eint_t const& get_value() const {
 		return value_;
 	}
+	virtual operator std::string() const;
 private:
 	eint_t const& value_;
 };
@@ -92,9 +95,7 @@ public:
 	virtual uint16_t get_radix() const {
 		return radix_;
 	}
-	virtual operator double() const {
-		return significand_ * (exponent_ ** radix_);
-	}
+	virtual operator std::string() const;
 private:
 	eint_t const& significand_;
 	eint_t const& exponent_;
@@ -116,6 +117,7 @@ public:
 	virtual uint16_t get_length() const {
 		return length_;
 	}
+	virtual operator std::string() const;
 private:
 	eint_t const& bits_;
 	uint16_t length_;
@@ -132,6 +134,7 @@ public:
 	virtual operator bool() const {
 		return value_;
 	}
+	virtual operator std::string() const;
 private:
 	bool const value_;
 };
@@ -147,6 +150,7 @@ public:
 	virtual Term const& get_term() const {
 		return term_;
 	}
+	virtual operator std::string() const;
 private:
 	Term const& term_;
 };

@@ -96,12 +96,6 @@ public:
 	 * @return	The radix.
 	 */
 	virtual uint16_t get_radix() const = 0;
-
-	/**
-	 * Get the float value as a @c double.
-	 * @return	This value as a double.
-	 */
-	virtual operator double() const = 0;
 };
 
 
