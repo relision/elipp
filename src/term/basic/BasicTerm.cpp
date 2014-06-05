@@ -19,6 +19,7 @@
  */
 
 #include "BasicTerm.h"
+#include <cctype>
 
 namespace elision {
 namespace term {
@@ -54,10 +55,7 @@ escape(std::string const& original, bool is_symbol) {
 			result += ch;
 			if (is_symbol) {
 				// Is the character is letter or digit?
-				if ('a' <= ch <= 'z' ||
-						'A' <= ch <= 'Z' ||
-						'0' <= ch <= '9' ||
-						ch == '_') {
+				if (isalnum(ch) || ch == '_') {
 					// Yes.  It's fine.
 				} else {
 					// No.  Result is something else.
@@ -71,9 +69,7 @@ escape(std::string const& original, bool is_symbol) {
 	// thing *still* has to be quoted, no matter what, if this is a symbol.
 	if (is_symbol) {
 		char ch = result[0];
-		if ('a' <= ch <= 'z' ||
-				'A' <= ch <= 'Z' ||
-				ch == '_') {
+		if (isalpha(ch) || ch == '_') {
 			quote = true;
 		}
 	}
@@ -94,7 +90,7 @@ BasicTerm::BasicTerm(Loc const& loc, Term const& type) :
 BasicTerm::operator
 std::string() const {
 	// Produce a warning that this term needs a string representation!
-	return "UNK-TERM(" + int(this) + ")";
+	return "UNK-TERM";
 }
 
 unsigned int

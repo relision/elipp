@@ -41,7 +41,7 @@ namespace basic {
  * @param is_symbol	True iff this is a symbol, and false for a string.
  * @return	The result of processing.
  */
-std::string const escape(std::string const& original, bool is_symbol);
+std::string const escape(std::string const& original, bool is_symbol = false);
 
 /**
  * Provide a basic implementation of elements common to terms.

@@ -27,6 +27,7 @@
 #include <sstream>
 #include <stdint.h>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <bitset>
 
 
 /**
@@ -87,6 +88,18 @@ namespace elision {
 typedef std::string estr_t;
 /// Define the big integer implementation used by Elision.
 typedef boost::multiprecision::cpp_int eint_t;
+
+/**
+ * Convert an unbounded integer to a string in the specified base.
+ * The base must be one of the allowed values: 16, 10, 8, or 2.  Other
+ * bases will result in an exception being thrown.
+ *
+ * @param value	The integer.
+ * @param base	The base, which must be 16, 10, 8, or 2.
+ * @return	The string, with any necessary base identifier.
+ * @throws	invalid_argument	If the base is incorrect.
+ */
+std::string eint_to_string(eint_t value, uint16_t base);
 
 /**
  * A stream manipulator to insert the current date and time in a stream.

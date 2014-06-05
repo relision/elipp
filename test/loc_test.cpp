@@ -76,6 +76,7 @@ START_ITEM(simple)
         if (loc1str != "test.eli:17:21") {
             FAIL_ITEM(simple, "Location 1 test string is incorrect.");
         }
+        SUCCESS;
 	} catch (std::exception& e) {
 		FAIL_ITEM(simple, "");
 		ENDL("Caught an exception: " << e.what ());
