@@ -1,6 +1,8 @@
 # README
 [![Build Status](https://drone.io/github.com/sprowell/elipp/status.png)](https://drone.io/github.com/sprowell/elipp/latest)
 
+**Note**: The build may be failing on [drone.io](https://drone.io/github.com/sprowell/elipp) because it requires a more modern version of [Boost][boost] than is currently available on the site.
+
 ## About
 This is an experimental project to re-develop the Elision term rewriter
 in C++.  Nothing here is even remotely stable, or usable by anyone other
