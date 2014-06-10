@@ -1,9 +1,6 @@
-#ifndef BINDINGS_H_
-#define BINDINGS_H_
-
 /**
  * @file
- * Define bindings.
+ * Provide method implementations for a term.
  *
  * @author sprowell@gmail.com
  *
@@ -25,15 +22,18 @@
 
 namespace elision {
 namespace term {
+namespace basic {
 
-/**
- * Define the structure of a set of bindings.
- */
-class Bindings : Term {
-public:
-};
+Term::Term(EPTR(ITerm) the_type) : type_(the_type), loc_(Loc::get_internal()) {
+	NOTNULL(the_type);
+}
 
+Term::Term(EPTR(Loc) the_loc, EPTR(ITerm) the_type) :
+	type_(the_type), loc_(the_loc) {
+	NOTNULL(the_loc);
+	NOTNULL(the_type);
+}
+
+} /* namespace basic */
 } /* namespace term */
 } /* namespace elision */
-
-#endif /* BINDINGS_H_ */

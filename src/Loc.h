@@ -3,7 +3,7 @@
 
 /**
  * @file
- * TODO: Describe purpose of file.
+ * Define the public interface to a location instance.
  *
  * @author sprowell@gmail.com
  *
@@ -21,6 +21,7 @@
  * @endverbatim
  */
 
+#include "elision.h"
 #include <string>
 #include <memory>
 
@@ -43,7 +44,7 @@ namespace elision {
  *     internal location via <tt>Loc::get_internal()</tt>.
  */
 class Loc {
-public:
+private:
     /**
      * Initialize a new instance.  Note that both the line and column numbers
      * are one-based, so zero can be used to indicate that the respective
@@ -64,11 +65,37 @@ public:
      */
     Loc(unsigned int line = 0, unsigned int column = 0);
 
+public:
     /**
      * Copy constructor.
      * @param loc       Another location.
      */
     Loc(Loc const& loc);
+
+    /**
+     * Factory method to get a pointer to a location instance.
+     * @param source    The source.  This should be the file name for files,
+     *                  the string "(console)" for the console, and the empty
+     *                  string for internal.
+     * @param line      The source line number.  If none is known, use zero.
+     * @param column    The source column.  If none is known, use zero.
+     */
+    inline static EPTR(Loc) get(std::string const& source,
+    		unsigned int line = 0, unsigned int column = 0) {
+    	EPTR(Loc) ret(new Loc(source, line, column));
+    	return ret;
+    }
+
+    /**
+     * Factory method to get a pointer to a console location instance.
+     * @param line      The source line number.  If none is known, use zero.
+     * @param column    The source column.  If none is known, use zero.
+     */
+    inline static EPTR(Loc) get(unsigned int line = 0,
+    		unsigned int column = 0) {
+    	EPTR(Loc) ret(new Loc(line, column));
+    	return ret;
+    }
 
     /**
      * Compare two locations.
@@ -121,7 +148,7 @@ public:
      * This is much faster than using <tt>Loc("")</tt>, since it only constructs
      * the first time.
      */
-    static Loc const& get_internal();
+    static EPTR(Loc) get_internal();
 
 private:
     struct Impl;

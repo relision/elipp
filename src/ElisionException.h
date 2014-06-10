@@ -38,7 +38,7 @@ public:
 	 * @param msg		A human-readable description of what happened.
 	 * @param cause	An exception that caused this exception.
 	 */
-	ElisionException(Loc const& loc, std::string const& msg,
+	ElisionException(EPTR(Loc) loc, std::string const& msg,
 			ElisionException const& cause) :
 			loc_(loc), message_(msg) {
 		cause_.reset(cause);
@@ -49,7 +49,7 @@ public:
 	 * @param loc		A relevant location, if any.
 	 * @param msg		A human-readable description of what happened.
 	 */
-	ElisionException(Loc const& loc, std::string const& msg) :
+	ElisionException(EPTR(Loc) loc, std::string const& msg) :
 			loc_(loc), message_(msg) {
 	}
 
@@ -90,10 +90,10 @@ public:
 	  * Get the location associated with this exception.
 	  * @return	The location associated with this exception.
 	  */
-	 Loc const& get_loc() const;
+	 EPTR(Loc) get_loc() const;
 
 private:
-	 Loc const& loc_;
+	 EPTR(Loc) loc_;
 	 std::string const& message_;
 	 boost::optional<ElisionException const&> cause_;
 };

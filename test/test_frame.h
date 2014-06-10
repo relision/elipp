@@ -291,10 +291,10 @@ int main(int argc, char *argv[]) { \
  * fails, fail the item item_name_m, and emit a mismatch message followed by
  * any extra_m content.
  */
-#define VALIDATE(item_name_m, computed_m, actual_m, extra) \
+#define VALIDATE(item_name_m, computed_m, actual_m, extra_m) \
 	if ((computed_m) != (actual_m)) { \
         FAIL_ITEM(item_name_m, "mismatch (" << (computed_m) << "!=" \
-			<< (actual_m) << ") " << extra) \
+			<< (actual_m) << ") " << extra_m) \
     }
 
 #endif /*TEST_FRAME_H_*/

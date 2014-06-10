@@ -79,9 +79,9 @@ std::string() const {
     return(str.str());
 }
 
-Loc const&
+EPTR(Loc)
 Loc::get_internal() {
-    static Loc internal("");
+    static EPTR(Loc) internal = std::shared_ptr<Loc const>(new Loc(""));
     return internal;
 }
 

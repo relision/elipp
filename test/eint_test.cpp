@@ -59,8 +59,8 @@ START_ITEM(bases)
 			// Just the right thing.
 		}
 	} catch (std:: exception& e) {
-		FAIL_ITEM(bases, "");
 		ENDL("Caught an exception: " << e.what());
+		FAIL_ITEM(bases, "");
 	}
 
 END_ITEM(bases)
