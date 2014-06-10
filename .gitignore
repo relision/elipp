@@ -11,3 +11,5 @@ doc/api
 test/eint_test
 test/literal_test
 Debug
+Testing
+CTestTestfile.cmake
