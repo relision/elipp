@@ -230,7 +230,7 @@ int main(int argc, char *argv[]) { \
 		return (EXIT_FAILURE); \
 	} \
 	ENDL("SUCCESS"); \
-	tf_retval = 0; \
+	(void)tf_retval; \
 	return (EXIT_SUCCESS); \
 }
 // The mention of tf_retval above keeps some compilers from
