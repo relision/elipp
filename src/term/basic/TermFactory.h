@@ -33,17 +33,6 @@ namespace basic {
 using namespace elision::term;
 
 /**
- * Provide a private implementation of the root term.
- */
-class RootTerm : public virtual Term {
-public:
-	RootTerm() : Term(std::shared_ptr<ITerm const>(this)) {}
-	~RootTerm() = default;
-	inline bool is_constant() const { return true; }
-	inline operator std::string() const { return "^ROOT"; }
-};
-
-/**
  * Implement a basic term factory that makes terms using the implementations in
  * the `elision::term::basic` namespace.
  */

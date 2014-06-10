@@ -25,10 +25,40 @@ namespace elision {
 namespace term {
 namespace basic {
 
+
+/**
+ * Provide a private implementation of the root term.
+ */
+class RootTerm : public virtual ITerm {
+public:
+	static EPTR(ITerm) fetch() {
+		// Make a new instance of myself.  This is static so we really, really
+		// only ever get one.  Just one.  Only one.  Note that we cannot use
+		// make_shared because the constructor is private.
+		static EPTR(RootTerm) self = std::shared_ptr<RootTerm>(new RootTerm());
+		// Make this instance its own type.
+		self.get()->me_ = self;
+		return self;
+	}
+	~RootTerm() {};
+	inline bool is_constant() const { return true; }
+	inline operator std::string() const { return "^ROOT"; }
+	inline EPTR(ITerm) get_type() const { return me_; }
+	inline unsigned int get_de_bruijn_index() const { return 0; }
+	inline unsigned int get_depth() const { return 0; }
+	inline bool is_meta_term() const { return false; }
+	inline EPTR(Loc) get_loc() const { return loc_; }
+
+private:
+	RootTerm() {}
+	mutable EPTR(RootTerm) me_;
+	EPTR(Loc) loc_ = Loc::get_internal();
+};
+
 // Little macro to initialize the root types.
 #define INIT(m_name) m_name = get_root_term(" ## m_name ## ");
 
-TermFactory::TermFactory() : root_(new RootTerm()){
+TermFactory::TermFactory() : root_(RootTerm::fetch()){
 	INIT(SYMBOL);
 	INIT(STRING);
 	INIT(INTEGER);

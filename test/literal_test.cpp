@@ -60,10 +60,10 @@ try {
 	HANG("Making Booleans");
 	EPTR(IBooleanLiteral) b1 = fact->get_boolean_literal(Loc::get_internal(), true, fact->get_root());
 	EPTR(IBooleanLiteral) b2 = fact->get_boolean_literal(Loc::get_internal(), false, fact->get_root());
-	EPTR(IBooleanLiteral) b3 = fact->get_boolean_literal(true);
-	EPTR(IBooleanLiteral) b4 = fact->get_boolean_literal(false);
-	EPTR(IBooleanLiteral) b5 = fact->get_boolean_literal(Loc::get(17,21), true);
-	EPTR(IBooleanLiteral) b6 = fact->get_boolean_literal(Loc::get(21,17), false);
+	EPTR(IBooleanLiteral) b3 = fact->get_boolean_literal(Loc::get_internal(), true, fact->BOOLEAN);
+	EPTR(IBooleanLiteral) b4 = fact->get_boolean_literal(Loc::get_internal(), false, fact->BOOLEAN);
+	EPTR(IBooleanLiteral) b5 = fact->get_boolean_literal(Loc::get(17,21), true, fact->BOOLEAN);
+	EPTR(IBooleanLiteral) b6 = fact->get_boolean_literal(Loc::get(21,17), false, fact->BOOLEAN);
 	ENDL("Done");
 
 	ENDL("Some Booleans")
@@ -137,9 +137,8 @@ try {
 	FAIL_ITEM(booleans, "");
 }
 
-// Done with the factory.  Explicitly release it.
-fact.release();
-
 END_ITEM(booleans)
+
+//fact.release();
 
 END_TEST
