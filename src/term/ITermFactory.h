@@ -38,7 +38,7 @@ namespace term {
 class ITermFactory {
 public:
 	/// Deallocate this instance.
-	virtual ~ITermFactory() = default;
+	virtual ~ITermFactory() {};
 
 	//======================================================================
 	// Access to root types.

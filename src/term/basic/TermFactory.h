@@ -53,7 +53,7 @@ public:
 	TermFactory();
 
 	/// Deallocate this instance.
-	virtual ~TermFactory() = default;
+	virtual ~TermFactory() {};
 
 	inline virtual EPTR(ITerm) get_root() const {
 		return root_;
