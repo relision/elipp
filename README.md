@@ -44,7 +44,7 @@ Here are some common examples.
   - **Build on Mac with Eclipse and/or make**  `cmake -G "Eclipse CDT4 - Unix Makefiles" ; make` (plus this creates an Eclipse project you can open and build)
   - **Build on Windows with Visual Studio 9**  `cmake -G "Visual Studio 9 2008 Win64"` (open the new project in Visual Studio)
 
-You can build documentation with Doxygen using `make doc`.  You can run the unit tests with `make check`.
+You can build documentation with Doxygen using `make doc`.  You can run the unit tests with `make check`, or you (once you have built) you can run `ctest` or `cmake test` to do things the CMake Way.  Note that `make check` runs a bash script right now, so your mileage on Windows will vary - but then you knew that, right?
 
 [cmake]: http://www.cmake.org/
 [boost]: http://www.boost.org/
