@@ -137,6 +137,9 @@ try {
 	FAIL_ITEM(booleans, "");
 }
 
+// Done with the factory.  Explicitly release it.
+fact.release();
+
 END_ITEM(booleans)
 
 END_TEST
