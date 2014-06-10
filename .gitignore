@@ -8,3 +8,6 @@ libelision.dll
 loc_test
 test.log*
 doc/api
+test/eint_test
+test/literal_test
+Debug
