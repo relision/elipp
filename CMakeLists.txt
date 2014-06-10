@@ -4,6 +4,9 @@
 # Verify the version of CMake required.
 cmake_minimum_required( VERSION 2.8 )
 
+# Testing!
+enable_testing()
+
 # Define the project and the current version numbers.
 project( elision )
 SET( ELI_MAJOR 0 )
@@ -49,8 +52,10 @@ add_custom_target( check ./run_tests.sh WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE
 add_dependencies( check tests )
 foreach( test_exec ${tests} )
     string( REGEX REPLACE "test/(.*)\\.cpp" "test/\\1" test_exec ${test_exec} )
-    add_executable( ${test_exec} EXCLUDE_FROM_ALL ${test_exec}.cpp )
+#    add_executable( ${test_exec} EXCLUDE_FROM_ALL ${test_exec}.cpp )
+    add_executable( ${test_exec} ${test_exec}.cpp )
     target_link_libraries( ${test_exec} elision )
+    add_test( ${test_exec} ${test_exec} )
     add_dependencies( tests ${test_exec} )
 endforeach( test_exec )
 
