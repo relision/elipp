@@ -1,7 +1,7 @@
 # README
 [![Build Status](https://drone.io/github.com/sprowell/elipp/status.png)](https://drone.io/github.com/sprowell/elipp/latest)
 
-**Note**: The build may be failing on [drone.io](https://drone.io/github.com/sprowell/elipp) because it requires a more modern version of [Boost][boost] than is currently available on the site.
+**Note**: The build is failing on [drone.io](https://drone.io/github.com/sprowell/elipp) because it requires a more modern version of [Boost][boost] than is currently available on the site.  So... drone.io builds are disabled for now.
 
 ## About
 This is an experimental project to re-develop the Elision term rewriter
