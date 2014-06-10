@@ -21,7 +21,7 @@
  * @endverbatim
  */
 
-#include "Term.h"
+#include "ITerm.h"
 #include <stdint.h>
 
 namespace elision {
