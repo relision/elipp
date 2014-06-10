@@ -28,8 +28,7 @@ namespace basic {
 // Little macro to initialize the root types.
 #define INIT(m_name) m_name = get_root_term(" ## m_name ## ");
 
-TermFactory::TermFactory() {
-	ROOT = get_root();
+TermFactory::TermFactory() : root_(new RootTerm()){
 	INIT(SYMBOL);
 	INIT(STRING);
 	INIT(INTEGER);

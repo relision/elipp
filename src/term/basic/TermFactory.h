@@ -76,7 +76,7 @@ public:
 			EPTR(Loc) loc, bool value, EPTR(ITerm) type) const;
 
 private:
-	EPTR(ITerm) root_ = std::shared_ptr<ITerm const>(new RootTerm());
+	EPTR(ITerm) root_;
 	mutable std::unordered_map<std::string, EPTR(ISymbolLiteral)> known_roots_;
 };
 
