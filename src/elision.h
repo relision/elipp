@@ -30,17 +30,6 @@
 #include <bitset>
 
 /**
- * Elision is full of immutable objects passed by shared pointer.  This is
- * because these can, in turn, but part of multiple objects, so no particular
- * object "owns" an instance - thus shared pointers.  To make this less
- * cray-cray, we define a macro shorthand for this. This gives a constant
- * shared pointer to a constant instance of the type <tt>type_m</tt>.  If
- * you want to use this, you need to include memory, which is included by
- * this file.
- */
-#define EPTR(type_m) std::shared_ptr<type_m const>
-
-/**
  * Construct a string using the << operator, and then perform the action
  * act_m, passing the string in parentheses.  This is a funny little macro
  * that can be used in several ways.

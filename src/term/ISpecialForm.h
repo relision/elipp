@@ -38,14 +38,17 @@ public:
 	 * Get the tag for this special form.
 	 * @return	The tag.
 	 */
-	virtual EPTR(ITerm) get_tag() const = 0;
+	virtual Term get_tag() const = 0;
 
 	/**
 	 * Get the content for this special form.
 	 * @return	The content.
 	 */
-	virtual EPTR(ITerm) get_content() const = 0;
+	virtual Term get_content() const = 0;
 };
+
+/// Shorthand for a property specification pointer.
+typedef std::shared_ptr<ISpecialForm const> SpecialForm;
 
 } /* namespace term */
 } /* namespace elision */

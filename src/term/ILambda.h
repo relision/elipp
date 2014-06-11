@@ -27,6 +27,10 @@
 namespace elision {
 namespace term {
 
+class ILambda;
+/// Shorthand for a lambda pointer.
+typedef std::shared_ptr<ILambda const> Lambda;
+
 /**
  * The public interface to a lambda instance.  A lambda in Elision consists of
  * a single parameter and a body.  When the lambda is applied to another term
@@ -40,13 +44,13 @@ public:
 	 * Get the lambda parameter.
 	 * @return	The lambda parameter.
 	 */
-	virtual EPTR(IVariable) get_parameter() const = 0;
+	virtual Variable get_parameter() const = 0;
 
 	/**
 	 * Get the lambda body.
 	 * @return	The lambda body.
 	 */
-	virtual EPTR(ITerm) get_body() const = 0;
+	virtual Term get_body() const = 0;
 };
 
 } /* namespace term */

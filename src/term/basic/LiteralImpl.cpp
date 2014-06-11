@@ -18,7 +18,7 @@
  * @endverbatim
  */
 
-#include "Literal.h"
+#include "LiteralImpl.h"
 #include <boost/lexical_cast.hpp>
 
 namespace elision {
@@ -29,11 +29,11 @@ namespace basic {
 // Symbol literal.
 //======================================================================
 
-SymbolLiteral::SymbolLiteral(EPTR(Loc) the_loc, std::string the_name,
-		EPTR(ITerm) the_type) : Term(the_loc, the_type), name_(the_name) {
+SymbolLiteralImpl::SymbolLiteralImpl(Locus the_loc, std::string the_name,
+		Term the_type) : TermImpl(the_loc, the_type), name_(the_name) {
 }
 
-SymbolLiteral::operator std::string() const {
+SymbolLiteralImpl::operator std::string() const {
 	return elision::escape(name_, true);
 }
 
@@ -41,11 +41,11 @@ SymbolLiteral::operator std::string() const {
 // String literal.
 //======================================================================
 
-StringLiteral::StringLiteral(EPTR(Loc) the_loc, std::string the_value,
-		EPTR(ITerm) the_type) : Term(the_loc, the_type), value_(the_value) {
+StringLiteralImpl::StringLiteralImpl(Locus the_loc, std::string the_value,
+		Term the_type) : TermImpl(the_loc, the_type), value_(the_value) {
 }
 
-StringLiteral::operator std::string() const {
+StringLiteralImpl::operator std::string() const {
 	return elision::escape(value_, false);
 }
 
@@ -53,12 +53,12 @@ StringLiteral::operator std::string() const {
 // Integer literal.
 //======================================================================
 
-IntegerLiteral::IntegerLiteral(EPTR(Loc) the_loc, eint_t the_value,
-		EPTR(ITerm) the_type) : Term(the_loc, the_type), value_(the_value) {
+IntegerLiteralImpl::IntegerLiteralImpl(Locus the_loc, eint_t the_value,
+		Term the_type) : TermImpl(the_loc, the_type), value_(the_value) {
 	NOTNULL(the_value);
 }
 
-IntegerLiteral::operator std::string() const {
+IntegerLiteralImpl::operator std::string() const {
 	return elision::eint_to_string(value_,
 			elision::preferred_radix, true);
 }
@@ -67,9 +67,9 @@ IntegerLiteral::operator std::string() const {
 // Float literal.
 //======================================================================
 
-FloatLiteral::FloatLiteral(EPTR(Loc) the_loc, eint_t the_significand,
-		eint_t the_exponent, uint8_t the_radix, EPTR(ITerm) the_type) :
-				Term(the_loc, the_type), significand_(the_significand),
+FloatLiteralImpl::FloatLiteralImpl(Locus the_loc, eint_t the_significand,
+		eint_t the_exponent, uint8_t the_radix, Term the_type) :
+				TermImpl(the_loc, the_type), significand_(the_significand),
 				exponent_(the_exponent), radix_(the_radix) {
 	NOTNULL(the_significand);
 	NOTNULL(the_exponent);
@@ -83,7 +83,7 @@ FloatLiteral::FloatLiteral(EPTR(Loc) the_loc, eint_t the_significand,
 	}
 }
 
-FloatLiteral::operator std::string() const {
+FloatLiteralImpl::operator std::string() const {
 	return elision::eint_to_string(significand_, radix_, true) +
 			(radix_ == 16 ? "p" : "e") +
 			elision::eint_to_string(exponent_, radix_, true);
@@ -93,14 +93,14 @@ FloatLiteral::operator std::string() const {
 // Bit string literal.
 //======================================================================
 
-BitStringLiteral::BitStringLiteral(EPTR(Loc) the_loc, eint_t the_bits,
-		eint_t the_length, EPTR(ITerm) the_type) : Term(the_loc, the_type),
+BitStringLiteralImpl::BitStringLiteralImpl(Locus the_loc, eint_t the_bits,
+		eint_t the_length, Term the_type) : TermImpl(the_loc, the_type),
 				bits_(the_bits), length_(the_length) {
 	NOTNULL(the_bits);
 	NOTNULL(the_length);
 }
 
-BitStringLiteral::operator std::string() const {
+BitStringLiteralImpl::operator std::string() const {
 	return elision::eint_to_string(bits_, 16, true) + "L" +
 			elision::eint_to_string(length_, 10, true);
 }
@@ -109,12 +109,12 @@ BitStringLiteral::operator std::string() const {
 // Boolean literal.
 //======================================================================
 
-BooleanLiteral::BooleanLiteral(EPTR(Loc) the_loc, bool the_value,
-		EPTR(ITerm) the_type) : Term(the_loc, the_type), value_(the_value) {
+BooleanLiteralImpl::BooleanLiteralImpl(Locus the_loc, bool the_value,
+		Term the_type) : TermImpl(the_loc, the_type), value_(the_value) {
 	// Nothing to do.
 }
 
-BooleanLiteral::operator std::string() const {
+BooleanLiteralImpl::operator std::string() const {
 	return value_ ? "true" : "false";
 }
 

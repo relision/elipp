@@ -21,7 +21,7 @@
  * @endverbatim
  */
 
-#include "Term.h"
+#include "TermImpl.h"
 #include "ILiteral.h"
 
 namespace elision {
@@ -32,9 +32,9 @@ using namespace elision;
 using namespace elision::term;
 
 
-class SymbolLiteral : public ISymbolLiteral, public Term {
+class SymbolLiteralImpl : public ISymbolLiteral, public TermImpl {
 public:
-	SymbolLiteral(EPTR(Loc) the_loc, std::string the_name, EPTR(ITerm) the_type);
+	SymbolLiteralImpl(Locus the_loc, std::string the_name, Term the_type);
 	inline virtual std::string const get_name() const {
 		return name_;
 	}
@@ -48,9 +48,9 @@ private:
 };
 
 
-class StringLiteral : public IStringLiteral, public Term {
+class StringLiteralImpl : public IStringLiteral, public TermImpl {
 public:
-	StringLiteral(EPTR(Loc) the_loc, std::string the_value, EPTR(ITerm) the_type);
+	StringLiteralImpl(Locus the_loc, std::string the_value, Term the_type);
 	inline virtual std::string const get_value() const {
 		return value_;
 	}
@@ -64,9 +64,9 @@ private:
 };
 
 
-class IntegerLiteral : public IIntegerLiteral, public Term {
+class IntegerLiteralImpl : public IIntegerLiteral, public TermImpl {
 public:
-	IntegerLiteral(EPTR(Loc) the_loc, eint_t the_value, EPTR(ITerm) the_type);
+	IntegerLiteralImpl(Locus the_loc, eint_t the_value, Term the_type);
 	inline virtual eint_t const get_value() const {
 		return value_;
 	}
@@ -80,10 +80,10 @@ private:
 };
 
 
-class FloatLiteral : public IFloatLiteral, public Term {
+class FloatLiteralImpl : public IFloatLiteral, public TermImpl {
 public:
-	FloatLiteral(EPTR(Loc) the_loc, eint_t the_significand, eint_t the_exponent,
-			uint8_t the_radix, EPTR(ITerm) the_type);
+	FloatLiteralImpl(Locus the_loc, eint_t the_significand, eint_t the_exponent,
+			uint8_t the_radix, Term the_type);
 	inline virtual eint_t const get_significand() const {
 		return significand_;
 	}
@@ -105,10 +105,10 @@ private:
 };
 
 
-class BitStringLiteral : public IBitStringLiteral, public Term {
+class BitStringLiteralImpl : public IBitStringLiteral, public TermImpl {
 public:
-	BitStringLiteral(EPTR(Loc) the_loc, eint_t the_bits, eint_t the_length,
-			EPTR(ITerm) the_type);
+	BitStringLiteralImpl(Locus the_loc, eint_t the_bits, eint_t the_length,
+			Term the_type);
 	inline virtual eint_t const get_bits() const {
 		return bits_;
 	}
@@ -126,9 +126,9 @@ private:
 };
 
 
-class BooleanLiteral : public IBooleanLiteral, public Term {
+class BooleanLiteralImpl : public IBooleanLiteral, public TermImpl {
 public:
-	BooleanLiteral(EPTR(Loc) the_loc, bool value, EPTR(ITerm) the_type);
+	BooleanLiteralImpl(Locus the_loc, bool value, Term the_type);
 	inline virtual operator bool() const {
 		return value_;
 	}

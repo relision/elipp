@@ -48,8 +48,11 @@ public:
 	 * Note that the trivial guard (always allowed) is <tt>true</tt>.
 	 * @return	The guard for the variable.
 	 */
-	virtual EPTR(ITerm) get_guard() const = 0;
+	virtual Term get_guard() const = 0;
 };
+
+/// Shorthand for a variable pointer.
+typedef std::shared_ptr<IVariable const> Variable;
 
 
 /**
@@ -57,7 +60,7 @@ public:
  * values, but term variables represent terms; that is, term variables are
  * meta-variables.
  */
-class TermVariable : public virtual ITerm {
+class ITermVariable : public virtual ITerm {
 public:
 	/**
 	 * Get the name of this variable.  Variables are uniquely identified by
@@ -66,6 +69,9 @@ public:
 	 */
 	virtual std::string const get_name() const = 0;
 };
+
+/// Shorthand for a variable pointer.
+typedef std::shared_ptr<ITermVariable const> TermVariable;
 
 } /* namespace term */
 } /* namespace elision */

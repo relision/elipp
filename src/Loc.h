@@ -27,6 +27,11 @@
 
 namespace elision {
 
+class Loc;
+/// Shorthand for a pointer to a location.
+typedef std::shared_ptr<Loc const> Locus;
+
+
 /**
  * Every term can have an associated location, which tells where the term
  * was originally declared.  This can be @b internal, or it can be from a
@@ -80,9 +85,9 @@ public:
      * @param line      The source line number.  If none is known, use zero.
      * @param column    The source column.  If none is known, use zero.
      */
-    inline static EPTR(Loc) get(std::string const& source,
+    inline static Locus get(std::string const& source,
     		unsigned int line = 0, unsigned int column = 0) {
-    	EPTR(Loc) ret(new Loc(source, line, column));
+    	Locus ret(new Loc(source, line, column));
     	return ret;
     }
 
@@ -91,9 +96,9 @@ public:
      * @param line      The source line number.  If none is known, use zero.
      * @param column    The source column.  If none is known, use zero.
      */
-    inline static EPTR(Loc) get(unsigned int line = 0,
+    inline static Locus get(unsigned int line = 0,
     		unsigned int column = 0) {
-    	EPTR(Loc) ret(new Loc(line, column));
+    	Locus ret(new Loc(line, column));
     	return ret;
     }
 
@@ -148,7 +153,7 @@ public:
      * This is much faster than using <tt>Loc("")</tt>, since it only constructs
      * the first time.
      */
-    static EPTR(Loc) get_internal();
+    static Locus get_internal();
 
 private:
     struct Impl;

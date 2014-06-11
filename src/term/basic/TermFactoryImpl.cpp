@@ -18,47 +18,64 @@
  * @endverbatim
  */
 
-#include "TermFactory.h"
-#include "Literal.h"
+#include "TermFactoryImpl.h"
+#include "LiteralImpl.h"
 
 namespace elision {
 namespace term {
 namespace basic {
 
+class RootTerm;
+typedef std::shared_ptr<RootTerm const> Root;
 
 /**
  * Provide a private implementation of the root term.
  */
 class RootTerm : public virtual ITerm {
 public:
-	static EPTR(ITerm) fetch() {
+	/**
+	 * Get the unique instance of the root term.
+	 * @return The root term.
+	 */
+	static Term fetch() {
 		// Make a new instance of myself.  This is static so we really, really
 		// only ever get one.  Just one.  Only one.  Note that we cannot use
 		// make_shared because the constructor is private.
-		static EPTR(RootTerm) self = std::shared_ptr<RootTerm>(new RootTerm());
+		static Root self = std::shared_ptr<RootTerm>(new RootTerm());
 		// Make this instance its own type.
 		self.get()->me_ = self;
 		return self;
 	}
+
+	/// Clean up this instance.
 	~RootTerm() {};
+
 	inline bool is_constant() const { return true; }
 	inline operator std::string() const { return "^ROOT"; }
-	inline EPTR(ITerm) get_type() const { return me_; }
+	inline Term get_type() const { return me_; }
 	inline unsigned int get_de_bruijn_index() const { return 0; }
 	inline unsigned int get_depth() const { return 0; }
 	inline bool is_meta_term() const { return false; }
-	inline EPTR(Loc) get_loc() const { return loc_; }
+	inline Locus get_loc() const { return loc_; }
 
 private:
+	/**
+	 * Construct a new instance.  This is private because it must only be
+	 * called from `fetch`, which explicitly "fixes up" the `me_` field.
+	 */
 	RootTerm() {}
-	mutable EPTR(RootTerm) me_;
-	EPTR(Loc) loc_ = Loc::get_internal();
+
+	/// Our type, which is ourself.
+	mutable Root me_;
+
+	/// Hold the internal loc for fast reference.
+	Locus loc_ = Loc::get_internal();
 };
 
 // Little macro to initialize the root types.
 #define INIT(m_name) m_name = get_root_term(" ## m_name ## ");
 
-TermFactory::TermFactory() : root_(RootTerm::fetch()){
+TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()){
 	INIT(SYMBOL);
 	INIT(STRING);
 	INIT(INTEGER);
@@ -67,13 +84,13 @@ TermFactory::TermFactory() : root_(RootTerm::fetch()){
 	INIT(BOOLEAN);
 }
 
-EPTR(ISymbolLiteral)
-TermFactory::get_root_term(std::string const name) const {
+SymbolLiteral
+TermFactoryImpl::get_root_term(std::string const name) const {
 	// Go and get a pointer from the map.
-	EPTR(ISymbolLiteral) rt = known_roots_[name];
+	SymbolLiteral rt = known_roots_[name];
 	if (!rt) {
 		// First time through.  Make a new symbol and store it.
-		EPTR(ISymbolLiteral) nrt =
+		SymbolLiteral nrt =
 				get_symbol_literal(Loc::get_internal(), name, root_);
 		known_roots_[name] = nrt;
 		return nrt;
@@ -84,52 +101,52 @@ TermFactory::get_root_term(std::string const name) const {
 // Shorthand to make a shared pointer of the correct type with the provided
 // arguments.  Depends on names being the "usual" names.
 #define MAKE(m_kind, ...) \
-	std::shared_ptr<I ## m_kind const>(new m_kind(loc, __VA_ARGS__, type))
+	std::shared_ptr<I ## m_kind const>(new m_kind ## Impl(loc, __VA_ARGS__, type))
 
-EPTR(ISymbolLiteral)
-TermFactory::get_symbol_literal(
-		EPTR(Loc) loc, std::string const& name, EPTR(ITerm) type) const {
+SymbolLiteral
+TermFactoryImpl::get_symbol_literal(
+		Locus loc, std::string const& name, Term type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(SymbolLiteral, name);
 }
 
-EPTR(IStringLiteral)
-TermFactory::get_string_literal(
-		EPTR(Loc) loc, std::string const& value, EPTR(ITerm) type) const {
+StringLiteral
+TermFactoryImpl::get_string_literal(
+		Locus loc, std::string const& value, Term type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(StringLiteral, value);
 }
 
-EPTR(IIntegerLiteral)
-TermFactory::get_integer_literal(
-		EPTR(Loc) loc, eint_t value, EPTR(ITerm) type) const {
+IntegerLiteral
+TermFactoryImpl::get_integer_literal(
+		Locus loc, eint_t value, Term type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(IntegerLiteral, value);
 }
 
-EPTR(IFloatLiteral)
-TermFactory::get_float_literal(
-		EPTR(Loc) loc, eint_t significand, eint_t exponent, uint16_t radix,
-		EPTR(ITerm) type) const {
+FloatLiteral
+TermFactoryImpl::get_float_literal(
+		Locus loc, eint_t significand, eint_t exponent, uint16_t radix,
+		Term type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(FloatLiteral, significand, exponent, radix);
 }
 
-EPTR(IBitStringLiteral)
-TermFactory::get_bit_string_literal(
-		EPTR(Loc) loc, eint_t bits, eint_t length, EPTR(ITerm) type) const {
+BitStringLiteral
+TermFactoryImpl::get_bit_string_literal(
+		Locus loc, eint_t bits, eint_t length, Term type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(BitStringLiteral, bits, length);
 }
 
-EPTR(IBooleanLiteral)
-TermFactory::get_boolean_literal(
-		EPTR(Loc) loc, bool value, EPTR(ITerm) type) const {
+BooleanLiteral
+TermFactoryImpl::get_boolean_literal(
+		Locus loc, bool value, Term type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(BooleanLiteral, value);

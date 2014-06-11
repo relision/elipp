@@ -36,6 +36,9 @@ public:
 	// Nothing to see.
 };
 
+/// Shorthand for a pointer to a literal.
+typedef std::shared_ptr<ILiteral const> Literal;
+
 
 /**
  * Specify the public interface to a symbol literal.  Symbols are just simple
@@ -49,6 +52,9 @@ public:
 	 */
 	virtual std::string const get_name() const = 0;
 };
+
+/// Shorthand for a symbol literal pointer.
+typedef std::shared_ptr<ISymbolLiteral const> SymbolLiteral;
 
 
 /**
@@ -64,6 +70,9 @@ public:
 	virtual std::string const get_value() const = 0;
 };
 
+/// Shorthand for a string literal pointer.
+typedef std::shared_ptr<IStringLiteral const> StringLiteral;
+
 
 /**
  * Specify the public interface to an integer literal.  Elision integers are
@@ -78,6 +87,9 @@ public:
 	 */
 	virtual elision::eint_t const get_value() const = 0;
 };
+
+/// Shorthand for a integer literal pointer.
+typedef std::shared_ptr<IIntegerLiteral const> IntegerLiteral;
 
 
 /**
@@ -120,6 +132,9 @@ public:
 	virtual uint8_t get_radix() const = 0;
 };
 
+/// Shorthand for a float literal pointer.
+typedef std::shared_ptr<IFloatLiteral const> FloatLiteral;
+
 
 /**
  * Specify the public interface to a bit string.
@@ -144,6 +159,9 @@ public:
 	virtual elision::eint_t const get_length() const = 0;
 };
 
+/// Shorthand for a bit string literal pointer.
+typedef std::shared_ptr<IBitStringLiteral const> BitStringLiteral;
+
 
 /**
  * Specify the public interface to a Boolean literal.  This is a literal that
@@ -164,6 +182,9 @@ public:
 	virtual bool get_value() const = 0;
 };
 
+/// Shorthand for a boolean literal pointer.
+typedef std::shared_ptr<IBooleanLiteral const> BooleanLiteral;
+
 
 /**
  * Specify the public interface to a term literal.  Term literals represent a
@@ -176,8 +197,11 @@ public:
 	 * Get the underlying term value.
 	 * @return	The underlying term.
 	 */
-	virtual EPTR(ITerm) get_term() const = 0;
+	virtual Term get_term() const = 0;
 };
+
+/// Shorthand for a term literal pointer.
+typedef std::shared_ptr<ITermLiteral const> TermLiteral;
 
 } /* namespace term */
 } /* namespace elision */

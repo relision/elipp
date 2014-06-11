@@ -22,7 +22,7 @@
 
 namespace elision {
 
-EPTR(Loc)
+Locus
 ElisionException::get_loc() const {
 	return loc_;
 }

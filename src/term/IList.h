@@ -26,6 +26,10 @@
 namespace elision {
 namespace term {
 
+class IList;
+/// Shorthand for a list pointer.
+typedef std::shared_ptr<IList const> List;
+
 /**
  * A list consists of a collection of terms and an algebraic property
  * specification.
@@ -36,7 +40,7 @@ public:
 	 * Get the property specification for this list.
 	 * @return	The property specification for this list.
 	 */
-	virtual EPTR(IPropertySpecification) get_property_specification() const = 0;
+	virtual PropertySpecification get_property_specification() const = 0;
 
 	/**
 	 * Get an element from this list, by apparent position.
@@ -44,7 +48,7 @@ public:
 	 * @return	The requested element.
 	 * @throws	std::out_of_range	If the position is out of range.
 	 */
-	virtual EPTR(ITerm) operator[](unsigned int position) const = 0;
+	virtual Term operator[](unsigned int position) const = 0;
 
 	/**
 	 * Get the length of this list (the number of elements).

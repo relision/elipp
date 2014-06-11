@@ -27,6 +27,10 @@
 namespace elision {
 namespace term {
 
+class ITerm;
+/// Shorthand for a pointer to a term.
+typedef std::shared_ptr<ITerm const> Term;
+
 /**
  * This is the public interface shared by all terms.
  */
@@ -42,7 +46,7 @@ public:
      * In fact, other than the root, there should be no cycles in the types.
      * @return  The type of this term.
      */
-	virtual EPTR(ITerm) get_type() const = 0;
+	virtual Term get_type() const = 0;
 
     /**
      * Produce a string representation of this term.  Since no enclosing
@@ -97,8 +101,10 @@ public:
      * constructed.
      * @return	The location of this term's declaration.
      */
-	virtual EPTR(Loc) get_loc() const = 0;
+	virtual Locus get_loc() const = 0;
 };
+
+/// Shorthand for using a term.
 
 } /* namespace term */
 } /* namespace elision */

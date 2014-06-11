@@ -88,19 +88,19 @@ public:
 	 * Get any absorber specification.
 	 * @return	The absorber specification.
 	 */
-	virtual boost::optional<EPTR(ITerm)> get_absorber() const = 0;
+	virtual boost::optional<Term> get_absorber() const = 0;
 
 	/**
 	 * Get any identity specification.
 	 * @return	The identity specification.
 	 */
-	virtual boost::optional<EPTR(ITerm)> get_identity() const = 0;
+	virtual boost::optional<Term> get_identity() const = 0;
 
 	/**
 	 * Get any membership specification.
 	 * @return	The membership specification.
 	 */
-	virtual boost::optional<EPTR(ITerm)> get_membership() const = 0;
+	virtual boost::optional<Term> get_membership() const = 0;
 
 	/**
 	 * Check the associativity specification.  If it is set to a Boolean
@@ -141,6 +141,10 @@ public:
 	 */
 	virtual bool const has_membership() const = 0;
 };
+
+/// Shorthand for a property specification pointer.
+typedef std::shared_ptr<IPropertySpecification const> PropertySpecification;
+
 } /* namespace term */
 } /* namespace elision */
 

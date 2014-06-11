@@ -18,17 +18,17 @@
  * @endverbatim
  */
 
-#include "Term.h"
+#include "TermImpl.h"
 
 namespace elision {
 namespace term {
 namespace basic {
 
-Term::Term(EPTR(ITerm) the_type) : type_(the_type), loc_(Loc::get_internal()) {
+TermImpl::TermImpl(Term the_type) : type_(the_type), loc_(Loc::get_internal()) {
 	NOTNULL(the_type);
 }
 
-Term::Term(EPTR(Loc) the_loc, EPTR(ITerm) the_type) :
+TermImpl::TermImpl(Locus the_loc, Term the_type) :
 	type_(the_type), loc_(the_loc) {
 	NOTNULL(the_loc);
 	NOTNULL(the_type);

@@ -31,26 +31,26 @@ namespace basic {
  * Partial implementation of a term.  This class is abstract; subclasses
  * must implement at least `is_constant` and the `std::string` operator.
  */
-class Term: public virtual elision::term::ITerm {
+class TermImpl: public virtual elision::term::ITerm {
 public:
 	/**
 	 * Initialize a new instance.  The location is "internal."
 	 * @param the_type	The type of this term.
 	 */
-	explicit Term(EPTR(ITerm) the_type);
+	explicit TermImpl(Term the_type);
 
 	/**
 	 * Initialize a new instance.
 	 * @param the_loc	The location of the term's declaration.
 	 * @param the_type	The type of this term.
 	 */
-	Term(EPTR(Loc) the_loc, EPTR(ITerm) the_type);
+	TermImpl(Locus the_loc, Term the_type);
 
 	/// Deallocate this instance.
-	virtual ~Term() = default;
+	virtual ~TermImpl() = default;
 
 	/// Return the type used during construction.
-	inline virtual EPTR(ITerm) get_type() const {
+	inline virtual Term get_type() const {
 		return type_;
 	}
 
@@ -76,13 +76,13 @@ public:
 	virtual bool is_constant() const = 0;
 
 	/// Return the location provided during construction.
-	inline virtual EPTR(Loc) get_loc() const {
+	inline virtual Locus get_loc() const {
 		return loc_;
 	}
 
 protected:
-	EPTR(ITerm) type_;
-	EPTR(Loc) loc_;
+	Term type_;
+	Locus loc_;
 };
 
 } /* namespace basic */

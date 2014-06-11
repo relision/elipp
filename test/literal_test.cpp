@@ -19,8 +19,8 @@
  */
 
 #include "test_frame.h"
-#include "ITermFactory.h"
-#include "basic/TermFactory.h"
+#include "TermFactory.h"
+#include "basic/TermFactoryImpl.h"
 #include <boost/lexical_cast.hpp>
 
 using namespace elision;
@@ -30,10 +30,20 @@ START_TEST
 
 // Get a term factory.
 HANG("Making a factory")
-std::unique_ptr<ITermFactory> fact(new elision::term::basic::TermFactory());
+std::unique_ptr<TermFactory> fact(new elision::term::basic::TermFactoryImpl());
 ENDL("Done")
 
 START_ITEM(symbols)
+
+try {
+	// Make some symbols.
+	HANG("Making symbols");
+	ENDL("Done");
+} catch (std::exception& e) {
+	// Failed!
+	ENDL("Caught an exception: " << e.what());
+	FAIL_ITEM(symbols, "");
+}
 
 END_ITEM(symbols)
 
@@ -58,12 +68,12 @@ START_ITEM(booleans)
 try {
 	// Make some Booleans.
 	HANG("Making Booleans");
-	EPTR(IBooleanLiteral) b1 = fact->get_boolean_literal(Loc::get_internal(), true, fact->get_root());
-	EPTR(IBooleanLiteral) b2 = fact->get_boolean_literal(Loc::get_internal(), false, fact->get_root());
-	EPTR(IBooleanLiteral) b3 = fact->get_boolean_literal(Loc::get_internal(), true, fact->BOOLEAN);
-	EPTR(IBooleanLiteral) b4 = fact->get_boolean_literal(Loc::get_internal(), false, fact->BOOLEAN);
-	EPTR(IBooleanLiteral) b5 = fact->get_boolean_literal(Loc::get(17,21), true, fact->BOOLEAN);
-	EPTR(IBooleanLiteral) b6 = fact->get_boolean_literal(Loc::get(21,17), false, fact->BOOLEAN);
+	BooleanLiteral b1 = fact->get_boolean_literal(Loc::get_internal(), true, fact->get_root());
+	BooleanLiteral b2 = fact->get_boolean_literal(Loc::get_internal(), false, fact->get_root());
+	BooleanLiteral b3 = fact->get_boolean_literal(Loc::get_internal(), true, fact->BOOLEAN);
+	BooleanLiteral b4 = fact->get_boolean_literal(Loc::get_internal(), false, fact->BOOLEAN);
+	BooleanLiteral b5 = fact->get_boolean_literal(Loc::get(17,21), true, fact->BOOLEAN);
+	BooleanLiteral b6 = fact->get_boolean_literal(Loc::get(21,17), false, fact->BOOLEAN);
 	ENDL("Done");
 
 	ENDL("Some Booleans")
@@ -138,7 +148,5 @@ try {
 }
 
 END_ITEM(booleans)
-
-//fact.release();
 
 END_TEST

@@ -28,8 +28,8 @@ START_ITEM(simple)
 	try {
 	    // Try the console location.
         HANG("Getting console")
-        EPTR(et::Loc) console1 = et::Loc::get(17,21);
-        EPTR(et::Loc) console2 = et::Loc::get(210,0);
+        et::Locus console1 = et::Loc::get(17,21);
+        et::Locus console2 = et::Loc::get(210,0);
         if (*console1 == *console2) {
             FAIL_ITEM(simple, "Unequal console locations show equal.");
         }
@@ -43,9 +43,9 @@ START_ITEM(simple)
 
         // Try the unique internal location.
 	    HANG("Getting internal")
-	    EPTR(et::Loc) internal1(et::Loc::get_internal());
-	    EPTR(et::Loc) internal2(et::Loc::get_internal());
-        EPTR(et::Loc) internal3 = et::Loc::get("");
+	    et::Locus internal1(et::Loc::get_internal());
+	    et::Locus internal2(et::Loc::get_internal());
+        et::Locus internal3 = et::Loc::get("");
         if (*internal1 != *internal2) {
             FAIL_ITEM(simple, "Internal locations via get_internal are not equal.");
         }
@@ -62,10 +62,10 @@ START_ITEM(simple)
 
 	    // Try a real location.
         HANG("Getting a location");
-        EPTR(et::Loc) loc1 = et::Loc::get("test.eli", 17, 21);
-        EPTR(et::Loc) loc2 = et::Loc::get("test.eli", 17, 21);
-        EPTR(et::Loc) loc3 = et::Loc::get("test.eli", 210, 0);
-        EPTR(et::Loc) loc4 = et::Loc::get("retest.eli", 210, 0);
+        et::Locus loc1 = et::Loc::get("test.eli", 17, 21);
+        et::Locus loc2 = et::Loc::get("test.eli", 17, 21);
+        et::Locus loc3 = et::Loc::get("test.eli", 210, 0);
+        et::Locus loc4 = et::Loc::get("retest.eli", 210, 0);
         if (*loc1 != *loc2) {
             FAIL_ITEM(simple, "Equal locations show unequal.");
         }
