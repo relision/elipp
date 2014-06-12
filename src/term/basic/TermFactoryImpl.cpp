@@ -92,13 +92,13 @@ TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()){
 	INIT(BOOLEAN);
 }
 
-SymbolLiteral
+pSymbolLiteral
 TermFactoryImpl::get_root_term(std::string const name) const {
 	// Go and get a pointer from the map.
-	SymbolLiteral rt = known_roots_[name];
+	pSymbolLiteral rt = known_roots_[name];
 	if (!rt) {
 		// First time through.  Make a new symbol and store it.
-		SymbolLiteral nrt =
+		pSymbolLiteral nrt =
 				get_symbol_literal(Loc::get_internal(), name, root_);
 		known_roots_[name] = nrt;
 		return nrt;
@@ -111,7 +111,7 @@ TermFactoryImpl::get_root_term(std::string const name) const {
 #define MAKE(m_kind, ...) \
 	std::shared_ptr<I ## m_kind const>(new m_kind ## Impl(loc, __VA_ARGS__, type))
 
-SymbolLiteral
+pSymbolLiteral
 TermFactoryImpl::get_symbol_literal(
 		Locus loc, std::string const& name, Term type) const {
 	NOTNULL(loc);
@@ -119,7 +119,7 @@ TermFactoryImpl::get_symbol_literal(
 	return MAKE(SymbolLiteral, name);
 }
 
-StringLiteral
+pStringLiteral
 TermFactoryImpl::get_string_literal(
 		Locus loc, std::string const& value, Term type) const {
 	NOTNULL(loc);
@@ -127,7 +127,7 @@ TermFactoryImpl::get_string_literal(
 	return MAKE(StringLiteral, value);
 }
 
-IntegerLiteral
+pIntegerLiteral
 TermFactoryImpl::get_integer_literal(
 		Locus loc, eint_t value, Term type) const {
 	NOTNULL(loc);
@@ -135,7 +135,7 @@ TermFactoryImpl::get_integer_literal(
 	return MAKE(IntegerLiteral, value);
 }
 
-FloatLiteral
+pFloatLiteral
 TermFactoryImpl::get_float_literal(
 		Locus loc, eint_t significand, eint_t exponent, uint16_t radix,
 		Term type) const {
@@ -144,7 +144,7 @@ TermFactoryImpl::get_float_literal(
 	return MAKE(FloatLiteral, significand, exponent, radix);
 }
 
-BitStringLiteral
+pBitStringLiteral
 TermFactoryImpl::get_bit_string_literal(
 		Locus loc, eint_t bits, eint_t length, Term type) const {
 	NOTNULL(loc);
@@ -152,7 +152,7 @@ TermFactoryImpl::get_bit_string_literal(
 	return MAKE(BitStringLiteral, bits, length);
 }
 
-BooleanLiteral
+pBooleanLiteral
 TermFactoryImpl::get_boolean_literal(
 		Locus loc, bool value, Term type) const {
 	NOTNULL(loc);

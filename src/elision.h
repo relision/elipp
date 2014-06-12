@@ -28,11 +28,6 @@
 #include <stdint.h>
 #ifdef HAVE_BOOST_CPP_INT
 #  include <boost/multiprecision/cpp_int.hpp>
-#else
-#  ifndef HAVE_BOOST_CPP_INT_WARN
-#    define HAVE_BOOST_CPP_INT_WARN
-#    warning "Could not find boost/multiprecision/cpp_int.hpp.  Using fallback."
-#  endif
 #endif
 #include <bitset>
 

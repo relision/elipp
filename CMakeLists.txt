@@ -14,6 +14,20 @@ SET( ELI_MINOR 0 )
 SET( ELI_VERSION ${ELI_MAJOR}.${ELI_MINOR} )
 SET( ELI_DIST_NAME "elision-${ELI_VERSION}" )
 
+# Find Boost and include it.
+FIND_PACKAGE(Boost)
+IF (Boost_FOUND)
+    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+    ADD_DEFINITIONS( "-DHAS_BOOST" )
+    # Look for the Boost multiprecision library.  We need it.
+    find_file(CPP_INT "cpp_int.hpp" "${Boost_INCLUDE_DIR}/boost/multiprecision/")
+    if(NOT CPP_INT)
+        message(WARNING "Boost does not have multiprecision; falling back to int64_t.")
+    else()
+        add_definitions(-DHAVE_BOOST_CPP_INT)
+    endif()
+ENDIF()
+
 # Specify the list of source files to use for the core library here.
 FILE(GLOB_RECURSE lib_sources RELATIVE ${CMAKE_HOME_DIRECTORY} src/*.cpp)
 
@@ -33,10 +47,6 @@ set( CMAKE_CXX_FLAGS "-g -Wall -std=c++11" )
 
 # Modify the include path so we can find our own files.
 include_directories( AFTER SYSTEM src src/term )
-
-# Look for the Boost multiprecision library.  We need it.
-include(CheckIncludeFiles)
-check_include_files("boost/multiprecision/cpp_int.hpp" HAVE_BOOST_CPP_INT)
 
 # Build the core library.
 add_library( elision SHARED ${lib_sources} )

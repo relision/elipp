@@ -48,25 +48,25 @@ public:
 		return root_;
 	}
 
-	virtual SymbolLiteral get_root_term(std::string const name) const;
+	virtual pSymbolLiteral get_root_term(std::string const name) const;
 
-	virtual SymbolLiteral get_symbol_literal(
+	virtual pSymbolLiteral get_symbol_literal(
 			Locus loc, std::string const& name, Term type) const;
-	virtual StringLiteral get_string_literal(
+	virtual pStringLiteral get_string_literal(
 			Locus loc, std::string const& value, Term type) const;
-	virtual IntegerLiteral get_integer_literal(
+	virtual pIntegerLiteral get_integer_literal(
 			Locus loc, eint_t value, Term type) const;
-	virtual FloatLiteral get_float_literal(
+	virtual pFloatLiteral get_float_literal(
 			Locus loc, eint_t significand, eint_t exponent, uint16_t radix,
 			Term type) const;
-	virtual BitStringLiteral get_bit_string_literal(
+	virtual pBitStringLiteral get_bit_string_literal(
 			Locus loc, eint_t bits, eint_t length, Term type) const;
-	virtual BooleanLiteral get_boolean_literal(
+	virtual pBooleanLiteral get_boolean_literal(
 			Locus loc, bool value, Term type) const;
 
 private:
 	Term root_;
-	mutable std::unordered_map<std::string, SymbolLiteral> known_roots_;
+	mutable std::unordered_map<std::string, pSymbolLiteral> known_roots_;
 };
 
 } /* namespace basic */

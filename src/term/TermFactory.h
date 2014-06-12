@@ -57,7 +57,7 @@ public:
 	 * @param	name	The name of the root term.
 	 * @return	The requested root term.
 	 */
-	virtual SymbolLiteral get_root_term(std::string const name) const = 0;
+	virtual pSymbolLiteral get_root_term(std::string const name) const = 0;
 
 	//======================================================================
 	// Well-known root types (and ^ROOT, itself).  Subclasses must initialize
@@ -65,56 +65,56 @@ public:
 	//======================================================================
 
 	Term ROOT;					//< Simple access to the root.
-	SymbolLiteral SYMBOL;		//< Simple access to the symbol type.
-	SymbolLiteral STRING;		//< Simple access to the string type.
-	SymbolLiteral INTEGER;		//< Simple access to the integer type.
-	SymbolLiteral FLOAT;		//< Simple access to the float type.
-	SymbolLiteral BITSTRING;	//< Simple access to the bit string type.
-	SymbolLiteral BOOLEAN;		//< Simple access to the Boolean type.
+	pSymbolLiteral SYMBOL;		//< Simple access to the symbol type.
+	pSymbolLiteral STRING;		//< Simple access to the string type.
+	pSymbolLiteral INTEGER;		//< Simple access to the integer type.
+	pSymbolLiteral FLOAT;		//< Simple access to the float type.
+	pSymbolLiteral BITSTRING;	//< Simple access to the bit string type.
+	pSymbolLiteral BOOLEAN;		//< Simple access to the Boolean type.
 
 	//======================================================================
 	// Make literals.
 	//======================================================================
 
-	virtual SymbolLiteral get_symbol_literal(
+	virtual pSymbolLiteral get_symbol_literal(
 			Locus loc, std::string const& name, Term type) const = 0;
-	virtual StringLiteral get_string_literal(
+	virtual pStringLiteral get_string_literal(
 			Locus loc, std::string const& value, Term type) const = 0;
-	virtual IntegerLiteral get_integer_literal(
+	virtual pIntegerLiteral get_integer_literal(
 			Locus loc, eint_t value, Term type) const = 0;
-	virtual FloatLiteral get_float_literal(
+	virtual pFloatLiteral get_float_literal(
 			Locus loc, eint_t significand, eint_t exponent, uint16_t radix,
 			Term type) const = 0;
-	virtual BitStringLiteral get_bit_string_literal(
+	virtual pBitStringLiteral get_bit_string_literal(
 			Locus loc, eint_t bits, eint_t length, Term type) const = 0;
-	virtual BooleanLiteral get_boolean_literal(
+	virtual pBooleanLiteral get_boolean_literal(
 			Locus loc, bool value, Term type) const = 0;
 
 	//======================================================================
 	// Make literals with the default type.
 	//======================================================================
 
-	SymbolLiteral get_symbol_literal(Locus loc,
+	pSymbolLiteral get_symbol_literal(Locus loc,
 			std::string const& name) const {
 		return get_symbol_literal(loc, name, SYMBOL);
 	}
-	StringLiteral get_string_literal(Locus loc,
+	pStringLiteral get_string_literal(Locus loc,
 			std::string const& value) const {
 		return get_string_literal(loc, value, STRING);
 	}
-	IntegerLiteral get_integer_literal(Locus loc,
+	pIntegerLiteral get_integer_literal(Locus loc,
 			eint_t value) const {
 		return get_integer_literal(loc, value, INTEGER);
 	}
-	FloatLiteral get_float_literal(Locus loc, eint_t significand,
+	pFloatLiteral get_float_literal(Locus loc, eint_t significand,
 			eint_t exponent, uint16_t radix) const {
 		return get_float_literal(loc, significand, exponent, radix, FLOAT);
 	}
-	BitStringLiteral get_bit_string_literal(Locus loc, eint_t bits,
+	pBitStringLiteral get_bit_string_literal(Locus loc, eint_t bits,
 			eint_t length) const {
 		return get_bit_string_literal(loc, bits, length, BITSTRING);
 	}
-	BooleanLiteral get_boolean_literal(Locus loc, bool value) const {
+	pBooleanLiteral get_boolean_literal(Locus loc, bool value) const {
 		return get_boolean_literal(loc, value, BOOLEAN);
 	}
 
@@ -122,25 +122,25 @@ public:
 	// Make literals with default type and internal location.
 	//======================================================================
 
-	SymbolLiteral get_symbol_literal(std::string const& name) const {
+	pSymbolLiteral get_symbol_literal(std::string const& name) const {
 		return get_symbol_literal(Loc::get_internal(), name);
 	}
-	StringLiteral get_string_literal(std::string const& value) const {
+	pStringLiteral get_string_literal(std::string const& value) const {
 		return get_string_literal(Loc::get_internal(), value);
 	}
-	IntegerLiteral get_integer_literal(eint_t value) const {
+	pIntegerLiteral get_integer_literal(eint_t value) const {
 		return get_integer_literal(Loc::get_internal(), value);
 	}
-	FloatLiteral get_float_literal(eint_t significand, eint_t exponent,
+	pFloatLiteral get_float_literal(eint_t significand, eint_t exponent,
 			uint16_t radix) const {
 		return get_float_literal(Loc::get_internal(), significand, exponent,
 				radix);
 	}
-	BitStringLiteral get_bit_string_literal(eint_t bits,
+	pBitStringLiteral get_bit_string_literal(eint_t bits,
 			eint_t length) const {
 		return get_bit_string_literal(Loc::get_internal(), bits, length);
 	}
-	BooleanLiteral get_boolean_literal(bool value) const {
+	pBooleanLiteral get_boolean_literal(bool value) const {
 		return get_boolean_literal(Loc::get_internal(), value);
 	}
 };

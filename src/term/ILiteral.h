@@ -37,7 +37,7 @@ public:
 };
 
 /// Shorthand for a pointer to a literal.
-typedef std::shared_ptr<ILiteral const> Literal;
+typedef std::shared_ptr<ILiteral const> pLiteral;
 
 
 /**
@@ -54,7 +54,7 @@ public:
 };
 
 /// Shorthand for a symbol literal pointer.
-typedef std::shared_ptr<ISymbolLiteral const> SymbolLiteral;
+typedef std::shared_ptr<ISymbolLiteral const> pSymbolLiteral;
 
 
 /**
@@ -71,7 +71,7 @@ public:
 };
 
 /// Shorthand for a string literal pointer.
-typedef std::shared_ptr<IStringLiteral const> StringLiteral;
+typedef std::shared_ptr<IStringLiteral const> pStringLiteral;
 
 
 /**
@@ -89,7 +89,7 @@ public:
 };
 
 /// Shorthand for a integer literal pointer.
-typedef std::shared_ptr<IIntegerLiteral const> IntegerLiteral;
+typedef std::shared_ptr<IIntegerLiteral const> pIntegerLiteral;
 
 
 /**
@@ -133,7 +133,7 @@ public:
 };
 
 /// Shorthand for a float literal pointer.
-typedef std::shared_ptr<IFloatLiteral const> FloatLiteral;
+typedef std::shared_ptr<IFloatLiteral const> pFloatLiteral;
 
 
 /**
@@ -160,7 +160,7 @@ public:
 };
 
 /// Shorthand for a bit string literal pointer.
-typedef std::shared_ptr<IBitStringLiteral const> BitStringLiteral;
+typedef std::shared_ptr<IBitStringLiteral const> pBitStringLiteral;
 
 
 /**
@@ -177,7 +177,7 @@ public:
 };
 
 /// Shorthand for a boolean literal pointer.
-typedef std::shared_ptr<IBooleanLiteral const> BooleanLiteral;
+typedef std::shared_ptr<IBooleanLiteral const> pBooleanLiteral;
 
 
 /**
@@ -195,7 +195,7 @@ public:
 };
 
 /// Shorthand for a term literal pointer.
-typedef std::shared_ptr<ITermLiteral const> TermLiteral;
+typedef std::shared_ptr<ITermLiteral const> pTermLiteral;
 
 } /* namespace term */
 } /* namespace elision */

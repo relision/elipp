@@ -38,12 +38,12 @@ START_ITEM(symbols)
 try {
 	// Make some symbols.
 	HANG("Making symbols");
-	SymbolLiteral s1 = fact->get_symbol_literal("joe1");
-	SymbolLiteral s2 = fact->get_symbol_literal("1joe");
-	SymbolLiteral s3 = fact->get_symbol_literal(Loc::get_internal(), "");
-	SymbolLiteral s4 = fact->get_symbol_literal(Loc::get_internal(), "joe1");
-	SymbolLiteral s5 = fact->get_symbol_literal(Loc::get(17, 21), "^5`\n4\" \t");
-	SymbolLiteral s6 = fact->get_symbol_literal(Loc::get(21, 17), "joe1", fact->INTEGER);
+	pSymbolLiteral s1 = fact->get_symbol_literal("joe1");
+	pSymbolLiteral s2 = fact->get_symbol_literal("1joe");
+	pSymbolLiteral s3 = fact->get_symbol_literal(Loc::get_internal(), "");
+	pSymbolLiteral s4 = fact->get_symbol_literal(Loc::get_internal(), "joe1");
+	pSymbolLiteral s5 = fact->get_symbol_literal(Loc::get(17, 21), "^5`\n4\" \t");
+	pSymbolLiteral s6 = fact->get_symbol_literal(Loc::get(21, 17), "joe1", fact->INTEGER);
 	ENDL("Done");
 
 	ENDL("Some symbols"); PUSH;
@@ -144,12 +144,12 @@ START_ITEM(booleans)
 try {
 	// Make some Booleans.
 	HANG("Making Booleans");
-	BooleanLiteral b1 = fact->get_boolean_literal(Loc::get_internal(), true, fact->ROOT);
-	BooleanLiteral b2 = fact->get_boolean_literal(Loc::get_internal(), false, fact->ROOT);
-	BooleanLiteral b3 = fact->get_boolean_literal(Loc::get_internal(), true);
-	BooleanLiteral b4 = fact->get_boolean_literal(Loc::get_internal(), false, fact->BOOLEAN);
-	BooleanLiteral b5 = fact->get_boolean_literal(Loc::get(17,21), true, fact->BOOLEAN);
-	BooleanLiteral b6 = fact->get_boolean_literal(Loc::get(21,17), false);
+	pBooleanLiteral b1 = fact->get_boolean_literal(Loc::get_internal(), true, fact->ROOT);
+	pBooleanLiteral b2 = fact->get_boolean_literal(Loc::get_internal(), false, fact->ROOT);
+	pBooleanLiteral b3 = fact->get_boolean_literal(Loc::get_internal(), true);
+	pBooleanLiteral b4 = fact->get_boolean_literal(Loc::get_internal(), false, fact->BOOLEAN);
+	pBooleanLiteral b5 = fact->get_boolean_literal(Loc::get(17,21), true, fact->BOOLEAN);
+	pBooleanLiteral b6 = fact->get_boolean_literal(Loc::get(21,17), false);
 	ENDL("Done");
 
 	ENDL("Some Booleans"); PUSH;
