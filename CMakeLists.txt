@@ -34,6 +34,10 @@ set( CMAKE_CXX_FLAGS "-g -Wall -std=c++11" )
 # Modify the include path so we can find our own files.
 include_directories( AFTER SYSTEM src src/term )
 
+# Look for the Boost multiprecision library.  We need it.
+include(CheckIncludeFiles)
+check_include_files("boost/multiprecision/cpp_int.hpp" HAVE_BOOST_CPP_INT)
+
 # Build the core library.
 add_library( elision SHARED ${lib_sources} )
 target_link_libraries( elision )

@@ -26,7 +26,14 @@
 #include <memory>
 #include <sstream>
 #include <stdint.h>
-#include <boost/multiprecision/cpp_int.hpp>
+#ifdef HAVE_BOOST_CPP_INT
+#  include <boost/multiprecision/cpp_int.hpp>
+#else
+#  ifndef HAVE_BOOST_CPP_INT_WARN
+#    define HAVE_BOOST_CPP_INT_WARN
+#    warning "Could not find boost/multiprecision/cpp_int.hpp.  Using fallback."
+#  endif
+#endif
 #include <bitset>
 
 /**
@@ -90,7 +97,11 @@ extern uint8_t preferred_radix;
 // Actual definition is in util.cpp.
 
 /// Define the big integer implementation used by Elision.
+#ifdef HAVE_BOOST_CPP_INT
 typedef boost::multiprecision::cpp_int eint_t;
+#else
+typedef int64_t eint_t;
+#endif
 
 /**
 * Produce an appropriately quoted version of a string. This can be either

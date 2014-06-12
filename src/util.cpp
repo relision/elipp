@@ -20,8 +20,6 @@ using std::ostringstream;
 
 namespace elision {
 
-using boost::multiprecision::cpp_int;
-
 uint8_t preferred_radix = 10;
 
 std::string const escape(std::string const& original, bool is_symbol) {
