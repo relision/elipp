@@ -70,6 +70,9 @@
 #define IF_INDENT \
 	if (tf_need_indent) { \
 		std::cout << "  "; \
+		for (int i_m = 0; i_m < tf_indent_level; i_m++) { \
+			std::cout << "  "; \
+		} \
 		tf_need_indent = false; \
 		tf_need_space = false; \
 		tf_need_endl = false; \
@@ -141,6 +144,34 @@
 		tf_need_endl = true; \
 	}
 
+/**
+ * Write a success message and continue the test.  A success message is
+ * automatically written for every item that succeeds, so this is an
+ * extra success message, if you want one.
+ */
+#define SUCCESS \
+	ENDL("SUCCESS"); \
+	tf_need_space = false;
+
+/**
+ * Write a failure message and continue the test.  The failure message does
+ * not end the test item, but plows on ahead.
+ */
+#define FAIL(msg_m) \
+	ENDL("FAIL" << msg_m); \
+	tf_fail_test = true; \
+	tf_fail_item = true;
+
+/**
+ * Show an expression, and then cast it to a string and show that.
+ */
+#define SHOW_STRING(exp_m) \
+	ENDL(#exp_m << ": " << std::string(exp_m));
+
+#define PUSH ++tf_indent_level;
+
+#define POP --tf_indent_level;
+
 //======================================================================
 // Utility macros for use during testing.
 //======================================================================
@@ -190,18 +221,10 @@ int main(int argc, char *argv[]) { \
 	bool tf_need_space = false, tf_need_endl = false, tf_need_indent = false; \
 	int tf_retval; \
 	int tf_item_enabled = true; \
+	int tf_indent_level = 0; \
 	bool tf_fail_test = false; \
 	srand(time(0)); \
 	TS("Starting test");
-
-/**
- * Write a success message and continue the test.  A success message is
- * automatically written for every item that succeeds, so this is an
- * extra success message, if you want one.
- */
-#define SUCCESS \
-	ENDL("SUCCESS"); \
-	tf_need_space = false;
 
 /**
  * Abort and fail the entire test.
@@ -216,6 +239,7 @@ int main(int argc, char *argv[]) { \
  */
 #define IF_FAIL_STOP \
 	if (tf_fail_test) { \
+		tf_fail_test = true; \
 		goto end_test; \
 	}
 
@@ -237,6 +261,10 @@ int main(int argc, char *argv[]) { \
 // complaining that it isn't used, and is more portable than
 // a pragma.
 
+//======================================================================
+// Macros to define and control test items within a test.
+//======================================================================
+
 /**
  * Disable the *next* test item, if any.  Other test items remain enabled.
  */
@@ -254,6 +282,7 @@ int main(int argc, char *argv[]) { \
 #define START_ITEM(item_name_m) \
 	if (tf_item_enabled) { \
 		bool tf_fail_item = false; \
+		tf_indent_level = 0; \
 		try { \
 			std::string tf_item_name = STRINGIFY(item_name_m); \
 			TS("Starting item " << tf_item_name);
@@ -273,6 +302,9 @@ int main(int argc, char *argv[]) { \
 #define END_ITEM(item_name_m) \
 			if (false) goto LABEL(item_name_m); \
 			LABEL(item_name_m): \
+			if (tf_indent_level != 0) { \
+				ENDL("**PUSH and POP mismatched!**"); \
+			} \
 			if (!tf_fail_item) { \
 				ENDL("SUCCESS"); \
 			} \
@@ -286,15 +318,68 @@ int main(int argc, char *argv[]) { \
 	} \
 	tf_item_enabled = true;
 
+//======================================================================
+// Macros to check results.
+//======================================================================
+
 /**
  * Validate a computed value against the actual (oracle) value.  If validation
  * fails, fail the item item_name_m, and emit a mismatch message followed by
  * any extra_m content.
  */
-#define VALIDATE(item_name_m, computed_m, actual_m, extra_m) \
-	if ((computed_m) != (actual_m)) { \
-        FAIL_ITEM(item_name_m, "mismatch (" << (computed_m) << "!=" \
-			<< (actual_m) << ") " << extra_m) \
-    }
+#define VALIDATE(computed_m, actual_m, extra_m) \
+	HANG("Checking " << #computed_m) \
+	{ \
+		auto val1_m = computed_m; \
+		auto val2_m = actual_m; \
+		if ((val1_m) != (val2_m)) { \
+			FAIL("mismatch (" << (val1_m) << "!=" \
+				<< (val2_m) << ") " << extra_m) \
+		} else { \
+			ENDL("Okay"); \
+		} \
+	}
+
+/**
+ * Verify that two values are equal.  If they are not, record a failure.  The
+ * current test item continues.
+ */
+#define MUST_EQUAL(first_m, second_m, extra_m) \
+	HANG("Checking " << #first_m << " == " << \
+		#second_m << " " << extra_m); \
+	if ((first_m) != (second_m)) { \
+		FAIL(""); \
+	} else { \
+		ENDL("Okay"); \
+	}
+
+/**
+ * Verify that two values are unequal.  If they are equal, record a failure.
+ * The current test item continues.
+ */
+#define MUST_NOT_EQUAL(first_m, second_m, extra_m) \
+	HANG("Checking " << #first_m << " != " << \
+		#second_m << " " << extra_m); \
+	if ((first_m) == (second_m)) { \
+		FAIL(""); \
+	} else { \
+		ENDL("Okay"); \
+	}
+
+/**
+ * Verify that some code throws an exception.  If the exception is not thrown,
+ * or the thrown exception is not what is expected, then record a failure.  The
+ * current test item continues.
+ */
+#define MUST_THROW(exp_m, except_m) \
+	HANG("Trying " << #exp_m); \
+	try { \
+		exp_m; \
+		FAIL("No exception was thrown."); \
+	} catch (except_m & e) { \
+		ENDL("Got expected " #except_m); \
+	} catch (...) { \
+		FAIL("Incorrect exception was thrown."); \
+	}
 
 #endif /*TEST_FRAME_H_*/

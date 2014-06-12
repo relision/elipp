@@ -41,7 +41,12 @@ public:
 	inline virtual bool is_constant() const {
 		return true;
 	}
-	virtual operator std::string() const;
+	virtual std::string to_string() const;
+
+	inline bool is_equal(ITerm const& other) const {
+		auto oth = dynamic_cast<SymbolLiteralImpl const&>(other);
+		return get_name() == oth.get_name();
+	}
 
 private:
 	std::string const name_;
@@ -57,7 +62,12 @@ public:
 	inline virtual bool is_constant() const {
 		return true;
 	}
-	virtual operator std::string() const;
+	virtual std::string to_string() const;
+
+	inline bool is_equal(ITerm const& other) const {
+		auto oth = dynamic_cast<StringLiteralImpl const&>(other);
+		return get_value() == oth.get_value();
+	}
 
 private:
 	std::string const value_;
@@ -73,7 +83,12 @@ public:
 	inline virtual bool is_constant() const {
 		return true;
 	}
-	virtual operator std::string() const;
+	virtual std::string to_string() const;
+
+	inline bool is_equal(ITerm const& other) const {
+		auto oth = dynamic_cast<IntegerLiteralImpl const&>(other);
+		return get_value() == oth.get_value();
+	}
 
 private:
 	eint_t const value_;
@@ -96,7 +111,15 @@ public:
 	inline virtual bool is_constant() const {
 		return true;
 	}
-	virtual operator std::string() const;
+	virtual std::string to_string() const;
+
+	inline bool is_equal(ITerm const& other) const {
+		// TODO Really should check the computed values somehow.
+		auto oth = dynamic_cast<FloatLiteralImpl const&>(other);
+		return (get_significand() == oth.get_significand()) &&
+				(get_exponent() == oth.get_exponent()) &&
+				(get_radix() == oth.get_radix());
+	}
 
 private:
 	eint_t const significand_;
@@ -118,7 +141,13 @@ public:
 	inline virtual bool is_constant() const {
 		return true;
 	}
-	virtual operator std::string() const;
+	virtual std::string to_string() const;
+
+	inline bool is_equal(ITerm const& other) const {
+		auto oth = dynamic_cast<BitStringLiteralImpl const&>(other);
+		return (get_bits() == oth.get_bits()) &&
+				(get_length() == oth.get_length());
+	}
 
 private:
 	eint_t const bits_;
@@ -129,16 +158,18 @@ private:
 class BooleanLiteralImpl : public IBooleanLiteral, public TermImpl {
 public:
 	BooleanLiteralImpl(Locus the_loc, bool value, Term the_type);
-	inline virtual operator bool() const {
-		return value_;
-	}
 	inline virtual bool get_value() const {
 		return value_;
 	}
 	inline virtual bool is_constant() const {
 		return true;
 	}
-	virtual operator std::string() const;
+	virtual std::string to_string() const;
+
+	inline bool is_equal(ITerm const& other) const {
+		auto oth = dynamic_cast<BooleanLiteralImpl const&>(other);
+		return get_value() == oth.get_value();
+	}
 
 private:
 	bool const value_;

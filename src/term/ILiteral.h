@@ -173,12 +173,6 @@ public:
 	 * Get this Boolean literal as a platform `bool` value.
 	 * @return	The Boolean value of this Boolean literal.
 	 */
-	virtual operator bool() const = 0;
-
-	/**
-	 * Get this Boolean literal as a platform `bool` value.
-	 * @return	The Boolean value of this Boolean literal.
-	 */
 	virtual bool get_value() const = 0;
 };
 

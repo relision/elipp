@@ -33,8 +33,9 @@ SymbolLiteralImpl::SymbolLiteralImpl(Locus the_loc, std::string the_name,
 		Term the_type) : TermImpl(the_loc, the_type), name_(the_name) {
 }
 
-SymbolLiteralImpl::operator std::string() const {
-	return elision::escape(name_, true);
+std::string
+SymbolLiteralImpl::to_string() const {
+	return elision::escape(name_, true) + WITH_TYPE(type_);
 }
 
 //======================================================================
@@ -45,8 +46,9 @@ StringLiteralImpl::StringLiteralImpl(Locus the_loc, std::string the_value,
 		Term the_type) : TermImpl(the_loc, the_type), value_(the_value) {
 }
 
-StringLiteralImpl::operator std::string() const {
-	return elision::escape(value_, false);
+std::string
+StringLiteralImpl::to_string() const {
+	return elision::escape(value_, false) + WITH_TYPE(type_);
 }
 
 //======================================================================
@@ -58,9 +60,10 @@ IntegerLiteralImpl::IntegerLiteralImpl(Locus the_loc, eint_t the_value,
 	NOTNULL(the_value);
 }
 
-IntegerLiteralImpl::operator std::string() const {
+std::string
+IntegerLiteralImpl::to_string() const {
 	return elision::eint_to_string(value_,
-			elision::preferred_radix, true);
+			elision::preferred_radix, true) + WITH_TYPE(type_);
 }
 
 //======================================================================
@@ -83,10 +86,12 @@ FloatLiteralImpl::FloatLiteralImpl(Locus the_loc, eint_t the_significand,
 	}
 }
 
-FloatLiteralImpl::operator std::string() const {
+std::string
+FloatLiteralImpl::to_string() const {
 	return elision::eint_to_string(significand_, radix_, true) +
 			(radix_ == 16 ? "p" : "e") +
-			elision::eint_to_string(exponent_, radix_, true);
+			elision::eint_to_string(exponent_, radix_, true) +
+			WITH_TYPE(type_);
 }
 
 //======================================================================
@@ -100,9 +105,11 @@ BitStringLiteralImpl::BitStringLiteralImpl(Locus the_loc, eint_t the_bits,
 	NOTNULL(the_length);
 }
 
-BitStringLiteralImpl::operator std::string() const {
+std::string
+BitStringLiteralImpl::to_string() const {
 	return elision::eint_to_string(bits_, 16, true) + "L" +
-			elision::eint_to_string(length_, 10, true);
+			elision::eint_to_string(length_, 10, true) +
+			WITH_TYPE(type_);
 }
 
 //======================================================================
@@ -114,9 +121,12 @@ BooleanLiteralImpl::BooleanLiteralImpl(Locus the_loc, bool the_value,
 	// Nothing to do.
 }
 
-BooleanLiteralImpl::operator std::string() const {
-	return value_ ? "true" : "false";
+std::string
+BooleanLiteralImpl::to_string() const {
+	return std::string(value_ ? "true" : "false") + WITH_TYPE(type_);
 }
+
+//ELIEQ_CHECKS(BooleanLiteral, x.get_value() == y.get_value());
 
 } /* namespace basic */
 } /* namespace term */

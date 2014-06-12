@@ -106,7 +106,7 @@ std::string const escape(std::string const& original, bool is_symbol) {
 	// thing *still* has to be quoted, no matter what, if this is a symbol.
 	if (is_symbol) {
 		char ch = result[0];
-		if (isalpha(ch) || ch == '_') {
+		if (!isalpha(ch) && ch != '_') {
 			quote = true;
 		}
 	}

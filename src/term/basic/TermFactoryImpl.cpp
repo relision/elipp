@@ -51,12 +51,19 @@ public:
 	~RootTerm() {};
 
 	inline bool is_constant() const { return true; }
-	inline operator std::string() const { return "^ROOT"; }
+	inline std::string to_string() const { return "^ROOT"; }
 	inline Term get_type() const { return me_; }
 	inline unsigned int get_de_bruijn_index() const { return 0; }
 	inline unsigned int get_depth() const { return 0; }
 	inline bool is_meta_term() const { return false; }
 	inline Locus get_loc() const { return loc_; }
+	inline bool is_root() const { return true; }
+
+protected:
+	inline bool is_equal(ITerm const& other) const {
+		// If we get here then we match.
+		return true;
+	}
 
 private:
 	/**
@@ -73,9 +80,10 @@ private:
 };
 
 // Little macro to initialize the root types.
-#define INIT(m_name) m_name = get_root_term(" ## m_name ## ");
+#define INIT(m_name) m_name = get_root_term(#m_name);
 
 TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()){
+	ROOT = root_;
 	INIT(SYMBOL);
 	INIT(STRING);
 	INIT(INTEGER);

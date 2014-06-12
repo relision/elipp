@@ -55,7 +55,18 @@ public:
      * should be Elision "source."
      * @return	The string representation of this term.
      */
-	virtual operator std::string() const = 0;
+	virtual std::string to_string() const = 0;
+
+    /**
+     * Produce a string representation of this term.  Since no enclosing
+     * semantic information is available, this will not be optimum, but is
+     * needed for debugging.  The basic structure of the returned string
+     * should be Elision "source."
+     * @return	The string representation of this term.
+     */
+	inline virtual operator std::string() const {
+		return to_string();
+	}
 
     /**
      * Get the de Bruijn index of this term.
@@ -102,6 +113,42 @@ public:
      * @return	The location of this term's declaration.
      */
 	virtual Locus get_loc() const = 0;
+
+	/**
+	 * The unique root term must return true here, and all others must return
+	 * false.  This is used to prevent endless (endless ...) recursion.
+	 * @return	True iff this is the unique root type.
+	 */
+	virtual bool is_root() const = 0;
+
+	/**
+	 * Equality test for terms that delegates to the term-centric is_equal
+	 * method.
+	 * @param x	First term.
+	 * @param y	Second term.
+	 * @return	True if these terms are equal, and false if they are not.
+	 */
+	friend bool operator==(ITerm const& x, ITerm const& y);
+
+	/**
+	 * Inequality test for terms that delegates to the equality test.
+	 * @param x	First term.
+	 * @param y Second term.
+	 * @return	True if these terms are not equal, and false if they are.
+	 */
+	friend bool operator!=(ITerm const& x, ITerm const& y);
+
+private:
+	/**
+	 * Compare this instance to another instance of the same class.  To
+	 * implement this make sure you first cast `other` to the correct class.
+	 * If the derived class where the implementation lives is `B`, then do
+	 * `dynamic_cast<B const&>(other)` and compare to `*this`.  Types have
+	 * already been checked.
+	 * @param other	The term to compare to.
+	 * @return	True iff the two are equal.
+	 */
+	virtual bool is_equal(ITerm const& other) const = 0;
 };
 
 /// Shorthand for using a term.

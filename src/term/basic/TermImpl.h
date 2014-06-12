@@ -28,6 +28,14 @@ namespace term {
 namespace basic {
 
 /**
+ * Helper macro to return a pointer to a term formatted as type information
+ * (with a leading colon), up to and including the root.  Use
+ * `+WITH_TYPE(type_)` in most cases.
+ */
+#define WITH_TYPE(item_m) \
+	(std::string(": ") + item_m->to_string())
+
+/**
  * Partial implementation of a term.  This class is abstract; subclasses
  * must implement at least `is_constant` and the `std::string` operator.
  */
@@ -54,8 +62,7 @@ public:
 		return type_;
 	}
 
-	/// Subclasses must provide an implementation.
-	virtual operator std::string() const = 0;
+	virtual std::string to_string() const = 0;
 
 	/// Return the default of zero.  Override if you need to.
 	inline virtual unsigned int get_de_bruijn_index() const {
@@ -80,7 +87,22 @@ public:
 		return loc_;
 	}
 
-protected:
+	/// Return whether this is the unique root.  Default is NO.
+	inline virtual bool is_root() const {
+		return false;
+	}
+
+	/**
+	 * Compare this instance to another instance of the same class.  To
+	 * implement this make sure you first cast `other` to the correct class.
+	 * If the derived class where the implementation lives is `B`, then do
+	 * `dynamic_cast<B const&>(other)` and compare to `*this`.  Types have
+	 * already been checked.
+	 * @param other	The term to compare to.
+	 * @return	True iff the two are equal.
+	 */
+	virtual bool is_equal(ITerm const& other) const = 0;
+
 	Term type_;
 	Locus loc_;
 };
