@@ -148,7 +148,7 @@ std::string eint_to_string(eint_t value, uint16_t base, bool prefix) {
 		// Get the string and iterate over the digits.  Convert each digit
 		// into binary.
 		for (char digit : hex.str()) {
-			switch (digit) {
+			switch (toupper(digit)) {
 			case '0':
 				binary += "0000";
 				break;
@@ -198,7 +198,8 @@ std::string eint_to_string(eint_t value, uint16_t base, bool prefix) {
 				binary += "1111";
 				break;
 			default:
-				throw std::logic_error("Unexpected hex digit.");
+				throw std::logic_error(std::string("Unexpected hex digit `") +
+						digit + "`");
 			}
 		} // Iterate over the digits.
 
@@ -224,7 +225,7 @@ std::string eint_to_string(eint_t value, uint16_t base, bool prefix) {
 		oss << boost::lexical_cast<std::string>(useval);
 		break;
 	case 16:
-		oss << (prefix ? "0x" : "") << std::hex << useval;
+		oss << (prefix ? "0x" : "") << std::uppercase << std::hex << useval;
 		break;
 	default:
 		throw std::invalid_argument(

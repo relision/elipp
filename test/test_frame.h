@@ -158,7 +158,7 @@
  * not end the test item, but plows on ahead.
  */
 #define FAIL(msg_m) \
-	ENDL("FAIL" << msg_m); \
+	ENDL("FAIL " << msg_m); \
 	tf_fail_test = true; \
 	tf_fail_item = true;
 
@@ -168,8 +168,14 @@
 #define SHOW_STRING(exp_m) \
 	ENDL(#exp_m << ": " << std::string(exp_m));
 
+/**
+ * Increase the indentation level.
+ */
 #define PUSH ++tf_indent_level;
 
+/**
+ * Decrease the indentation level.
+ */
 #define POP --tf_indent_level;
 
 //======================================================================

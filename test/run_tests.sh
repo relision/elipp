@@ -14,7 +14,12 @@ fi
 # Just to be sure.
 /bin/rm -f test.log
 touch test.log
+
 # Run all tests.
+if [ $( shopt -s nullglob ; set -- *_test ; echo "$#" ) -le 0 ] ; then
+	echo "No tests were found."
+	exit 0
+fi
 for file in *_test ; do
     printf "Running test %-20s ... " $file
     ./$file >>test.log

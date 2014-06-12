@@ -49,13 +49,17 @@ START_ITEM(bases)
 		value *= 16384;
 		value *= 32768;
 		value *= 8191;
+#ifdef HAVE_BOOST_CPP_INT
+		// This will only work with very large integer support.
 		VALIDATE(e::eint_to_string(value, 8), "0o2463654600000000000000000", "");
 		VALIDATE(e::eint_to_string(value, 10), "12284031854414647001088", "");
 		VALIDATE(e::eint_to_string(value, 16), "0x299EB30000000000000", "");
+#endif
 		MUST_THROW(e::eint_to_string(value, 12), std::exception);
 		POP;
 	} catch (std:: exception& e) {
 		ENDL("Caught an exception: " << e.what());
+		POP;
 		FAIL_ITEM(bases, "");
 	}
 
