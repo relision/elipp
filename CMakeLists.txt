@@ -28,14 +28,14 @@ IF (Boost_FOUND)
     endif()
 ENDIF()
 
+# Locate valgrind.
+find_program(CTEST_MEMORYCHECK_COMMAND NAMES valgrind)
+
 # Specify the list of source files to use for the core library here.
 FILE(GLOB_RECURSE lib_sources RELATIVE ${CMAKE_HOME_DIRECTORY} src/*.cpp)
 
-# Someday we will have tests.
+# Specify the list of tests to complile.
 FILE(GLOB_RECURSE tests RELATIVE ${CMAKE_HOME_DIRECTORY} test/*_test.cpp)
-
-# Someday we will have examples.
-#FILE(GLOB_RECURSE lib_examples RELATIVE ${CMAKE_HOME_DIRECTORY} src/*_ex.cpp)
 
 # Figure out if this is a debug or release.
 if( NOT CMAKE_BUILD_TYPE )
@@ -43,7 +43,28 @@ if( NOT CMAKE_BUILD_TYPE )
 endif( NOT CMAKE_BUILD_TYPE )
 
 # Compiler flags.
-set( CMAKE_CXX_FLAGS "-g -Wall -std=c++11" )
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+CHECK_CXX_COMPILER_FLAG("-Wall" COMPILER_SUPPORTS_WALL)
+CHECK_CXX_COMPILER_FLAG("-g3" COMPILER_SUPPORTS_G3)
+CHECK_CXX_COMPILER_FLAG("-O3" COMPILER_SUPPORTS_O3)
+if (COMPILER_SUPPORTS_CXX11)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif (COMPILER_SUPPORTS_CXX0X)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support.  Please use a different C++ compiler.")
+endif()
+if (COMPILER_SUPPORTS_WALL)
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall" )
+endif()
+if (COMPILER_SUPPORTS_G3)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g3")
+endif()
+if (COMPILER_SUPPORTS_O3)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+endif()
 
 # Modify the include path so we can find our own files.
 include_directories( AFTER SYSTEM src src/term )
