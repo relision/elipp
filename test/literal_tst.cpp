@@ -172,7 +172,80 @@ START_ITEM(integers)
 try {
 	HANG("Making some integers");
 	pIntegerLiteral i1 = fact->get_integer_literal(0);
+	pIntegerLiteral i2 = fact->get_integer_literal(-1);
+	pIntegerLiteral i3 = fact->get_integer_literal(65535);
+	pIntegerLiteral i4 = fact->get_integer_literal(65536);
+	eint_t value = 666;
+	value *= 1024;
+	value *= 4096;
+#ifdef HAVE_BOOST_CPP_INT
+	value *= 16384;
+	value *= 32768;
+	value *= 8191;
+#endif
+	pIntegerLiteral i5 = fact->get_integer_literal(Loc::get_internal(), value, fact->FLOAT);
+	pIntegerLiteral i6 = fact->get_integer_literal(Loc::get(17, 21), value);
+	pIntegerLiteral i7 = fact->get_integer_literal(Loc::get_internal(), -value, fact->FLOAT);
+	pIntegerLiteral i8 = fact->get_integer_literal(Loc::get(21, 17), -value);
+	pIntegerLiteral i9 = fact->get_integer_literal(value);
+	pIntegerLiteral i10 = fact->get_integer_literal(-value);
 	ENDL("Done");
+
+	ENDL("Some integers"); PUSH;
+	SHOW_STRING(*i1);
+	SHOW_STRING(*i2);
+	SHOW_STRING(*i3);
+	SHOW_STRING(*i4);
+	SHOW_STRING(*i5);
+	SHOW_STRING(*i6);
+	SHOW_STRING(*i7);
+	SHOW_STRING(*i8);
+	SHOW_STRING(*i9);
+	SHOW_STRING(*i10);
+	POP;
+
+	ENDL("Checking values"); PUSH;
+	VALIDATE(i1->get_value(), 0, "1");
+	VALIDATE(i2->get_value(), -1, "2");
+	VALIDATE(i3->get_value(), 65535, "3");
+	VALIDATE(i4->get_value(), 65536, "4");
+	VALIDATE(i5->get_value(), value, "5");
+	VALIDATE(i6->get_value(), value, "6");
+	VALIDATE(i7->get_value(), -value, "7");
+	VALIDATE(i8->get_value(), -value, "8");
+	VALIDATE(i9->get_value(), value, "9");
+	VALIDATE(i10->get_value(), -value, "10");
+	POP;
+
+	ENDL("Checking strings"); PUSH;
+	VALIDATE(std::string(*i1), "0: INTEGER: ^ROOT", "1");
+	VALIDATE(std::string(*i2), "-1: INTEGER: ^ROOT", "2");
+	VALIDATE(std::string(*i3), "65535: INTEGER: ^ROOT", "3");
+	VALIDATE(std::string(*i4), "65536: INTEGER: ^ROOT", "4");
+	VALIDATE(std::string(*i5), boost::lexical_cast<std::string>(value) +
+			": FLOAT: ^ROOT", "5");
+	VALIDATE(std::string(*i6), boost::lexical_cast<std::string>(value) +
+			": INTEGER: ^ROOT", "6");
+	VALIDATE(std::string(*i7), boost::lexical_cast<std::string>(-value) +
+			": FLOAT: ^ROOT", "7");
+	VALIDATE(std::string(*i8), boost::lexical_cast<std::string>(-value) +
+			": INTEGER: ^ROOT", "8");
+	VALIDATE(std::string(*i9), boost::lexical_cast<std::string>(value) +
+			": INTEGER: ^ROOT", "9");
+	VALIDATE(std::string(*i10), boost::lexical_cast<std::string>(-value) +
+			": INTEGER: ^ROOT", "10");
+	POP;
+
+	ENDL("Checking equality and inequality"); PUSH;
+	MUST_EQUAL(*i5, *i5, "same object");
+	MUST_EQUAL(*i6, *i9, "different locus");
+	MUST_EQUAL(*i8, *i10, "different locus");
+	MUST_NOT_EQUAL(*i1, *i2, "different values");
+	MUST_NOT_EQUAL(*i2, *i3, "different values");
+	MUST_NOT_EQUAL(*i3, *i4, "different values");
+	MUST_NOT_EQUAL(*i5, *i6, "different types");
+	MUST_NOT_EQUAL(*i7, *i8, "different types");
+	POP;
 } catch (std::exception& e) {
 	// Failed!
 	ENDL("Caught an exception: " << e.what());
