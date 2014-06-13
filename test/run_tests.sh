@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## Run all tests in this folder.  Tests are identified as any
-## file starting with test_.
+## file ending with _tst.
 
 # See if we are running on a smart terminal.
 success="[32mSUCCESS[0m"
@@ -16,11 +16,11 @@ fi
 touch test.log
 
 # Run all tests.
-if [ $( shopt -s nullglob ; set -- test_* ; echo "$#" ) -le 0 ] ; then
+if [ $( shopt -s nullglob ; set -- *_tst ; echo "$#" ) -le 0 ] ; then
 	echo "No tests were found."
 	exit 0
 fi
-for file in test_* ; do
+for file in *_tst ; do
     printf "Running test %-20s ... " $file
     ./$file >>test.log
     if (($? != 0)) ; then

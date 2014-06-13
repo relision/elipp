@@ -37,7 +37,7 @@ find_program(CTEST_MEMORYCHECK_COMMAND NAMES valgrind)
 FILE(GLOB_RECURSE lib_sources RELATIVE ${CMAKE_HOME_DIRECTORY} src/*.cpp)
 
 # Specify the list of tests to complile.
-FILE(GLOB_RECURSE tests RELATIVE ${CMAKE_HOME_DIRECTORY} test/*_test.cpp)
+FILE(GLOB_RECURSE tests RELATIVE ${CMAKE_HOME_DIRECTORY} test/*_tst.cpp)
 
 # Figure out if this is a debug or release.
 if( NOT CMAKE_BUILD_TYPE )
