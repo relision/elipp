@@ -30,13 +30,13 @@ bool operator==(ITerm const& first, ITerm const& second) {
 	}
 
 	// Check for simple inequality.
-	if (typeid(first) != typeid(second)) {
+	if (first.get_kind() != second.get_kind()) {
 		return false;
 	}
 
 	// Get pointers to the types.
-	Term ftype = first.get_type();
-	Term stype = second.get_type();
+	pTerm ftype = first.get_type();
+	pTerm stype = second.get_type();
 	if (ftype != stype) {
 		// Watch out for the root term.
 		if (ftype->is_root()) {

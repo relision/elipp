@@ -42,19 +42,19 @@ public:
 	 * Get the left hand side of this map pair.
 	 * @return	The left hand term.
 	 */
-	virtual Term get_lhs() const = 0;
+	virtual pTerm get_lhs() const = 0;
 
 	/**
 	 * Get the right hand side of this map pair.
 	 * @return	The right hand side.
 	 */
-	virtual Term get_rhs() const = 0;
+	virtual pTerm get_rhs() const = 0;
 
 	/**
 	 * Get the guard for this map pair.
 	 * @return	The guard for this map pair.
 	 */
-	virtual Term get_guard() const = 0;
+	virtual pTerm get_guard() const = 0;
 };
 
 /// Shorthand for a map pair pointer.

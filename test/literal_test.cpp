@@ -19,8 +19,8 @@
  */
 
 #include "test_frame.h"
-#include "TermFactory.h"
-#include "basic/TermFactoryImpl.h"
+#include "term/TermFactory.h"
+#include "term/basic/TermFactoryImpl.h"
 #include <boost/lexical_cast.hpp>
 
 using namespace elision;

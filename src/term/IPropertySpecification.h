@@ -88,19 +88,19 @@ public:
 	 * Get any absorber specification.
 	 * @return	The absorber specification.
 	 */
-	virtual boost::optional<Term> get_absorber() const = 0;
+	virtual boost::optional<pTerm> get_absorber() const = 0;
 
 	/**
 	 * Get any identity specification.
 	 * @return	The identity specification.
 	 */
-	virtual boost::optional<Term> get_identity() const = 0;
+	virtual boost::optional<pTerm> get_identity() const = 0;
 
 	/**
 	 * Get any membership specification.
 	 * @return	The membership specification.
 	 */
-	virtual boost::optional<Term> get_membership() const = 0;
+	virtual boost::optional<pTerm> get_membership() const = 0;
 
 	/**
 	 * Check the associativity specification.  If it is set to a Boolean

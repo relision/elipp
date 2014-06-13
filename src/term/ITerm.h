@@ -27,9 +27,27 @@
 namespace elision {
 namespace term {
 
+/**
+ * The term kind is used to avoid relying on dynamic type information,
+ * which can be costly (like `dynamic_cast`).
+ *
+ * A term kind specifies the level at which equality testing makes sense.
+ * Terms of different kinds are unequal, and terms of the same kind may be
+ * equal.
+ *
+ * The term kind also specifies the sort order among terms.  Items earlier
+ * in the list sort earlier.
+ */
+enum TermKind {
+	SYMBOL_LITERAL, STRING_LITERAL, INTEGER_LITERAL, FLOAT_LITERAL,
+	BIT_STRING_LITERAL, BOOLEAN_LITERAL, TERM_LITERAL,
+	VARIABLE, TERM_VARIABLE, BINDING, LAMBDA, MAP_PAIR, LIST,
+	PROPERTY_SPECIFICATION, SPECIAL_FORM, APPLY, ROOT
+};
+
 class ITerm;
 /// Shorthand for a pointer to a term.
-typedef std::shared_ptr<ITerm const> Term;
+typedef std::shared_ptr<ITerm const> pTerm;
 
 /**
  * This is the public interface shared by all terms.
@@ -46,7 +64,7 @@ public:
      * In fact, other than the root, there should be no cycles in the types.
      * @return  The type of this term.
      */
-	virtual Term get_type() const = 0;
+	virtual pTerm get_type() const = 0;
 
     /**
      * Produce a string representation of this term.  Since no enclosing
@@ -120,6 +138,12 @@ public:
 	 * @return	True iff this is the unique root type.
 	 */
 	virtual bool is_root() const = 0;
+
+	/**
+	 * Get the kind for this term.
+	 * @return	The term kind.
+	 */
+	virtual TermKind get_kind() const = 0;
 
 	/**
 	 * Equality test for terms that delegates to the term-centric is_equal

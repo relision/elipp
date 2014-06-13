@@ -24,11 +24,11 @@ namespace elision {
 namespace term {
 namespace basic {
 
-TermImpl::TermImpl(Term the_type) : type_(the_type), loc_(Loc::get_internal()) {
+TermImpl::TermImpl(pTerm the_type) : type_(the_type), loc_(Loc::get_internal()) {
 	NOTNULL(the_type);
 }
 
-TermImpl::TermImpl(Locus the_loc, Term the_type) :
+TermImpl::TermImpl(Locus the_loc, pTerm the_type) :
 	type_(the_type), loc_(the_loc) {
 	NOTNULL(the_loc);
 	NOTNULL(the_type);

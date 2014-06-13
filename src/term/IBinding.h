@@ -53,7 +53,7 @@ public:
 	 * Get the non-abstract content of this binding as a map.
 	 * @return	The concrete binds in this binding.
 	 */
-	virtual operator std::unordered_map<std::string const, Term>() const = 0;
+	virtual operator std::unordered_map<std::string const, pTerm>() const = 0;
 
 	/**
 	 * Get the term bound to the named variable, if any.  If none, then an
@@ -62,7 +62,7 @@ public:
 	 * @return	The bound value.
 	 * @throws	std::out_of_range	The variable name is not concretely bound.
 	 */
-	virtual Term get_bind(std::string const& name) = 0;
+	virtual pTerm get_bind(std::string const& name) = 0;
 
 	/**
 	 * Determine if this binding contains a bind for the given variable name.
@@ -75,7 +75,7 @@ public:
 	 * Get all the elements of this binding, concrete or not.
 	 * @return	The complete set of elements of this binding.
 	 */
-	virtual std::unordered_set<Term> get_elements() const = 0;
+	virtual std::unordered_set<pTerm> get_elements() const = 0;
 };
 
 } /* namespace term */

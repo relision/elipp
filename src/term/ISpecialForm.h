@@ -38,13 +38,13 @@ public:
 	 * Get the tag for this special form.
 	 * @return	The tag.
 	 */
-	virtual Term get_tag() const = 0;
+	virtual pTerm get_tag() const = 0;
 
 	/**
 	 * Get the content for this special form.
 	 * @return	The content.
 	 */
-	virtual Term get_content() const = 0;
+	virtual pTerm get_content() const = 0;
 };
 
 /// Shorthand for a property specification pointer.

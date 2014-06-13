@@ -48,7 +48,7 @@ public:
 	 * @return	The requested element.
 	 * @throws	std::out_of_range	If the position is out of range.
 	 */
-	virtual Term operator[](unsigned int position) const = 0;
+	virtual pTerm operator[](unsigned int position) const = 0;
 
 	/**
 	 * Get the length of this list (the number of elements).

@@ -50,7 +50,7 @@ public:
 	 * Get the lambda body.
 	 * @return	The lambda body.
 	 */
-	virtual Term get_body() const = 0;
+	virtual pTerm get_body() const = 0;
 };
 
 } /* namespace term */

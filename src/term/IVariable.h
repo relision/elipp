@@ -48,7 +48,7 @@ public:
 	 * Note that the trivial guard (always allowed) is <tt>true</tt>.
 	 * @return	The guard for the variable.
 	 */
-	virtual Term get_guard() const = 0;
+	virtual pTerm get_guard() const = 0;
 };
 
 /// Shorthand for a variable pointer.

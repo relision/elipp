@@ -21,7 +21,7 @@
  * @endverbatim
  */
 
-#include "ITerm.h"
+#include "term/ITerm.h"
 
 namespace elision {
 namespace term {
@@ -45,20 +45,20 @@ public:
 	 * Initialize a new instance.  The location is "internal."
 	 * @param the_type	The type of this term.
 	 */
-	explicit TermImpl(Term the_type);
+	explicit TermImpl(pTerm the_type);
 
 	/**
 	 * Initialize a new instance.
 	 * @param the_loc	The location of the term's declaration.
 	 * @param the_type	The type of this term.
 	 */
-	TermImpl(Locus the_loc, Term the_type);
+	TermImpl(Locus the_loc, pTerm the_type);
 
 	/// Deallocate this instance.
 	virtual ~TermImpl() = default;
 
 	/// Return the type used during construction.
-	inline virtual Term get_type() const {
+	inline virtual pTerm get_type() const {
 		return type_;
 	}
 
@@ -103,7 +103,7 @@ public:
 	 */
 	virtual bool is_equal(ITerm const& other) const = 0;
 
-	Term type_;
+	pTerm type_;
 	Locus loc_;
 };
 

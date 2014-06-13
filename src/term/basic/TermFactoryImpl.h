@@ -21,7 +21,7 @@
  * @endverbatim
  */
 
-#include "TermFactory.h"
+#include "term/TermFactory.h"
 #include "TermImpl.h"
 #include <unordered_map>
 #include <string>
@@ -44,28 +44,28 @@ public:
 	/// Deallocate this instance.
 	virtual ~TermFactoryImpl() {};
 
-	inline virtual Term get_root() const {
+	inline virtual pTerm get_root() const {
 		return root_;
 	}
 
 	virtual pSymbolLiteral get_root_term(std::string const name) const;
 
 	virtual pSymbolLiteral get_symbol_literal(
-			Locus loc, std::string const& name, Term type) const;
+			Locus loc, std::string const& name, pTerm type) const;
 	virtual pStringLiteral get_string_literal(
-			Locus loc, std::string const& value, Term type) const;
+			Locus loc, std::string const& value, pTerm type) const;
 	virtual pIntegerLiteral get_integer_literal(
-			Locus loc, eint_t value, Term type) const;
+			Locus loc, eint_t value, pTerm type) const;
 	virtual pFloatLiteral get_float_literal(
 			Locus loc, eint_t significand, eint_t exponent, uint16_t radix,
-			Term type) const;
+			pTerm type) const;
 	virtual pBitStringLiteral get_bit_string_literal(
-			Locus loc, eint_t bits, eint_t length, Term type) const;
+			Locus loc, eint_t bits, eint_t length, pTerm type) const;
 	virtual pBooleanLiteral get_boolean_literal(
-			Locus loc, bool value, Term type) const;
+			Locus loc, bool value, pTerm type) const;
 
 private:
-	Term root_;
+	pTerm root_;
 	mutable std::unordered_map<std::string, pSymbolLiteral> known_roots_;
 };
 

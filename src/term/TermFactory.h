@@ -48,7 +48,7 @@ public:
 	 * Get the unique root.
 	 * @return	The unique root type.
 	 */
-	virtual Term get_root() const = 0;
+	virtual pTerm get_root() const = 0;
 
 	/**
 	 * Get a root term specified by name.  This keeps a registry of known
@@ -64,7 +64,7 @@ public:
 	// these!
 	//======================================================================
 
-	Term ROOT;					//< Simple access to the root.
+	pTerm ROOT;					//< Simple access to the root.
 	pSymbolLiteral SYMBOL;		//< Simple access to the symbol type.
 	pSymbolLiteral STRING;		//< Simple access to the string type.
 	pSymbolLiteral INTEGER;		//< Simple access to the integer type.
@@ -77,18 +77,18 @@ public:
 	//======================================================================
 
 	virtual pSymbolLiteral get_symbol_literal(
-			Locus loc, std::string const& name, Term type) const = 0;
+			Locus loc, std::string const& name, pTerm type) const = 0;
 	virtual pStringLiteral get_string_literal(
-			Locus loc, std::string const& value, Term type) const = 0;
+			Locus loc, std::string const& value, pTerm type) const = 0;
 	virtual pIntegerLiteral get_integer_literal(
-			Locus loc, eint_t value, Term type) const = 0;
+			Locus loc, eint_t value, pTerm type) const = 0;
 	virtual pFloatLiteral get_float_literal(
 			Locus loc, eint_t significand, eint_t exponent, uint16_t radix,
-			Term type) const = 0;
+			pTerm type) const = 0;
 	virtual pBitStringLiteral get_bit_string_literal(
-			Locus loc, eint_t bits, eint_t length, Term type) const = 0;
+			Locus loc, eint_t bits, eint_t length, pTerm type) const = 0;
 	virtual pBooleanLiteral get_boolean_literal(
-			Locus loc, bool value, Term type) const = 0;
+			Locus loc, bool value, pTerm type) const = 0;
 
 	//======================================================================
 	// Make literals with the default type.

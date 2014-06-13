@@ -22,7 +22,7 @@
  */
 
 #include "TermImpl.h"
-#include "ILiteral.h"
+#include "term/ILiteral.h"
 
 namespace elision {
 namespace term {
@@ -34,7 +34,6 @@ using namespace elision::term;
 
 class SymbolLiteralImpl : public ISymbolLiteral, public TermImpl {
 public:
-	SymbolLiteralImpl(Locus the_loc, std::string the_name, Term the_type);
 	inline virtual std::string const get_name() const {
 		return name_;
 	}
@@ -48,14 +47,19 @@ public:
 		return get_name() == oth.get_name();
 	}
 
+	inline TermKind get_kind() const {
+		return SYMBOL_LITERAL;
+	}
+
 private:
+	friend class TermFactoryImpl;
+	SymbolLiteralImpl(Locus the_loc, std::string the_name, pTerm the_type);
 	std::string const name_;
 };
 
 
 class StringLiteralImpl : public IStringLiteral, public TermImpl {
 public:
-	StringLiteralImpl(Locus the_loc, std::string the_value, Term the_type);
 	inline virtual std::string const get_value() const {
 		return value_;
 	}
@@ -69,14 +73,19 @@ public:
 		return get_value() == oth.get_value();
 	}
 
+	inline TermKind get_kind() const {
+		return STRING_LITERAL;
+	}
+
 private:
+	friend class TermFactoryImpl;
+	StringLiteralImpl(Locus the_loc, std::string the_value, pTerm the_type);
 	std::string const value_;
 };
 
 
 class IntegerLiteralImpl : public IIntegerLiteral, public TermImpl {
 public:
-	IntegerLiteralImpl(Locus the_loc, eint_t the_value, Term the_type);
 	inline virtual eint_t const get_value() const {
 		return value_;
 	}
@@ -90,15 +99,19 @@ public:
 		return get_value() == oth.get_value();
 	}
 
+	inline TermKind get_kind() const {
+		return INTEGER_LITERAL;
+	}
+
 private:
+	friend class TermFactoryImpl;
+	IntegerLiteralImpl(Locus the_loc, eint_t the_value, pTerm the_type);
 	eint_t const value_;
 };
 
 
 class FloatLiteralImpl : public IFloatLiteral, public TermImpl {
 public:
-	FloatLiteralImpl(Locus the_loc, eint_t the_significand, eint_t the_exponent,
-			uint8_t the_radix, Term the_type);
 	inline virtual eint_t const get_significand() const {
 		return significand_;
 	}
@@ -121,7 +134,14 @@ public:
 				(get_radix() == oth.get_radix());
 	}
 
+	inline TermKind get_kind() const {
+		return FLOAT_LITERAL;
+	}
+
 private:
+	friend class TermFactoryImpl;
+	FloatLiteralImpl(Locus the_loc, eint_t the_significand, eint_t the_exponent,
+			uint8_t the_radix, pTerm the_type);
 	eint_t const significand_;
 	eint_t const exponent_;
 	uint8_t const radix_;
@@ -130,8 +150,6 @@ private:
 
 class BitStringLiteralImpl : public IBitStringLiteral, public TermImpl {
 public:
-	BitStringLiteralImpl(Locus the_loc, eint_t the_bits, eint_t the_length,
-			Term the_type);
 	inline virtual eint_t const get_bits() const {
 		return bits_;
 	}
@@ -149,7 +167,14 @@ public:
 				(get_length() == oth.get_length());
 	}
 
+	inline TermKind get_kind() const {
+		return BIT_STRING_LITERAL;
+	}
+
 private:
+	friend class TermFactoryImpl;
+	BitStringLiteralImpl(Locus the_loc, eint_t the_bits, eint_t the_length,
+			pTerm the_type);
 	eint_t const bits_;
 	eint_t const length_;
 };
@@ -157,7 +182,6 @@ private:
 
 class BooleanLiteralImpl : public IBooleanLiteral, public TermImpl {
 public:
-	BooleanLiteralImpl(Locus the_loc, bool value, Term the_type);
 	inline virtual bool get_value() const {
 		return value_;
 	}
@@ -171,7 +195,13 @@ public:
 		return get_value() == oth.get_value();
 	}
 
+	inline TermKind get_kind() const {
+		return BOOLEAN_LITERAL;
+	}
+
 private:
+	friend class TermFactoryImpl;
+	BooleanLiteralImpl(Locus the_loc, bool value, pTerm the_type);
 	bool const value_;
 };
 

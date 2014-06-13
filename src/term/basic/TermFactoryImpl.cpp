@@ -37,7 +37,7 @@ public:
 	 * Get the unique instance of the root term.
 	 * @return The root term.
 	 */
-	static Term fetch() {
+	static pTerm fetch() {
 		// Make a new instance of myself.  This is static so we really, really
 		// only ever get one.  Just one.  Only one.  Note that we cannot use
 		// make_shared because the constructor is private.
@@ -52,16 +52,19 @@ public:
 
 	inline bool is_constant() const { return true; }
 	inline std::string to_string() const { return "^ROOT"; }
-	inline Term get_type() const { return me_; }
+	inline pTerm get_type() const { return me_; }
 	inline unsigned int get_de_bruijn_index() const { return 0; }
 	inline unsigned int get_depth() const { return 0; }
 	inline bool is_meta_term() const { return false; }
 	inline Locus get_loc() const { return loc_; }
 	inline bool is_root() const { return true; }
+	inline TermKind get_kind() const { return ROOT; }
 
 protected:
 	inline bool is_equal(ITerm const& other) const {
-		// If we get here then we match.
+		// If we get here then we match.  What's the logic for this?  Well,
+		// we've already matched on the term kind (in the == method), so
+		// we known the other term is also a root.
 		return true;
 	}
 
@@ -82,7 +85,8 @@ private:
 // Little macro to initialize the root types.
 #define INIT(m_name) m_name = get_root_term(#m_name);
 
-TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()){
+TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()) {
+	// Initialize the well-known root terms.
 	ROOT = root_;
 	INIT(SYMBOL);
 	INIT(STRING);
@@ -113,7 +117,7 @@ TermFactoryImpl::get_root_term(std::string const name) const {
 
 pSymbolLiteral
 TermFactoryImpl::get_symbol_literal(
-		Locus loc, std::string const& name, Term type) const {
+		Locus loc, std::string const& name, pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(SymbolLiteral, name);
@@ -121,7 +125,7 @@ TermFactoryImpl::get_symbol_literal(
 
 pStringLiteral
 TermFactoryImpl::get_string_literal(
-		Locus loc, std::string const& value, Term type) const {
+		Locus loc, std::string const& value, pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(StringLiteral, value);
@@ -129,7 +133,7 @@ TermFactoryImpl::get_string_literal(
 
 pIntegerLiteral
 TermFactoryImpl::get_integer_literal(
-		Locus loc, eint_t value, Term type) const {
+		Locus loc, eint_t value, pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(IntegerLiteral, value);
@@ -138,7 +142,7 @@ TermFactoryImpl::get_integer_literal(
 pFloatLiteral
 TermFactoryImpl::get_float_literal(
 		Locus loc, eint_t significand, eint_t exponent, uint16_t radix,
-		Term type) const {
+		pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(FloatLiteral, significand, exponent, radix);
@@ -146,7 +150,7 @@ TermFactoryImpl::get_float_literal(
 
 pBitStringLiteral
 TermFactoryImpl::get_bit_string_literal(
-		Locus loc, eint_t bits, eint_t length, Term type) const {
+		Locus loc, eint_t bits, eint_t length, pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(BitStringLiteral, bits, length);
@@ -154,7 +158,7 @@ TermFactoryImpl::get_bit_string_literal(
 
 pBooleanLiteral
 TermFactoryImpl::get_boolean_literal(
-		Locus loc, bool value, Term type) const {
+		Locus loc, bool value, pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(BooleanLiteral, value);

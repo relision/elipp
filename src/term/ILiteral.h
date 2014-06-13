@@ -191,7 +191,7 @@ public:
 	 * Get the underlying term value.
 	 * @return	The underlying term.
 	 */
-	virtual Term get_term() const = 0;
+	virtual pTerm get_term() const = 0;
 };
 
 /// Shorthand for a term literal pointer.
