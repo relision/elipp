@@ -46,6 +46,11 @@ Here are some common examples.
 
 You can build documentation with Doxygen using `make doc`.  You can run the unit tests with `make check`, or you (once you have built) you can run `ctest` or `cmake test` to do things the CMake Way.  Note that `make check` runs a bash script right now, so your mileage on Windows will vary - but then you knew that, right?
 
+What do **I** do?  On the Mac I do this (since I use Eclipse):
+<pre>
+	cmake -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_ECLIPSE_VERSION=4.3
+</pre>
+
 [cmake]: http://www.cmake.org/
 [boost]: http://www.boost.org/
 [doxygen]: http://www.doxygen.org/
