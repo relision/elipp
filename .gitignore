@@ -13,3 +13,6 @@ test/literal_test
 Debug
 Testing
 CTestTestfile.cmake
+eint_tst
+literal_tst
+loc_tst
