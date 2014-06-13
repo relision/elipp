@@ -42,8 +42,10 @@ try {
 	pSymbolLiteral s2 = fact->get_symbol_literal("1joe");
 	pSymbolLiteral s3 = fact->get_symbol_literal(Loc::get_internal(), "");
 	pSymbolLiteral s4 = fact->get_symbol_literal(Loc::get_internal(), "joe1");
-	pSymbolLiteral s5 = fact->get_symbol_literal(Loc::get(17, 21), "^5`\n4\" \t");
-	pSymbolLiteral s6 = fact->get_symbol_literal(Loc::get(21, 17), "joe1", fact->INTEGER);
+	pSymbolLiteral s5 = fact->get_symbol_literal(Loc::get(17, 21),
+			"^5`\n4\" \t");
+	pSymbolLiteral s6 = fact->get_symbol_literal(Loc::get(21, 17), "joe1",
+			fact->INTEGER);
 	ENDL("Done");
 
 	ENDL("Some symbols"); PUSH;
@@ -94,10 +96,72 @@ END_ITEM(symbols)
 START_ITEM(strings)
 
 try {
+	HANG("Making some strings");
+	pStringLiteral s1 = fact->get_string_literal("fred");
+	pStringLiteral s2 = fact->get_string_literal(Loc::get(17,21), "fred");
+	pStringLiteral s3 = fact->get_string_literal(Loc::get(21,17), "fred");
+	pStringLiteral s4 = fact->get_string_literal(Loc::get_internal(), "fred",
+			fact->SYMBOL);
+	pStringLiteral s5 = fact->get_string_literal(Loc::get_internal(), "fred",
+			fact->SYMBOL);
+	pStringLiteral s6 = fact->get_string_literal(Loc::get(17,21), "fred",
+			fact->SYMBOL);
+	pStringLiteral s7 = fact->get_string_literal("");
+	pStringLiteral s8 = fact->get_string_literal("\n \t\\*\"'");
+	pStringLiteral s9 = fact->get_string_literal(Loc::get_internal(),
+			"\n \t\\*\"'", fact->SYMBOL);
+	ENDL("Done");
 
+	ENDL("Some strings"); PUSH;
+	SHOW_STRING(*s1);
+	SHOW_STRING(*s2);
+	SHOW_STRING(*s3);
+	SHOW_STRING(*s4);
+	SHOW_STRING(*s5);
+	SHOW_STRING(*s6);
+	SHOW_STRING(*s7);
+	SHOW_STRING(*s8);
+	SHOW_STRING(*s9);
+	POP;
+
+	ENDL("Checking values"); PUSH;
+	VALIDATE(s1->get_value(), "fred", "1");
+	VALIDATE(s2->get_value(), "fred", "2");
+	VALIDATE(s3->get_value(), "fred", "3");
+	VALIDATE(s4->get_value(), "fred", "4");
+	VALIDATE(s5->get_value(), "fred", "5");
+	VALIDATE(s6->get_value(), "fred", "6");
+	VALIDATE(s7->get_value(), "", "7");
+	VALIDATE(s8->get_value(), "\n \t\\*\"'", "8");
+	VALIDATE(s9->get_value(), "\n \t\\*\"'", "9");
+	POP;
+
+	ENDL("Checking strings"); PUSH;
+	VALIDATE(std::string(*s1), "\"fred\": STRING: ^ROOT", "1");
+	VALIDATE(std::string(*s2), "\"fred\": STRING: ^ROOT", "1");
+	VALIDATE(std::string(*s3), "\"fred\": STRING: ^ROOT", "1");
+	VALIDATE(std::string(*s4), "\"fred\": SYMBOL: ^ROOT", "1");
+	VALIDATE(std::string(*s5), "\"fred\": SYMBOL: ^ROOT", "1");
+	VALIDATE(std::string(*s6), "\"fred\": SYMBOL: ^ROOT", "1");
+	VALIDATE(std::string(*s7), "\"\": STRING: ^ROOT", "1");
+	VALIDATE(std::string(*s8), "\"\\n \\t\\\\*\\\"\\'\": STRING: ^ROOT", "1");
+	VALIDATE(std::string(*s9), "\"\\n \\t\\\\*\\\"\\'\": SYMBOL: ^ROOT", "1");
+	POP;
+
+	ENDL("Checking equality and inequality"); PUSH;
+	MUST_EQUAL(*s1, *s2, "different locus");
+	MUST_NOT_EQUAL(*s1, *s4, "different types");
+	MUST_EQUAL(*s2, *s3, "different locus");
+	MUST_NOT_EQUAL(*s4, *s3, "different types");
+	MUST_EQUAL(*s4, *s6, "different locus");
+	MUST_NOT_EQUAL(*s8, *s9, "different type");
+	MUST_NOT_EQUAL(*s7, *s1, "different values");
+	MUST_NOT_EQUAL(*s8, *s7, "different values");
+	POP;
 } catch (std::exception& e) {
 	// Failed!
 	ENDL("Caught an exception: " << e.what());
+	POP;
 	FAIL_ITEM(strings, "");
 }
 
@@ -106,7 +170,9 @@ END_ITEM(strings)
 START_ITEM(integers)
 
 try {
-
+	HANG("Making some integers");
+	pIntegerLiteral i1 = fact->get_integer_literal(0);
+	ENDL("Done");
 } catch (std::exception& e) {
 	// Failed!
 	ENDL("Caught an exception: " << e.what());
@@ -144,11 +210,15 @@ START_ITEM(booleans)
 try {
 	// Make some Booleans.
 	HANG("Making Booleans");
-	pBooleanLiteral b1 = fact->get_boolean_literal(Loc::get_internal(), true, fact->ROOT);
-	pBooleanLiteral b2 = fact->get_boolean_literal(Loc::get_internal(), false, fact->ROOT);
+	pBooleanLiteral b1 = fact->get_boolean_literal(Loc::get_internal(), true,
+			fact->ROOT);
+	pBooleanLiteral b2 = fact->get_boolean_literal(Loc::get_internal(), false,
+			fact->ROOT);
 	pBooleanLiteral b3 = fact->get_boolean_literal(Loc::get_internal(), true);
-	pBooleanLiteral b4 = fact->get_boolean_literal(Loc::get_internal(), false, fact->BOOLEAN);
-	pBooleanLiteral b5 = fact->get_boolean_literal(Loc::get(17,21), true, fact->BOOLEAN);
+	pBooleanLiteral b4 = fact->get_boolean_literal(Loc::get_internal(), false,
+			fact->BOOLEAN);
+	pBooleanLiteral b5 = fact->get_boolean_literal(Loc::get(17,21), true,
+			fact->BOOLEAN);
 	pBooleanLiteral b6 = fact->get_boolean_literal(Loc::get(21,17), false);
 	ENDL("Done");
 
