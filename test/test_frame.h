@@ -224,6 +224,7 @@
  */
 #define START_TEST \
 int main(int argc, char *argv[]) { \
+	(void)argc; (void)argv; \
 	bool tf_need_space = false, tf_need_endl = false, tf_need_indent = false; \
 	int tf_retval; \
 	int tf_item_enabled = true; \

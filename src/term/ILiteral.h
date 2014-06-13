@@ -85,7 +85,7 @@ public:
 	 * Get the value of this integer literal.
 	 * @return	The value of this integer literal.
 	 */
-	virtual elision::eint_t const get_value() const = 0;
+	virtual elision::eint_t get_value() const = 0;
 };
 
 /// Shorthand for a integer literal pointer.
@@ -117,13 +117,13 @@ public:
 	 * Get the significand for this float.
 	 * @return	The significand.
 	 */
-	virtual elision::eint_t const get_significand() const = 0;
+	virtual elision::eint_t get_significand() const = 0;
 
 	/**
 	 * Get the exponent for this float.
 	 * @return	The exponent.
 	 */
-	virtual elision::eint_t const get_exponent() const = 0;
+	virtual elision::eint_t get_exponent() const = 0;
 
 	/**
 	 * Get the radix, or base, of this float.
@@ -150,13 +150,13 @@ public:
 	 * Get the bits of this bit string.
 	 * @return	The bits of this bit string.
 	 */
-	virtual elision::eint_t const get_bits() const = 0;
+	virtual elision::eint_t get_bits() const = 0;
 
 	/**
 	 * Get the number of bits in this bit string.
 	 * @return	The number of bits in this bit string.
 	 */
-	virtual elision::eint_t const get_length() const = 0;
+	virtual elision::eint_t get_length() const = 0;
 };
 
 /// Shorthand for a bit string literal pointer.

@@ -65,6 +65,7 @@ protected:
 		// If we get here then we match.  What's the logic for this?  Well,
 		// we've already matched on the term kind (in the == method), so
 		// we known the other term is also a root.
+		(void)other; // Avoid warnings about unused parameter.
 		return true;
 	}
 

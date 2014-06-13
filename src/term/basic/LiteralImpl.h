@@ -86,7 +86,7 @@ private:
 
 class IntegerLiteralImpl : public IIntegerLiteral, public TermImpl {
 public:
-	inline virtual eint_t const get_value() const {
+	inline virtual eint_t get_value() const {
 		return value_;
 	}
 	inline virtual bool is_constant() const {
@@ -112,10 +112,10 @@ private:
 
 class FloatLiteralImpl : public IFloatLiteral, public TermImpl {
 public:
-	inline virtual eint_t const get_significand() const {
+	inline virtual eint_t get_significand() const {
 		return significand_;
 	}
-	inline virtual eint_t const get_exponent() const {
+	inline virtual eint_t get_exponent() const {
 		return exponent_;
 	}
 	inline virtual uint8_t get_radix() const {
@@ -150,10 +150,10 @@ private:
 
 class BitStringLiteralImpl : public IBitStringLiteral, public TermImpl {
 public:
-	inline virtual eint_t const get_bits() const {
+	inline virtual eint_t get_bits() const {
 		return bits_;
 	}
-	inline virtual eint_t const get_length() const {
+	inline virtual eint_t get_length() const {
 		return length_;
 	}
 	inline virtual bool is_constant() const {
