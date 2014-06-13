@@ -14,7 +14,9 @@ SET( ELI_MINOR 0 )
 SET( ELI_VERSION ${ELI_MAJOR}.${ELI_MINOR} )
 SET( ELI_DIST_NAME "elision-${ELI_VERSION}" )
 SET( MACOSX_RPATH 1 )
-cmake_policy(SET CMP0042 NEW)
+if (POLICY CMP0042)
+    cmake_policy(SET CMP0042 NEW)
+endif()
 
 # Find Boost and include it.
 FIND_PACKAGE(Boost)
