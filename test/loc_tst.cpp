@@ -4,7 +4,6 @@
  *
  * @author ysp
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __

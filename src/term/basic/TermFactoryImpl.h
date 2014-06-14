@@ -7,7 +7,6 @@
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __
@@ -63,6 +62,16 @@ public:
 			Locus loc, eint_t bits, eint_t length, pTerm type) const;
 	virtual pBooleanLiteral get_boolean_literal(
 			Locus loc, bool value, pTerm type) const;
+
+	virtual pVariable get_variable(Locus loc, std::string name, pTerm guard,
+			pTerm type) const;
+	virtual pTermVariable get_term_variable(Locus loc, std::string name,
+			pTerm type) const;
+
+	virtual pLambda get_lambda(Locus loc, pVariable parameter, pTerm body,
+			pTerm type) const ;
+
+	//virtual pTerm apply(Locus loc, pTerm op, pTerm arg, pTerm type) const;
 
 private:
 	pTerm root_;

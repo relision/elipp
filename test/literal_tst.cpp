@@ -4,7 +4,6 @@
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __
@@ -29,9 +28,9 @@ using namespace elision::term;
 START_TEST
 
 // Get a term factory.
-HANG("Making a factory")
+HANG("Making a factory");
 std::unique_ptr<TermFactory> fact(new elision::term::basic::TermFactoryImpl());
-ENDL("Done")
+ENDL("Done");
 
 START_ITEM(symbols)
 
@@ -138,14 +137,14 @@ try {
 
 	ENDL("Checking strings"); PUSH;
 	VALIDATE(std::string(*s1), "\"fred\": STRING: ^ROOT", "1");
-	VALIDATE(std::string(*s2), "\"fred\": STRING: ^ROOT", "1");
-	VALIDATE(std::string(*s3), "\"fred\": STRING: ^ROOT", "1");
-	VALIDATE(std::string(*s4), "\"fred\": SYMBOL: ^ROOT", "1");
-	VALIDATE(std::string(*s5), "\"fred\": SYMBOL: ^ROOT", "1");
-	VALIDATE(std::string(*s6), "\"fred\": SYMBOL: ^ROOT", "1");
-	VALIDATE(std::string(*s7), "\"\": STRING: ^ROOT", "1");
-	VALIDATE(std::string(*s8), "\"\\n \\t\\\\*\\\"\\'\": STRING: ^ROOT", "1");
-	VALIDATE(std::string(*s9), "\"\\n \\t\\\\*\\\"\\'\": SYMBOL: ^ROOT", "1");
+	VALIDATE(std::string(*s2), "\"fred\": STRING: ^ROOT", "2");
+	VALIDATE(std::string(*s3), "\"fred\": STRING: ^ROOT", "3");
+	VALIDATE(std::string(*s4), "\"fred\": SYMBOL: ^ROOT", "4");
+	VALIDATE(std::string(*s5), "\"fred\": SYMBOL: ^ROOT", "5");
+	VALIDATE(std::string(*s6), "\"fred\": SYMBOL: ^ROOT", "6");
+	VALIDATE(std::string(*s7), "\"\": STRING: ^ROOT", "7");
+	VALIDATE(std::string(*s8), "\"\\n \\t\\\\*\\\"\\'\": STRING: ^ROOT", "8");
+	VALIDATE(std::string(*s9), "\"\\n \\t\\\\*\\\"\\'\": SYMBOL: ^ROOT", "9");
 	POP;
 
 	ENDL("Checking equality and inequality"); PUSH;

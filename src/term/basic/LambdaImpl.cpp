@@ -1,6 +1,6 @@
 /**
  * @file
- * Provide method implementations for a term.
+ * TODO: Describe purpose of file.
  *
  * @author sprowell@gmail.com
  *
@@ -17,20 +17,20 @@
  * @endverbatim
  */
 
-#include "TermImpl.h"
+#include <basic/LambdaImpl.h>
 
 namespace elision {
 namespace term {
 namespace basic {
 
-TermImpl::TermImpl(pTerm the_type) : type_(the_type), loc_(Loc::get_internal()) {
-	NOTNULL(the_type);
+LambdaImpl::LambdaImpl(Locus the_loc, pVariable the_parameter, pTerm the_body,
+		pTerm the_type) : TermImpl(the_loc, the_type),
+				parameter_(the_parameter), body_(the_body) {
 }
 
-TermImpl::TermImpl(Locus the_loc, pTerm the_type) :
-	type_(the_type), loc_(the_loc) {
-	NOTNULL(the_loc);
-	NOTNULL(the_type);
+std::string
+LambdaImpl::to_string() const {
+	return "\\" + parameter_->to_string() + "." + body_->to_string();
 }
 
 } /* namespace basic */

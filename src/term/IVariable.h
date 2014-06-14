@@ -7,7 +7,6 @@
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __
@@ -52,7 +51,7 @@ public:
 };
 
 /// Shorthand for a variable pointer.
-typedef std::shared_ptr<IVariable const> Variable;
+typedef std::shared_ptr<IVariable const> pVariable;
 
 
 /**
@@ -71,7 +70,7 @@ public:
 };
 
 /// Shorthand for a variable pointer.
-typedef std::shared_ptr<ITermVariable const> TermVariable;
+typedef std::shared_ptr<ITermVariable const> pTermVariable;
 
 } /* namespace term */
 } /* namespace elision */

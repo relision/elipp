@@ -7,7 +7,6 @@
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __
@@ -96,9 +95,9 @@ typedef std::shared_ptr<IIntegerLiteral const> pIntegerLiteral;
  * Specify the public interface to a floating point literal.  Elision floating
  * point literals are constructed from unbounded integers and are, essentially,
  * also unbounded.  A floating point literal is composed of three elements:
- *   - a @b significand @f$s$,
- *   - an @b exponent @f$e$, and
- *   - the base, or @b radix @f$r$.
+ *   - a @b significand @f$s@f$,
+ *   - an @b exponent @f$e@f$, and
+ *   - the base, or @b radix @f$r@f$.
  * These three values are combined to yield the value of the literal, which is
  * given by the equation:
  * @f[

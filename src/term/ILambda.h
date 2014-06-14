@@ -7,7 +7,6 @@
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __
@@ -27,10 +26,6 @@
 namespace elision {
 namespace term {
 
-class ILambda;
-/// Shorthand for a lambda pointer.
-typedef std::shared_ptr<ILambda const> Lambda;
-
 /**
  * The public interface to a lambda instance.  A lambda in Elision consists of
  * a single parameter and a body.  When the lambda is applied to another term
@@ -44,7 +39,7 @@ public:
 	 * Get the lambda parameter.
 	 * @return	The lambda parameter.
 	 */
-	virtual Variable get_parameter() const = 0;
+	virtual pVariable get_parameter() const = 0;
 
 	/**
 	 * Get the lambda body.
@@ -52,6 +47,9 @@ public:
 	 */
 	virtual pTerm get_body() const = 0;
 };
+
+/// Shorthand for a lambda pointer.
+typedef std::shared_ptr<ILambda const> pLambda;
 
 } /* namespace term */
 } /* namespace elision */

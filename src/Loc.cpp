@@ -1,10 +1,9 @@
 /**
  * @file
- * TODO: Describe purpose of file.
+ * Provide an implementation of locations.
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __

@@ -3,11 +3,10 @@
 
 /**
  * @file
- * TODO: Describe purpose of file.
+ * Provide a common base class for Elision exceptions.
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __

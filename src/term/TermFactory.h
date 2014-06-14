@@ -7,7 +7,6 @@
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __
@@ -23,6 +22,8 @@
 
 #include "ITerm.h"
 #include "ILiteral.h"
+#include "IVariable.h"
+#include "ILambda.h"
 
 namespace elision {
 namespace term {
@@ -71,6 +72,15 @@ public:
 	pSymbolLiteral FLOAT;		//< Simple access to the float type.
 	pSymbolLiteral BITSTRING;	//< Simple access to the bit string type.
 	pSymbolLiteral BOOLEAN;		//< Simple access to the Boolean type.
+	pSymbolLiteral ANY;			//< The wildcard.
+	pSymbolLiteral NONE;		//< Match nothing.
+
+	//======================================================================
+	// Well-known literals.
+	//======================================================================
+
+	pBooleanLiteral TRUE;		//< True literal.
+	pBooleanLiteral FALSE;		//< False literal.
 
 	//======================================================================
 	// Make literals.
@@ -143,6 +153,33 @@ public:
 	pBooleanLiteral get_boolean_literal(bool value) const {
 		return get_boolean_literal(Loc::get_internal(), value);
 	}
+
+	//======================================================================
+	// Make variables.
+	//======================================================================
+
+	virtual pVariable get_variable(Locus loc, std::string name, pTerm guard,
+			pTerm type) const = 0;
+
+	//======================================================================
+	// Make term variables.
+	//======================================================================
+
+	virtual pTermVariable get_term_variable(Locus loc, std::string name,
+			pTerm type) const = 0;
+
+	//======================================================================
+	// Make lambdas.
+	//======================================================================
+
+	virtual pLambda get_lambda(Locus loc, pVariable parameter, pTerm body,
+			pTerm type) const = 0;
+
+	//======================================================================
+	// Handle application.
+	//======================================================================
+
+	//virtual pTerm apply(Locus loc, pTerm op, pTerm arg, pTerm type) const = 0;
 };
 
 } /* namespace term */

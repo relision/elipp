@@ -1,10 +1,9 @@
 /**
  * @file
- * TODO: Describe purpose of file.
+ * Provide implementations of the literals.
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __

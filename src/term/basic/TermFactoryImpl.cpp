@@ -4,7 +4,6 @@
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __
@@ -20,6 +19,8 @@
 
 #include "TermFactoryImpl.h"
 #include "LiteralImpl.h"
+#include "VariableImpl.h"
+#include "LambdaImpl.h"
 
 namespace elision {
 namespace term {
@@ -95,6 +96,10 @@ TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()) {
 	INIT(FLOAT);
 	INIT(BITSTRING);
 	INIT(BOOLEAN);
+	INIT(ANY);
+	INIT(NONE);
+	TRUE = get_boolean_literal(Loc::get_internal(), true, BOOLEAN);
+	FALSE = get_boolean_literal(Loc::get_internal(), false, BOOLEAN);
 }
 
 pSymbolLiteral
@@ -163,6 +168,33 @@ TermFactoryImpl::get_boolean_literal(
 	NOTNULL(loc);
 	NOTNULL(type);
 	return MAKE(BooleanLiteral, value);
+}
+
+pVariable
+TermFactoryImpl::get_variable(
+		Locus loc, std::string name, pTerm guard, pTerm type) const {
+	NOTNULL(loc);
+	NOTNULL(guard);
+	NOTNULL(type);
+	return MAKE(Variable, name, guard);
+}
+
+pTermVariable
+TermFactoryImpl::get_term_variable(
+		Locus loc, std::string name, pTerm type) const {
+	NOTNULL(loc);
+	NOTNULL(type);
+	return MAKE(TermVariable, name);
+}
+
+pLambda
+TermFactoryImpl::get_lambda(
+		Locus loc, pVariable parameter, pTerm body, pTerm type) const {
+	NOTNULL(loc);
+	NOTNULL(parameter);
+	NOTNULL(body);
+	NOTNULL(type);
+	return MAKE(Lambda, parameter, body);
 }
 
 } /* namespace basic */

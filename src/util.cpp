@@ -4,9 +4,17 @@
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
- * This program is Copyright (C) by UT-Battelle, LLC.
+ * @verbatim
+ *       _ _     _
+ *   ___| (_)___(_) ___  _ __
+ *  / _ \ | / __| |/ _ \| '_ \
+ * |  __/ | \__ \ | (_) | | | |
+ *  \___|_|_|___/_|\___/|_| |_|
+ * The Elision Term Rewriter
+ *
+ * Copyright (c) 2014 by Stacy Prowell (sprowell@gmail.com)
  * All rights reserved.
+ * @endverbatim
  */
 
 #include <string>

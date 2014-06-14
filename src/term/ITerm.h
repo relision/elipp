@@ -7,7 +7,6 @@
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __
@@ -148,19 +147,19 @@ public:
 	/**
 	 * Equality test for terms that delegates to the term-centric is_equal
 	 * method.
-	 * @param x	First term.
-	 * @param y	Second term.
+	 * @param first		First term.
+	 * @param second	Second term.
 	 * @return	True if these terms are equal, and false if they are not.
 	 */
-	friend bool operator==(ITerm const& x, ITerm const& y);
+	friend bool operator==(ITerm const& first, ITerm const& second);
 
 	/**
 	 * Inequality test for terms that delegates to the equality test.
-	 * @param x	First term.
-	 * @param y Second term.
+	 * @param first		First term.
+	 * @param second	Second term.
 	 * @return	True if these terms are not equal, and false if they are.
 	 */
-	friend bool operator!=(ITerm const& x, ITerm const& y);
+	friend bool operator!=(ITerm const& first, ITerm const& second);
 
 private:
 	/**

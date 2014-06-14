@@ -7,7 +7,6 @@
  *
  * @author sprowell@gmail.com
  *
- * @section LICENSE
  * @verbatim
  *       _ _     _
  *   ___| (_)___(_) ___  _ __
@@ -37,9 +36,11 @@ public:
 	inline virtual std::string const get_name() const {
 		return name_;
 	}
+
 	inline virtual bool is_constant() const {
 		return true;
 	}
+
 	virtual std::string to_string() const;
 
 	inline bool is_equal(ITerm const& other) const {
@@ -63,9 +64,11 @@ public:
 	inline virtual std::string const get_value() const {
 		return value_;
 	}
+
 	inline virtual bool is_constant() const {
 		return true;
 	}
+
 	virtual std::string to_string() const;
 
 	inline bool is_equal(ITerm const& other) const {
@@ -89,9 +92,11 @@ public:
 	inline virtual eint_t get_value() const {
 		return value_;
 	}
+
 	inline virtual bool is_constant() const {
 		return true;
 	}
+
 	virtual std::string to_string() const;
 
 	inline bool is_equal(ITerm const& other) const {
@@ -115,15 +120,19 @@ public:
 	inline virtual eint_t get_significand() const {
 		return significand_;
 	}
+
 	inline virtual eint_t get_exponent() const {
 		return exponent_;
 	}
+
 	inline virtual uint8_t get_radix() const {
 		return radix_;
 	}
+
 	inline virtual bool is_constant() const {
 		return true;
 	}
+
 	virtual std::string to_string() const;
 
 	inline bool is_equal(ITerm const& other) const {
@@ -153,12 +162,15 @@ public:
 	inline virtual eint_t get_bits() const {
 		return bits_;
 	}
+
 	inline virtual eint_t get_length() const {
 		return length_;
 	}
+
 	inline virtual bool is_constant() const {
 		return true;
 	}
+
 	virtual std::string to_string() const;
 
 	inline bool is_equal(ITerm const& other) const {
@@ -185,9 +197,11 @@ public:
 	inline virtual bool get_value() const {
 		return value_;
 	}
+
 	inline virtual bool is_constant() const {
 		return true;
 	}
+
 	virtual std::string to_string() const;
 
 	inline bool is_equal(ITerm const& other) const {
