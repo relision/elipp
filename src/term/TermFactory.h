@@ -187,7 +187,7 @@ public:
 	// Handle application.
 	//======================================================================
 
-	//virtual pTerm apply(Locus loc, pTerm op, pTerm arg, pTerm type) const = 0;
+	virtual pTerm apply(Locus loc, pTerm op, pTerm arg) const = 0;
 };
 
 } /* namespace term */

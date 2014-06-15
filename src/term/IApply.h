@@ -36,13 +36,13 @@ public:
 	 * Get the operator.
 	 * @return The operator.
 	 */
-	pTerm get_operator() const = 0;
+	virtual pTerm get_operator() const = 0;
 
 	/**
 	 * Get the argument.
 	 * @return The argument.
 	 */
-	pTerm get_argument() const = 0;
+	virtual pTerm get_argument() const = 0;
 
 	TermKind my_kind = APPLY;
 };

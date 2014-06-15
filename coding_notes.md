@@ -120,7 +120,7 @@ is a typedef for `shard_ptr<ITerm const>`.
   - **Variable** (needs Literals for guards)
   - **Static Map**
   - **Lambda** (needs Static Map for type and Variable for parameter)
-  - Apply
+  - **Apply**
   - Binding (needs Map Pair and allows application of Lambdas, and Turing completeness)
   - Map Pair (needs Literals for guards)
   - Property Specification (needs Variables and Literals)

@@ -74,7 +74,7 @@ public:
 	virtual pLambda get_lambda(Locus loc, pVariable parameter,
 			pTerm body) const;
 
-	//virtual pTerm apply(Locus loc, pTerm op, pTerm arg, pTerm type) const;
+	virtual pTerm apply(Locus loc, pTerm op, pTerm arg) const;
 
 private:
 	pTerm root_;

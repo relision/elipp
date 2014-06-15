@@ -22,6 +22,7 @@
 #include "VariableImpl.h"
 #include "StaticMapImpl.h"
 #include "LambdaImpl.h"
+#include "ApplyImpl.h"
 
 namespace elision {
 namespace term {
@@ -210,6 +211,33 @@ TermFactoryImpl::get_lambda(
 	// from the type of its parameter to the type of its body.
 	pTerm type = get_static_map(loc, parameter->get_type(), body->get_type());
 	return MAKE(Lambda, parameter, body, type);
+}
+
+pTerm
+TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
+	NOTNULL(loc);
+	NOTNULL(op);
+	NOTNULL(arg);
+	// Decide what to do based on the operator's kind.
+	switch (op->get_kind()) {
+	case BINDING:
+		// Applying a binding replaces bound variables with their bound terms.
+	case LAMBDA:
+		// Applying a lambda "curries" the lambda.
+	case MAP_PAIR:
+		// Applying a map pair matches the pattern, checks the guard, and then
+		// yields any replacement.
+	case LIST:
+		// Applying a list concatenates lists.
+	case PROPERTY_SPECIFICATION:
+		// Applying a property specification merges property specifications.
+	case SPECIAL_FORM:
+		// Applying a special form may do several things, depending on the tag.
+
+	default:
+		// No special handling.
+		return MAKE(Apply, op, arg, MAP);
+	}
 }
 
 } /* namespace basic */
