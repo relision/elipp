@@ -114,3 +114,14 @@ prefix abstract classes containing only pure virtuals with `I`, and follow
 implementations with `Impl`.  Prefix pointer types with `p`.  Thus we end up
 with `ITerm`, implemented as `TermImpl`, and with pointer type `pTerm`, which
 is a typedef for `shard_ptr<ITerm const>`.
+
+# The implementation order
+  - Literal
+  - Variable (needs Literals for guards)
+  - Map Pair (needs Literals for guards)
+  - Lambda (needs Map Pair for type and Variable for parameter)
+  - Apply
+  - Binding (needs Map Pair and allows application of Lambdas, and Turing completeness)
+  - Property Specification (needs Variables and Literals)
+  - List (needs Property Specification)
+  - Special Form

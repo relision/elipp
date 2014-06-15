@@ -23,6 +23,7 @@
 #include "ITerm.h"
 #include "ILiteral.h"
 #include "IVariable.h"
+#include "IStaticMap.h"
 #include "ILambda.h"
 
 namespace elision {
@@ -74,6 +75,7 @@ public:
 	pSymbolLiteral BOOLEAN;		//< Simple access to the Boolean type.
 	pSymbolLiteral ANY;			//< The wildcard.
 	pSymbolLiteral NONE;		//< Match nothing.
+	pSymbolLiteral MAP;			//< Simple access to the type for map pairs.
 
 	//======================================================================
 	// Well-known literals.
@@ -169,11 +171,17 @@ public:
 			pTerm type) const = 0;
 
 	//======================================================================
+	// Make static maps.
+	//======================================================================
+
+	virtual pStaticMap get_static_map(Locus loc, pTerm domain,
+			pTerm codomain) const = 0;
+
+	//======================================================================
 	// Make lambdas.
 	//======================================================================
 
-	virtual pLambda get_lambda(Locus loc, pVariable parameter, pTerm body,
-			pTerm type) const = 0;
+	virtual pLambda get_lambda(Locus loc, pVariable parameter, pTerm body) const = 0;
 
 	//======================================================================
 	// Handle application.

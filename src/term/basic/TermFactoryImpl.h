@@ -68,8 +68,11 @@ public:
 	virtual pTermVariable get_term_variable(Locus loc, std::string name,
 			pTerm type) const;
 
-	virtual pLambda get_lambda(Locus loc, pVariable parameter, pTerm body,
-			pTerm type) const ;
+	virtual pStaticMap get_static_map(Locus loc, pTerm domain,
+			pTerm codomain) const;
+
+	virtual pLambda get_lambda(Locus loc, pVariable parameter,
+			pTerm body) const;
 
 	//virtual pTerm apply(Locus loc, pTerm op, pTerm arg, pTerm type) const;
 

@@ -1,6 +1,6 @@
 /**
  * @file
- * Provide an implementation of lambdas.
+ * Provide an implementation of static maps.
  *
  * @author sprowell@gmail.com
  *
@@ -17,20 +17,20 @@
  * @endverbatim
  */
 
-#include <basic/LambdaImpl.h>
+#include <basic/StaticMapImpl.h>
 
 namespace elision {
 namespace term {
 namespace basic {
 
-LambdaImpl::LambdaImpl(Locus the_loc, pVariable the_parameter, pTerm the_body,
-		pTerm the_type) : TermImpl(the_loc, the_type),
-				parameter_(the_parameter), body_(the_body) {
+StaticMapImpl::StaticMapImpl(Locus the_loc, pTerm the_domain,
+		pTerm the_codomain, pTerm the_type) : TermImpl(the_loc, the_type),
+				domain_(the_domain), codomain_(the_codomain) {
 }
 
 std::string
-LambdaImpl::to_string() const {
-	return "\\" + parameter_->to_string() + "." + body_->to_string();
+StaticMapImpl::to_string() const {
+	return domain_->to_string() + "=>" + codomain_->to_string();
 }
 
 } /* namespace basic */

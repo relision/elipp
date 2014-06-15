@@ -1,9 +1,9 @@
-#ifndef LAMBDAIMPL_H_
-#define LAMBDAIMPL_H_
+#ifndef STATICMAPIMPL_H_
+#define STATICMAPIMPL_H_
 
 /**
  * @file
- * Define the interface for an implementation of lambdas.
+ * Define a simple interface to a static map.
  *
  * @author sprowell@gmail.com
  *
@@ -21,7 +21,7 @@
  */
 
 #include "TermImpl.h"
-#include "term/ILambda.h"
+#include "term/IStaticMap.h"
 
 namespace elision {
 namespace term {
@@ -30,44 +30,44 @@ namespace basic {
 using namespace elision;
 using namespace elision::term;
 
-class LambdaImpl: public ILambda, public TermImpl {
+class StaticMapImpl: public IStaticMap, public TermImpl {
 public:
-	virtual ~LambdaImpl() = default;
+	virtual ~StaticMapImpl() = default;
 
-	inline pVariable get_parameter() const {
-		return parameter_;
+	inline pTerm get_domain() const {
+		return domain_;
 	}
 
-	inline pTerm get_body() const {
-		return body_;
+	inline pTerm get_codomain() const {
+		return codomain_;
 	}
 
 	inline bool is_constant() const {
-		return body_->is_constant();
+		return domain_->is_constant() && codomain_->is_constant();
 	}
 
 	inline bool is_equal(ITerm const& other) const {
-		auto oth = dynamic_cast<ILambda const*>(&other);
-		return *get_parameter() == *oth->get_parameter() &&
-				*get_body() == *oth->get_body();
+		auto oth = dynamic_cast<IStaticMap const*>(&other);
+		return *get_domain() == *oth->get_domain() &&
+				*get_codomain() == *oth->get_codomain();
 	}
 
 	inline TermKind get_kind() const {
-		return LAMBDA;
+		return STATIC_MAP;
 	}
 
 	virtual std::string to_string() const;
 
 private:
 	friend class TermFactoryImpl;
-	LambdaImpl(Locus the_loc, pVariable the_parameter, pTerm the_body,
+	StaticMapImpl(Locus the_loc, pTerm the_domain, pTerm the_codomain,
 			pTerm the_type);
-	pVariable parameter_;
-	pTerm body_;
+	pTerm domain_;
+	pTerm codomain_;
 };
 
 } /* namespace basic */
 } /* namespace term */
 } /* namespace elision */
 
-#endif /* LAMBDAIMPL_H_ */
+#endif /* STATICMAPIMPL_H_ */

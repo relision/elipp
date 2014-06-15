@@ -51,7 +51,7 @@ public:
 	inline bool is_equal(ITerm const& other) const {
 		auto oth = dynamic_cast<IVariable const*>(&other);
 		return get_name() == oth->get_name() &&
-				get_guard() == oth->get_guard();
+				*get_guard() == *oth->get_guard();
 	}
 
 	inline TermKind get_kind() const {

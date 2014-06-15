@@ -20,6 +20,7 @@
 #include "TermFactoryImpl.h"
 #include "LiteralImpl.h"
 #include "VariableImpl.h"
+#include "StaticMapImpl.h"
 #include "LambdaImpl.h"
 
 namespace elision {
@@ -98,6 +99,7 @@ TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()) {
 	INIT(BOOLEAN);
 	INIT(ANY);
 	INIT(NONE);
+	INIT(MAP);
 	TRUE = get_boolean_literal(Loc::get_internal(), true, BOOLEAN);
 	FALSE = get_boolean_literal(Loc::get_internal(), false, BOOLEAN);
 }
@@ -119,14 +121,14 @@ TermFactoryImpl::get_root_term(std::string const name) const {
 // Shorthand to make a shared pointer of the correct type with the provided
 // arguments.  Depends on names being the "usual" names.
 #define MAKE(m_kind, ...) \
-	std::shared_ptr<I ## m_kind const>(new m_kind ## Impl(loc, __VA_ARGS__, type))
+	std::shared_ptr<I ## m_kind const>(new m_kind ## Impl(loc, __VA_ARGS__))
 
 pSymbolLiteral
 TermFactoryImpl::get_symbol_literal(
 		Locus loc, std::string const& name, pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
-	return MAKE(SymbolLiteral, name);
+	return MAKE(SymbolLiteral, name, type);
 }
 
 pStringLiteral
@@ -134,7 +136,7 @@ TermFactoryImpl::get_string_literal(
 		Locus loc, std::string const& value, pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
-	return MAKE(StringLiteral, value);
+	return MAKE(StringLiteral, value, type);
 }
 
 pIntegerLiteral
@@ -142,7 +144,7 @@ TermFactoryImpl::get_integer_literal(
 		Locus loc, eint_t value, pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
-	return MAKE(IntegerLiteral, value);
+	return MAKE(IntegerLiteral, value, type);
 }
 
 pFloatLiteral
@@ -151,7 +153,7 @@ TermFactoryImpl::get_float_literal(
 		pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
-	return MAKE(FloatLiteral, significand, exponent, radix);
+	return MAKE(FloatLiteral, significand, exponent, radix, type);
 }
 
 pBitStringLiteral
@@ -159,7 +161,7 @@ TermFactoryImpl::get_bit_string_literal(
 		Locus loc, eint_t bits, eint_t length, pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
-	return MAKE(BitStringLiteral, bits, length);
+	return MAKE(BitStringLiteral, bits, length, type);
 }
 
 pBooleanLiteral
@@ -167,7 +169,7 @@ TermFactoryImpl::get_boolean_literal(
 		Locus loc, bool value, pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
-	return MAKE(BooleanLiteral, value);
+	return MAKE(BooleanLiteral, value, type);
 }
 
 pVariable
@@ -176,7 +178,7 @@ TermFactoryImpl::get_variable(
 	NOTNULL(loc);
 	NOTNULL(guard);
 	NOTNULL(type);
-	return MAKE(Variable, name, guard);
+	return MAKE(Variable, name, guard, type);
 }
 
 pTermVariable
@@ -184,17 +186,30 @@ TermFactoryImpl::get_term_variable(
 		Locus loc, std::string name, pTerm type) const {
 	NOTNULL(loc);
 	NOTNULL(type);
-	return MAKE(TermVariable, name);
+	return MAKE(TermVariable, name, type);
+}
+
+pStaticMap
+TermFactoryImpl::get_static_map(
+		Locus loc, pTerm domain, pTerm codomain) const {
+	NOTNULL(loc);
+	NOTNULL(domain);
+	NOTNULL(codomain);
+	return MAKE(StaticMap, domain, codomain, MAP);
 }
 
 pLambda
 TermFactoryImpl::get_lambda(
-		Locus loc, pVariable parameter, pTerm body, pTerm type) const {
+		Locus loc, pVariable parameter, pTerm body) const {
 	NOTNULL(loc);
 	NOTNULL(parameter);
 	NOTNULL(body);
-	NOTNULL(type);
-	return MAKE(Lambda, parameter, body);
+
+	// The type for the lambda has to be computed.  We do that here, and then
+	// we pass it to the constructor.  The type of a lambda is a static map
+	// from the type of its parameter to the type of its body.
+	pTerm type = get_static_map(loc, parameter->get_type(), body->get_type());
+	return MAKE(Lambda, parameter, body, type);
 }
 
 } /* namespace basic */

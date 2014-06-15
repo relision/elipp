@@ -1,6 +1,6 @@
 /**
  * @file
- * Perform testing on literals.
+ * Perform structural testing on literals.
  *
  * @author sprowell@gmail.com
  *
