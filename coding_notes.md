@@ -116,10 +116,10 @@ with `ITerm`, implemented as `TermImpl`, and with pointer type `pTerm`, which
 is a typedef for `shard_ptr<ITerm const>`.
 
 # The implementation order
-  - Literal
-  - Variable (needs Literals for guards)
-  - Static Map
-  - Lambda (needs Static Map for type and Variable for parameter)
+  - **Literal**
+  - **Variable** (needs Literals for guards)
+  - **Static Map**
+  - **Lambda** (needs Static Map for type and Variable for parameter)
   - Apply
   - Binding (needs Map Pair and allows application of Lambdas, and Turing completeness)
   - Map Pair (needs Literals for guards)

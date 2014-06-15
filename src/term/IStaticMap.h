@@ -25,6 +25,11 @@
 namespace elision {
 namespace term {
 
+/**
+ * A static map represents a mapping from one term to another.  Unlike a
+ * map pair, it cannot be applied and is effectively a constant - though
+ * variables may be used for the domain and codomain.
+ */
 class IStaticMap : public virtual ITerm {
 public:
 	/**

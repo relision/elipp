@@ -5,14 +5,9 @@ CMakeCache.txt
 libelision.dylib
 libelision.so
 libelision.dll
-loc_test
 test.log*
 doc/api
-test/eint_test
-test/literal_test
 Debug
 Testing
 CTestTestfile.cmake
-eint_tst
-literal_tst
-loc_tst
+*_tst
