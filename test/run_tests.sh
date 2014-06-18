@@ -27,7 +27,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	echo "Running on Mac"
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	if $(which valgrind 2>&1 >/dev/null) ; then
-		memory="valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes --track-origins=yes --tool=callgrind"
+		memory="valgrind --tool=memcheck --leak-check=full --show-reachable=yes --num-callers=20 --track-fds=yes --track-origins=yes --tool=callgrind"
 	else
 		echo "The valgrind command was not found.  Plese install valgrind."
 	fi
