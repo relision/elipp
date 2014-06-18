@@ -47,6 +47,9 @@ public:
 	TermKind my_kind = APPLY;
 };
 
+/// Shorthand for an apply pointer.
+typedef std::shared_ptr<IApply const> pApply;
+
 } /* namespace term */
 } /* namespace elision */
 

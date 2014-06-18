@@ -26,6 +26,9 @@
 namespace elision {
 namespace term {
 
+#define CAST(type_m, ptr_m) \
+	std::dynamic_pointer_cast<I ## type_m const>(ptr_m)
+
 /**
  * The term kind is used to avoid relying on dynamic type information,
  * which can be costly (like `dynamic_cast`).
@@ -47,6 +50,12 @@ enum TermKind {
 class ITerm;
 /// Shorthand for a pointer to a term.
 typedef std::shared_ptr<ITerm const> pTerm;
+
+class TermVisitor {
+public:
+	virtual ~TermVisitor() = default;
+	virtual pTerm visit(pTerm term) = 0;
+};
 
 /**
  * This is the public interface shared by all terms.

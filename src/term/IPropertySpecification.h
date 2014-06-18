@@ -21,6 +21,7 @@
  */
 
 #include "ITerm.h"
+#include "ElisionException.h"
 #include <boost/optional.hpp>
 
 namespace elision {
@@ -32,7 +33,7 @@ namespace term {
  * property to a non-Boolean, for example) or that properties are being used
  * inconsistently (requiring idempotency but not associativity).
  */
-class IllegalPropertySpecification : ElisionException {};
+class IllegalPropertySpecification : public ElisionException {};
 
 /**
  * Encapsulate the algebraic properties ascribed to some object.
@@ -69,19 +70,19 @@ public:
 	 * Get any associativity specification.
 	 * @return	The associativity specification.
 	 */
-	virtual boost::optional<bool> const get_associative() const = 0;
+	virtual boost::optional<bool> get_associative() const = 0;
 
 	/**
 	 * Get any commutativity specification.
 	 * @return	The commutativity specification.
 	 */
-	virtual boost::optional<bool> const get_commutative() const = 0;
+	virtual boost::optional<bool> get_commutative() const = 0;
 
 	/**
 	 * Get any idempotency specification.
 	 * @return	The idempotency specification.
 	 */
-	virtual boost::optional<bool> const get_idempotent() const = 0;
+	virtual boost::optional<bool> get_idempotent() const = 0;
 
 	/**
 	 * Get any absorber specification.
@@ -126,23 +127,23 @@ public:
 	 * Determine if an absorber is specified.
 	 * @return	True if an absorber is specified, and false otherwise.
 	 */
-	virtual bool const has_absorber() const = 0;
+	virtual bool has_absorber() const = 0;
 
 	/**
 	 * Determine if an identity is specified.
 	 * @return	True if an identity is specified, and false otherwise.
 	 */
-	virtual bool const has_identity() const = 0;
+	virtual bool has_identity() const = 0;
 
 	/**
 	 * Determine if membership is specified.
 	 * @return	True if membership is specified, and false otherwise.
 	 */
-	virtual bool const has_membership() const = 0;
+	virtual bool has_membership() const = 0;
 };
 
 /// Shorthand for a property specification pointer.
-typedef std::shared_ptr<IPropertySpecification const> PropertySpecification;
+typedef std::shared_ptr<IPropertySpecification const> pPropertySpecification;
 
 } /* namespace term */
 } /* namespace elision */

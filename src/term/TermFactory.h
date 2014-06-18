@@ -20,11 +20,16 @@
  * @endverbatim
  */
 
-#include "ITerm.h"
-#include "ILiteral.h"
-#include "IVariable.h"
-#include "IStaticMap.h"
+#include "IApply.h"
+#include "IBinding.h"
 #include "ILambda.h"
+#include "IList.h"
+#include "ILiteral.h"
+#include "IMapPair.h"
+#include "IPropertySpecification.h"
+#include "ISpecialForm.h"
+#include "IStaticMap.h"
+#include "IVariable.h"
 
 namespace elision {
 namespace term {
@@ -178,10 +183,18 @@ public:
 			pTerm codomain) const = 0;
 
 	//======================================================================
+	// Make map pairs.
+	//======================================================================
+
+	virtual pMapPair get_map_pair(Locus loc, pTerm lhs, pTerm rhs,
+			pTerm guard) const = 0;
+
+	//======================================================================
 	// Make lambdas.
 	//======================================================================
 
-	virtual pLambda get_lambda(Locus loc, pVariable parameter, pTerm body) const = 0;
+	virtual pLambda get_lambda(Locus loc, pVariable parameter,
+			pTerm body) const = 0;
 
 	//======================================================================
 	// Handle application.

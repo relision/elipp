@@ -33,26 +33,18 @@ namespace term {
  * variable name, term pair is called a @b bind.  A binding may be empty, or it
  * may specify an arbitrary number of binds.
  *
- * Bindings may also be abstract, in that they may contain variables and are
- * treated as if they were associative and commutative, for the purpose of
- * matching.
- *
- * It is best to check whether a binding is abstract or not before making any
- * assumptions about its content.
+ * For performance, bindings are constants.  If you need to match on bindings,
+ * they you need to transform them into some other kind of term.
  */
 class IBinding : public virtual ITerm {
 public:
-	/**
-	 * Determine if this binding is abstract or not.
-	 * @return	True iff abstract.
-	 */
-	virtual bool is_abstract() const = 0;
+	typedef std::unordered_map<std::string, pTerm> const map_t;
 
 	/**
 	 * Get the non-abstract content of this binding as a map.
 	 * @return	The concrete binds in this binding.
 	 */
-	virtual operator std::unordered_map<std::string const, pTerm>() const = 0;
+	virtual std::shared_ptr<map_t> get_map() const = 0;
 
 	/**
 	 * Get the term bound to the named variable, if any.  If none, then an
@@ -61,21 +53,18 @@ public:
 	 * @return	The bound value.
 	 * @throws	std::out_of_range	The variable name is not concretely bound.
 	 */
-	virtual pTerm get_bind(std::string const& name) = 0;
+	virtual pTerm get_bind(std::string const& name) const = 0;
 
 	/**
 	 * Determine if this binding contains a bind for the given variable name.
 	 * @param	name	The variable name.
 	 * @return	True iff this binding binds the variable name concretely.
 	 */
-	virtual bool has_bind(std::string const& name) = 0;
-
-	/**
-	 * Get all the elements of this binding, concrete or not.
-	 * @return	The complete set of elements of this binding.
-	 */
-	virtual std::unordered_set<pTerm> get_elements() const = 0;
+	virtual bool has_bind(std::string const& name) const = 0;
 };
+
+/// Shorthand for a binding pointer.
+typedef std::shared_ptr<IBinding const> pBinding;
 
 } /* namespace term */
 } /* namespace elision */

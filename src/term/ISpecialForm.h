@@ -47,7 +47,7 @@ public:
 };
 
 /// Shorthand for a property specification pointer.
-typedef std::shared_ptr<ISpecialForm const> SpecialForm;
+typedef std::shared_ptr<ISpecialForm const> pSpecialForm;
 
 } /* namespace term */
 } /* namespace elision */

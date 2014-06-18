@@ -71,6 +71,9 @@ public:
 	virtual pStaticMap get_static_map(Locus loc, pTerm domain,
 			pTerm codomain) const;
 
+	virtual pMapPair get_map_pair(Locus loc, pTerm lhs, pTerm rhs,
+			pTerm guard) const;
+
 	virtual pLambda get_lambda(Locus loc, pVariable parameter,
 			pTerm body) const;
 

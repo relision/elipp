@@ -17,12 +17,17 @@
  * @endverbatim
  */
 
-#include "TermFactoryImpl.h"
-#include "LiteralImpl.h"
-#include "VariableImpl.h"
-#include "StaticMapImpl.h"
-#include "LambdaImpl.h"
 #include "ApplyImpl.h"
+#include "BindingImpl.h"
+#include "LambdaImpl.h"
+//#include "ListImpl.h"
+#include "LiteralImpl.h"
+#include "MapPairImpl.h"
+//#include "PropertySpecificationImpl.h"
+//#include "SpecialFormImpl.h"
+#include "StaticMapImpl.h"
+#include "VariableImpl.h"
+#include "TermFactoryImpl.h"
 
 namespace elision {
 namespace term {
@@ -199,6 +204,21 @@ TermFactoryImpl::get_static_map(
 	return MAKE(StaticMap, domain, codomain, MAP);
 }
 
+pMapPair
+TermFactoryImpl::get_map_pair(
+		Locus loc, pTerm lhs, pTerm rhs, pTerm guard) const {
+	NOTNULL(loc);
+	NOTNULL(lhs);
+	NOTNULL(rhs);
+	NOTNULL(guard);
+
+	// The type for a map pair has to be computed.  We do that here, and then
+	// we pass it to the constructor.  The type of the map is a static map from
+	// the type of the lhs to the type of the rhs.
+	pTerm type = get_static_map(loc, lhs->get_type(), rhs->get_type());
+	return MAKE(MapPair, lhs, rhs, guard, type);
+}
+
 pLambda
 TermFactoryImpl::get_lambda(
 		Locus loc, pVariable parameter, pTerm body) const {
@@ -218,26 +238,91 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 	NOTNULL(loc);
 	NOTNULL(op);
 	NOTNULL(arg);
+
 	// Decide what to do based on the operator's kind.
 	switch (op->get_kind()) {
-	case BINDING:
-		// Applying a binding replaces bound variables with their bound terms.
-	case LAMBDA:
+	case LAMBDA: {
 		// Applying a lambda "curries" the lambda.
-	case MAP_PAIR:
+		auto lambda = std::dynamic_pointer_cast<ILambda const>(op);
+
+		// If the lambda is constant or if the de Bruijn index of the body is
+		// zero, then the lambda body does not contain the parameter, and it is
+		// a constant.
+		if (lambda->get_de_bruijn_index() == 0) return lambda->get_body();
+
+//		// Match the lambda parameter against the argument.
+//		auto result = Matcher::match(lambda->get_parameter(), arg);
+//		if (!result) {
+//			// The lambda parameter does not match the argument.  This is an
+//			// error.
+//		} else {
+//			// The match succeeded.  Use the resulting bindings to rewrite the
+//			// body.
+//			return lambda->get_body()->rewrite(result->next_raw_bindings());
+//		}
+		break;
+	}
+
+	case BINDING: {
+		// Applying a binding replaces bound variables with their bound terms.
+		auto binding = std::dynamic_pointer_cast<IBinding const>(op);
+//		return argument->rewrite(binding);
+		break;
+	}
+
+	case MAP_PAIR: {
 		// Applying a map pair matches the pattern, checks the guard, and then
 		// yields any replacement.
-	case LIST:
-		// Applying a list concatenates lists.
-	case PROPERTY_SPECIFICATION:
-		// Applying a property specification merges property specifications.
-	case SPECIAL_FORM:
-		// Applying a special form may do several things, depending on the tag.
-
-	default:
-		// No special handling.
-		return MAKE(Apply, op, arg, MAP);
+//		auto map_pair = std::dynamic_pointer_cast<IMapPair const>(op);
+//		auto result = Matcher::match(map_pair->get_lhs(), argument);
+//		if (result) {
+//			// The match succeeded.  Check the guard.
+//			auto raw = result->next_raw_bindings();
+//			if (map_pair->get_guard()->rewrite(raw) == TRUE) {
+//				// The guard succeeded.  Rewrite the replacement and return it.
+//				return map_pair->get_rhs()->rewrite(raw);
+//			}
+//		}
+//		// If we come here, then either the LHS did not match or the guard
+//		// did not evaluate to true.  In either case, no rewrite happens.
+//		return argument;
+		break;
 	}
+
+	case LIST: {
+		// Applying a list concatenates lists.
+//		if (argument.get_kind() == LIST) {
+//			auto first = std::dynamic_pointer_cast<IList const>(op);
+//			auto second = std::dynamic_pointer_cast<IList const>(argument);
+//			return first->catenate(second);
+//		}
+		break;
+	}
+
+	case PROPERTY_SPECIFICATION: {
+		// Applying a property specification merges property specifications
+		// and modifies lists.
+//		if (argument.get_kind() == LIST) {
+//			auto list = std::dynamic_pointer_cast<IList const>(argument);
+//			auto ps = dynamic_pointer_cast<pPropertySpecification>(op);
+//			auto new_ps = list->get_property_specification()->merge(ps);
+//			return get_list(new_ps, list->get_elements());
+//		}
+		break;
+	}
+
+	case SPECIAL_FORM: {
+		// Applying a special form may do several things, depending on the tag.
+		break;
+	}
+
+	default: {
+		break;
+	}
+	}
+
+	// No special handling.
+	return MAKE(Apply, op, arg, MAP);
 }
 
 } /* namespace basic */

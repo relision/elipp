@@ -21,13 +21,10 @@
  */
 
 #include "ITerm.h"
+#include "IPropertySpecification.h"
 
 namespace elision {
 namespace term {
-
-class IList;
-/// Shorthand for a list pointer.
-typedef std::shared_ptr<IList const> List;
 
 /**
  * A list consists of a collection of terms and an algebraic property
@@ -39,7 +36,7 @@ public:
 	 * Get the property specification for this list.
 	 * @return	The property specification for this list.
 	 */
-	virtual PropertySpecification get_property_specification() const = 0;
+	virtual pPropertySpecification get_property_specification() const = 0;
 
 	/**
 	 * Get an element from this list, by apparent position.
@@ -55,6 +52,9 @@ public:
 	 */
 	virtual unsigned int get_length() const = 0;
 };
+
+/// Shorthand for a list pointer.
+typedef std::shared_ptr<IList const> pList;
 
 } /* namespace term */
 } /* namespace elision */

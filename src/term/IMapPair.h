@@ -57,7 +57,7 @@ public:
 };
 
 /// Shorthand for a map pair pointer.
-typedef std::shared_ptr<IMapPair const> MapPair;
+typedef std::shared_ptr<IMapPair const> pMapPair;
 
 } /* namespace term */
 } /* namespace elision */
