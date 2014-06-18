@@ -1,0 +1,44 @@
+/**
+ * @file
+ * Provide an implementation of a list.
+ *
+ * @author sprowell@gmail.com
+ *
+ * @verbatim
+ *       _ _     _
+ *   ___| (_)___(_) ___  _ __
+ *  / _ \ | / __| |/ _ \| '_ \
+ * |  __/ | \__ \ | (_) | | | |
+ *  \___|_|_|___/_|\___/|_| |_|
+ * The Elision Term Rewriter
+ *
+ * Copyright (c) 2014 by Stacy Prowell (sprowell@gmail.com)
+ * All rights reserved.
+ * @endverbatim
+ */
+
+#include <basic/ListImpl.h>
+
+namespace elision {
+namespace term {
+namespace basic {
+
+ListImpl::ListImpl(Locus the_loc, pPropertySpecification the_spec,
+		std::vector<pTerm>& the_elements, pTerm the_type) :
+			TermImpl(the_loc, the_type), properties_(the_spec),
+			elements_(the_elements) {
+}
+
+std::string
+ListImpl::to_string() const {
+	bool first = true;
+	std::string res = properties_->to_string() + "(";
+	for (auto i : elements_) {
+		res += (first ? "" : ", ") + i.get()->to_string();
+	} // Add all elements.
+	return res + ")";
+}
+
+} /* namespace basic */
+} /* namespace term */
+} /* namespace elision */

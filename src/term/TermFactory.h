@@ -81,6 +81,7 @@ public:
 	pSymbolLiteral ANY;			//< The wildcard.
 	pSymbolLiteral NONE;		//< Match nothing.
 	pSymbolLiteral MAP;			//< Simple access to the type for map pairs.
+	pSymbolLiteral SEQ;			//< Type for lists.
 
 	//======================================================================
 	// Well-known literals.
@@ -195,6 +196,13 @@ public:
 
 	virtual pLambda get_lambda(Locus loc, pVariable parameter,
 			pTerm body) const = 0;
+
+	//======================================================================
+	// Make lists.
+	//======================================================================
+
+	virtual pList get_list(Locus loc, pPropertySpecification spec,
+			std::vector<pTerm>& elements) const = 0;
 
 	//======================================================================
 	// Handle application.

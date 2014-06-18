@@ -20,7 +20,7 @@
 #include "ApplyImpl.h"
 #include "BindingImpl.h"
 #include "LambdaImpl.h"
-//#include "ListImpl.h"
+#include "ListImpl.h"
 #include "LiteralImpl.h"
 #include "MapPairImpl.h"
 //#include "PropertySpecificationImpl.h"
@@ -106,6 +106,7 @@ TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()) {
 	INIT(ANY);
 	INIT(NONE);
 	INIT(MAP);
+	INIT(SEQ);
 	TRUE = get_boolean_literal(Loc::get_internal(), true, BOOLEAN);
 	FALSE = get_boolean_literal(Loc::get_internal(), false, BOOLEAN);
 }
@@ -231,6 +232,17 @@ TermFactoryImpl::get_lambda(
 	// from the type of its parameter to the type of its body.
 	pTerm type = get_static_map(loc, parameter->get_type(), body->get_type());
 	return MAKE(Lambda, parameter, body, type);
+}
+
+pList
+TermFactoryImpl::get_list(Locus loc, pPropertySpecification spec,
+		std::vector<pTerm>& elements) const {
+	NOTNULL(loc);
+	NOTNULL(spec);
+
+	// The real type for the list is deduced from the element specification in
+	// the property specification.
+	return MAKE(List, spec, elements, SEQ);
 }
 
 pTerm

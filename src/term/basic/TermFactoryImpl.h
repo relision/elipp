@@ -41,7 +41,7 @@ public:
 	TermFactoryImpl();
 
 	/// Deallocate this instance.
-	virtual ~TermFactoryImpl() {};
+	virtual ~TermFactoryImpl() = default;
 
 	inline virtual pTerm get_root() const {
 		return root_;
@@ -76,6 +76,9 @@ public:
 
 	virtual pLambda get_lambda(Locus loc, pVariable parameter,
 			pTerm body) const;
+
+	virtual pList get_list(Locus loc, pPropertySpecification spec,
+			std::vector<pTerm>& elements) const;
 
 	virtual pTerm apply(Locus loc, pTerm op, pTerm arg) const;
 

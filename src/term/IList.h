@@ -39,18 +39,24 @@ public:
 	virtual pPropertySpecification get_property_specification() const = 0;
 
 	/**
+	 * Get all the elements of this list.
+	 * @return	The elements of this list.
+	 */
+	virtual std::vector<pTerm> get_elements() const = 0;
+
+	/**
 	 * Get an element from this list, by apparent position.
 	 * @param position	The zero-based position.
 	 * @return	The requested element.
 	 * @throws	std::out_of_range	If the position is out of range.
 	 */
-	virtual pTerm operator[](unsigned int position) const = 0;
+	virtual pTerm operator[](size_t position) const = 0;
 
 	/**
 	 * Get the length of this list (the number of elements).
 	 * @return	The length of the list.
 	 */
-	virtual unsigned int get_length() const = 0;
+	virtual size_t size() const = 0;
 };
 
 /// Shorthand for a list pointer.

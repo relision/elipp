@@ -80,8 +80,7 @@ std::string() const {
 
 Locus
 Loc::get_internal() {
-    static Locus internal = std::shared_ptr<Loc const>(new Loc(""));
-    return internal;
+    return std::shared_ptr<Loc const>(new Loc(""));
 }
 
 } /* namespace elision */
