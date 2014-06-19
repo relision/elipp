@@ -22,6 +22,7 @@
 
 #include "TermImpl.h"
 #include "term/ILambda.h"
+#include "Lazy.h"
 
 namespace elision {
 namespace term {
@@ -56,7 +57,9 @@ public:
 		return LAMBDA;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 private:
 	friend class TermFactoryImpl;
@@ -64,6 +67,7 @@ private:
 			pTerm the_type);
 	pVariable parameter_;
 	pTerm body_;
+	Lazy<std::string> strval_;
 };
 
 } /* namespace basic */

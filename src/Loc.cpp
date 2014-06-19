@@ -18,6 +18,7 @@
  */
 
 #include "Loc.h"
+#include "Lazy.h"
 #include <sstream>
 
 namespace elision {
@@ -26,6 +27,7 @@ struct Loc::Impl {
     std::string source_{""};
     unsigned int line_ = 0;
     unsigned int column_ = 0;
+    Lazy<std::string> strval_{};
 };
 
 Loc::Loc(const std::string& source, unsigned int line, unsigned int column)
@@ -33,18 +35,48 @@ Loc::Loc(const std::string& source, unsigned int line, unsigned int column)
     pimpl_->source_ = source;
     pimpl_->line_ = line;
     pimpl_->column_ = column;
+    pimpl_->strval_ = Lazy<std::string>([this]() {
+        std::ostringstream str;
+        if (this->pimpl_->source_.length() > 0) {
+            str << this->pimpl_->source_ << ":"
+                    << this->pimpl_->line_ << ":"
+                    << this->pimpl_->column_;
+        }
+        std::string ret = str.str();
+        return ret;
+    });
 }
 
 Loc::Loc(unsigned int line, unsigned int column) :pimpl_(new Impl) {
     pimpl_->source_ = "(console)";
     pimpl_->line_ = line;
     pimpl_->column_ = column;
+    pimpl_->strval_ = Lazy<std::string>([this]() {
+        std::ostringstream str;
+        if (this->pimpl_->source_.length() > 0) {
+            str << this->pimpl_->source_ << ":"
+                    << this->pimpl_->line_ << ":"
+                    << this->pimpl_->column_;
+        }
+        std::string ret = str.str();
+        return ret;
+    });
 }
 
 Loc::Loc(Loc const& loc) {
     pimpl_->source_ = loc.pimpl_->source_;
     pimpl_->line_ = loc.pimpl_->line_;
     pimpl_->column_ = loc.pimpl_->column_;
+    pimpl_->strval_ = Lazy<std::string>([this]() {
+        std::ostringstream str;
+        if (this->pimpl_->source_.length() > 0) {
+            str << this->pimpl_->source_ << ":"
+                    << this->pimpl_->line_ << ":"
+                    << this->pimpl_->column_;
+        }
+        std::string ret = str.str();
+        return ret;
+    });
 }
 
 Loc::~Loc() {}
@@ -69,18 +101,15 @@ Loc::operator!=(Loc const& other) const {
 
 Loc::operator
 std::string() const {
-    std::ostringstream str;
-    if (pimpl_->source_.length() > 0) {
-        str << pimpl_->source_ << ":"
-                << pimpl_->line_ << ":"
-                << pimpl_->column_;
-    }
-    return(str.str());
+	return pimpl_->strval_;
 }
 
 Locus
 Loc::get_internal() {
-    return std::shared_ptr<Loc const>(new Loc(""));
+	static Lazy<Locus> ret([](){
+		return std::shared_ptr<Loc const>(new Loc(""));
+	});
+    return ret;
 }
 
 } /* namespace elision */

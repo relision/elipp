@@ -20,6 +20,7 @@
  * @endverbatim
  */
 
+#include "Lazy.h"
 #include "TermImpl.h"
 #include "term/IApply.h"
 
@@ -43,7 +44,7 @@ public:
 	}
 
 	inline bool is_constant() const {
-		return operator_->is_constant() && argument_->is_constant();
+		return constant_;
 	}
 
 	inline bool is_equal(ITerm const& other) const {
@@ -56,13 +57,17 @@ public:
 		return APPLY;
 	}
 
-	virtual std::string to_string() const;
+	virtual std::string to_string() const {
+		return strval_;
+	}
 
 private:
 	friend class TermFactoryImpl;
 	ApplyImpl(Locus the_loc, pTerm op, pTerm argument, pTerm the_type);
 	pTerm operator_;
 	pTerm argument_;
+	Lazy<bool> constant_;
+	Lazy<std::string> strval_;
 };
 
 } /* namespace basic */

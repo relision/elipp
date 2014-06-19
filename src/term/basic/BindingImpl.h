@@ -23,6 +23,7 @@
 #include "TermImpl.h"
 #include "term/IBinding.h"
 #include "term/ILambda.h"
+#include "Lazy.h"
 #include <memory>
 
 namespace elision {
@@ -42,7 +43,9 @@ public:
 
 	virtual bool has_bind(std::string const& name) const;
 
-	bool is_constant() const;
+	inline bool is_constant() const {
+		return constant_;
+	}
 
 	inline bool is_equal(ITerm const& other) const {
 		auto oth = dynamic_cast<IBinding const*>(&other);
@@ -53,12 +56,16 @@ public:
 		return BINDING;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 private:
 	friend class TermFactoryImpl;
 	BindingImpl(Locus the_loc, map_t* map, pTerm type);
 	std::shared_ptr<map_t> const map_;
+	Lazy<std::string> strval_;
+	Lazy<bool> constant_;
 };
 
 } /* namespace basic */

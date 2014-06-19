@@ -26,6 +26,23 @@ namespace basic {
 
 BindingImpl::BindingImpl(Locus loc, BindingImpl::map_t* map, pTerm type) :
 		TermImpl(loc, type), map_(map) {
+	strval_ = Lazy<std::string>([this]() {
+		std::string ret("{~ ");
+		for (auto elt : *map_) {
+			ret += escape(elt.first, true);
+			ret += "->";
+			ret += elt.second->to_string();
+		} // Add all the binds.
+		ret += " }";
+		return ret;
+	});
+	constant_ = Lazy<bool>([this]() {
+		bool ret = true;
+		for (auto entry : *map_) {
+			ret = ret && entry.second->is_constant();
+		} // Check constancy over all pairs.
+		return ret;
+	});
 }
 
 std::shared_ptr<BindingImpl::map_t>
@@ -47,23 +64,6 @@ BindingImpl::has_bind(std::string const& name) const {
 	} catch (std::out_of_range & e) {
 		return false;
 	}
-}
-
-bool
-BindingImpl::is_constant() const {
-	return true;
-}
-
-std::string
-BindingImpl::to_string() const {
-	std::string ret("{~ ");
-	for (auto elt : *map_) {
-		ret += escape(elt.first, true);
-		ret += "->";
-		ret += elt.second->to_string();
-	} // Add all the binds.
-	ret += " }";
-	return ret;
 }
 
 } /* namespace basic */

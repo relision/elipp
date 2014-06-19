@@ -25,12 +25,15 @@ namespace basic {
 
 ApplyImpl::ApplyImpl(Locus the_loc, pTerm the_operator, pTerm the_argument,
 		pTerm the_type) : TermImpl(the_loc, the_type),
-				operator_(the_operator), argument_(the_argument) {
-}
-
-std::string
-ApplyImpl::to_string() const {
-	return operator_->to_string() + "." + argument_->to_string();
+				operator_(the_operator),
+				argument_(the_argument),
+				constant_([this](){
+					return this->operator_->is_constant() &&
+						this->argument_->is_constant(); }),
+				strval_([this](){
+					return this->operator_->to_string() + "." +
+						this->argument_->to_string(); }) {
+	// Nothing left to do.
 }
 
 } /* namespace basic */
