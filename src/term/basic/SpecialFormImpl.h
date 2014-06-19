@@ -1,9 +1,9 @@
-#ifndef STATICMAPIMPL_H_
-#define STATICMAPIMPL_H_
+#ifndef SPECIALFORMIMPL_H_
+#define SPECIALFORMIMPL_H_
 
 /**
  * @file
- * Define a simple interface to a static map.
+ * Define the interface for an implementation of special forms.
  *
  * @author sprowell@gmail.com
  *
@@ -20,41 +20,38 @@
  * @endverbatim
  */
 
-#include "TermImpl.h"
-#include "term/IStaticMap.h"
+#include <basic/TermImpl.h>
+#include <ISpecialForm.h>
 #include <Lazy.h>
 
 namespace elision {
 namespace term {
 namespace basic {
 
-using namespace elision;
-using namespace elision::term;
-
-class StaticMapImpl: public IStaticMap, public TermImpl {
+class SpecialFormImpl: public ISpecialForm, public TermImpl {
 public:
-	virtual ~StaticMapImpl() = default;
+	virtual ~SpecialFormImpl() = default;
 
-	inline pTerm get_domain() const {
-		return domain_;
+	inline pTerm get_tag() const {
+		return tag_;
 	}
 
-	inline pTerm get_codomain() const {
-		return codomain_;
+	inline pTerm get_content() const {
+		return content_;
 	}
 
 	inline bool is_constant() const {
-		return domain_->is_constant() && codomain_->is_constant();
+		return tag_->is_constant() && content_->is_constant();
 	}
 
 	inline bool is_equal(ITerm const& other) const {
-		auto oth = dynamic_cast<IStaticMap const*>(&other);
-		return *get_domain() == *oth->get_domain() &&
-				*get_codomain() == *oth->get_codomain();
+		auto oth = dynamic_cast<ISpecialForm const*>(&other);
+		return *get_tag() == *oth->get_tag() &&
+				*get_content() == *oth->get_content();
 	}
 
 	inline TermKind get_kind() const {
-		return STATIC_MAP_KIND;
+		return SPECIAL_FORM_KIND;
 	}
 
 	inline std::string to_string() const {
@@ -63,10 +60,10 @@ public:
 
 private:
 	friend class TermFactoryImpl;
-	StaticMapImpl(Locus the_loc, pTerm the_domain, pTerm the_codomain,
+	SpecialFormImpl(Locus the_loc, pTerm the_tag, pTerm the_content,
 			pTerm the_type);
-	pTerm domain_;
-	pTerm codomain_;
+	pTerm tag_;
+	pTerm content_;
 	Lazy<std::string> strval_;
 };
 
@@ -74,4 +71,4 @@ private:
 } /* namespace term */
 } /* namespace elision */
 
-#endif /* STATICMAPIMPL_H_ */
+#endif /* SPECIALFORMIMPL_H_ */

@@ -24,7 +24,7 @@
 #include "LiteralImpl.h"
 #include "MapPairImpl.h"
 //#include "PropertySpecificationImpl.h"
-//#include "SpecialFormImpl.h"
+#include "SpecialFormImpl.h"
 #include "StaticMapImpl.h"
 #include "VariableImpl.h"
 #include "TermFactoryImpl.h"
@@ -66,7 +66,7 @@ public:
 	inline bool is_meta_term() const { return false; }
 	inline Locus get_loc() const { return loc_; }
 	inline bool is_root() const { return true; }
-	inline TermKind get_kind() const { return ROOT; }
+	inline TermKind get_kind() const { return ROOT_KIND; }
 
 protected:
 	inline bool is_equal(ITerm const& other) const {
@@ -106,7 +106,7 @@ TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()) {
 	INIT(ANY);
 	INIT(NONE);
 	INIT(MAP);
-	INIT(SEQ);
+	INIT(SPECIAL_FORM);
 	TRUE = get_boolean_literal(Loc::get_internal(), true, BOOLEAN);
 	FALSE = get_boolean_literal(Loc::get_internal(), false, BOOLEAN);
 }
@@ -179,6 +179,19 @@ TermFactoryImpl::get_boolean_literal(
 	return MAKE(BooleanLiteral, value, type);
 }
 
+pTermLiteral
+TermFactoryImpl::get_term_literal(
+		Locus loc, pTerm term) const {
+	NOTNULL(loc);
+	NOTNULL(term);
+
+	// Keep this around.
+	static pTerm TERM =
+			get_symbol_literal(Loc::get_internal(), "TERM", SYMBOL);
+	return MAKE(TermLiteral, term,
+			get_special_form(Loc::get_internal(), TERM, term->get_type()));
+}
+
 pVariable
 TermFactoryImpl::get_variable(
 		Locus loc, std::string name, pTerm guard, pTerm type) const {
@@ -234,15 +247,29 @@ TermFactoryImpl::get_lambda(
 	return MAKE(Lambda, parameter, body, type);
 }
 
+pSpecialForm
+TermFactoryImpl::get_special_form(Locus loc, pTerm tag, pTerm content) const {
+	NOTNULL(loc);
+	NOTNULL(tag);
+	NOTNULL(content);
+	return MAKE(SpecialForm, tag, content, SPECIAL_FORM);
+}
+
 pList
 TermFactoryImpl::get_list(Locus loc, pPropertySpecification spec,
 		std::vector<pTerm>& elements) const {
 	NOTNULL(loc);
 	NOTNULL(spec);
 
+	// Keep this around.
+	static pSymbolLiteral LIST =
+			get_symbol_literal(Loc::get_internal(), "LIST", SYMBOL);
+
 	// The real type for the list is deduced from the element specification in
 	// the property specification.
-	return MAKE(List, spec, elements, SEQ);
+	pTerm element_type = spec->get_membership().get_value_or(ANY);
+	pTerm the_type = get_special_form(loc, LIST, element_type);
+	return MAKE(List, spec, elements, the_type);
 }
 
 pTerm
@@ -253,7 +280,7 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 
 	// Decide what to do based on the operator's kind.
 	switch (op->get_kind()) {
-	case LAMBDA: {
+	case LAMBDA_KIND: {
 		// Applying a lambda "curries" the lambda.
 		auto lambda = std::dynamic_pointer_cast<ILambda const>(op);
 
@@ -275,14 +302,14 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 		break;
 	}
 
-	case BINDING: {
+	case BINDING_KIND: {
 		// Applying a binding replaces bound variables with their bound terms.
 		auto binding = std::dynamic_pointer_cast<IBinding const>(op);
 //		return argument->rewrite(binding);
 		break;
 	}
 
-	case MAP_PAIR: {
+	case MAP_PAIR_KIND: {
 		// Applying a map pair matches the pattern, checks the guard, and then
 		// yields any replacement.
 //		auto map_pair = std::dynamic_pointer_cast<IMapPair const>(op);
@@ -301,7 +328,7 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 		break;
 	}
 
-	case LIST: {
+	case LIST_KIND: {
 		// Applying a list concatenates lists.
 //		if (argument.get_kind() == LIST) {
 //			auto first = std::dynamic_pointer_cast<IList const>(op);
@@ -311,7 +338,7 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 		break;
 	}
 
-	case PROPERTY_SPECIFICATION: {
+	case PROPERTY_SPECIFICATION_KIND: {
 		// Applying a property specification merges property specifications
 		// and modifies lists.
 //		if (argument.get_kind() == LIST) {
@@ -323,7 +350,7 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 		break;
 	}
 
-	case SPECIAL_FORM: {
+	case SPECIAL_FORM_KIND: {
 		// Applying a special form may do several things, depending on the tag.
 		break;
 	}

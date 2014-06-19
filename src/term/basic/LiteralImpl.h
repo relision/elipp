@@ -34,11 +34,11 @@ using namespace elision::term;
 
 class SymbolLiteralImpl : public ISymbolLiteral, public TermImpl {
 public:
-	inline virtual std::string const get_name() const {
+	inline std::string const get_name() const {
 		return name_;
 	}
 
-	inline virtual bool is_constant() const {
+	inline bool is_constant() const {
 		return true;
 	}
 
@@ -52,7 +52,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return SYMBOL_LITERAL;
+		return SYMBOL_LITERAL_KIND;
 	}
 
 private:
@@ -65,11 +65,11 @@ private:
 
 class StringLiteralImpl : public IStringLiteral, public TermImpl {
 public:
-	inline virtual std::string const get_value() const {
+	inline std::string const get_value() const {
 		return value_;
 	}
 
-	inline virtual bool is_constant() const {
+	inline bool is_constant() const {
 		return true;
 	}
 
@@ -83,7 +83,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return STRING_LITERAL;
+		return STRING_LITERAL_KIND;
 	}
 
 private:
@@ -96,11 +96,11 @@ private:
 
 class IntegerLiteralImpl : public IIntegerLiteral, public TermImpl {
 public:
-	inline virtual eint_t get_value() const {
+	inline eint_t get_value() const {
 		return value_;
 	}
 
-	inline virtual bool is_constant() const {
+	inline bool is_constant() const {
 		return true;
 	}
 
@@ -114,7 +114,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return INTEGER_LITERAL;
+		return INTEGER_LITERAL_KIND;
 	}
 
 private:
@@ -127,19 +127,19 @@ private:
 
 class FloatLiteralImpl : public IFloatLiteral, public TermImpl {
 public:
-	inline virtual eint_t get_significand() const {
+	inline eint_t get_significand() const {
 		return significand_;
 	}
 
-	inline virtual eint_t get_exponent() const {
+	inline eint_t get_exponent() const {
 		return exponent_;
 	}
 
-	inline virtual uint8_t get_radix() const {
+	inline uint8_t get_radix() const {
 		return radix_;
 	}
 
-	inline virtual bool is_constant() const {
+	inline bool is_constant() const {
 		return true;
 	}
 
@@ -156,7 +156,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return FLOAT_LITERAL;
+		return FLOAT_LITERAL_KIND;
 	}
 
 private:
@@ -172,15 +172,15 @@ private:
 
 class BitStringLiteralImpl : public IBitStringLiteral, public TermImpl {
 public:
-	inline virtual eint_t get_bits() const {
+	inline eint_t get_bits() const {
 		return bits_;
 	}
 
-	inline virtual eint_t get_length() const {
+	inline eint_t get_length() const {
 		return length_;
 	}
 
-	inline virtual bool is_constant() const {
+	inline bool is_constant() const {
 		return true;
 	}
 
@@ -195,7 +195,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return BIT_STRING_LITERAL;
+		return BIT_STRING_LITERAL_KIND;
 	}
 
 private:
@@ -210,11 +210,11 @@ private:
 
 class BooleanLiteralImpl : public IBooleanLiteral, public TermImpl {
 public:
-	inline virtual bool get_value() const {
+	inline bool get_value() const {
 		return value_;
 	}
 
-	inline virtual bool is_constant() const {
+	inline bool is_constant() const {
 		return true;
 	}
 
@@ -228,13 +228,44 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return BOOLEAN_LITERAL;
+		return BOOLEAN_LITERAL_KIND;
 	}
 
 private:
 	friend class TermFactoryImpl;
 	BooleanLiteralImpl(Locus the_loc, bool value, pTerm the_type);
 	bool const value_;
+	Lazy<std::string> strval_;
+};
+
+
+class TermLiteralImpl : public ITermLiteral, public TermImpl {
+public:
+	inline pTerm get_term() const {
+		return term_;
+	}
+
+	inline bool is_constant() const {
+		return true;
+	}
+
+	inline std::string to_string() const {
+		return strval_;
+	}
+
+	inline bool is_equal(ITerm const& other) const {
+		auto oth = dynamic_cast<TermLiteralImpl const&>(other);
+		return get_term() == oth.get_term();
+	}
+
+	inline TermKind get_kind() const {
+		return TERM_LITERAL_KIND;
+	}
+
+private:
+	friend class TermFactoryImpl;
+	TermLiteralImpl(Locus the_loc, pTerm the_term, pTerm the_type);
+	pTerm term_;
 	Lazy<std::string> strval_;
 };
 

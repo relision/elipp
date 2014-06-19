@@ -53,7 +53,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return BINDING;
+		return BINDING_KIND;
 	}
 
 	inline std::string to_string() const {

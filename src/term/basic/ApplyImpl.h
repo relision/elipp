@@ -54,7 +54,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return APPLY;
+		return APPLY_KIND;
 	}
 
 	virtual std::string to_string() const {

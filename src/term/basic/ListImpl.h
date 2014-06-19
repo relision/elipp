@@ -61,7 +61,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return LIST;
+		return LIST_KIND;
 	}
 
 	virtual std::string to_string() const {

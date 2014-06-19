@@ -62,6 +62,8 @@ public:
 			Locus loc, eint_t bits, eint_t length, pTerm type) const;
 	virtual pBooleanLiteral get_boolean_literal(
 			Locus loc, bool value, pTerm type) const;
+	virtual pTermLiteral get_term_literal(
+			Locus loc, pTerm term) const;
 
 	virtual pVariable get_variable(Locus loc, std::string name, pTerm guard,
 			pTerm type) const;
@@ -76,6 +78,9 @@ public:
 
 	virtual pLambda get_lambda(Locus loc, pVariable parameter,
 			pTerm body) const;
+
+	virtual pSpecialForm get_special_form(Locus loc, pTerm tag,
+			pTerm content) const;
 
 	virtual pList get_list(Locus loc, pPropertySpecification spec,
 			std::vector<pTerm>& elements) const;

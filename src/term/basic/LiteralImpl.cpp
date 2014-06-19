@@ -107,6 +107,17 @@ BooleanLiteralImpl::BooleanLiteralImpl(Locus the_loc, bool the_value,
 	};
 }
 
+//======================================================================
+// Term literal.
+//======================================================================
+
+TermLiteralImpl::TermLiteralImpl(Locus the_loc, pTerm the_term,
+		pTerm the_type) : TermImpl(the_loc, the_type), term_(the_term) {
+	strval_ = [this]() {
+		return "<" + term_->to_string() + ">";
+	};
+}
+
 } /* namespace basic */
 } /* namespace term */
 } /* namespace elision */

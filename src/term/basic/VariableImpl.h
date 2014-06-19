@@ -58,7 +58,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return VARIABLE;
+		return VARIABLE_KIND;
 	}
 
 private:
@@ -93,7 +93,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return TERM_VARIABLE;
+		return TERM_VARIABLE_KIND;
 	}
 
 private:

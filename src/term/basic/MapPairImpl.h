@@ -60,7 +60,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return MAP_PAIR;
+		return MAP_PAIR_KIND;
 	}
 
 	inline std::string to_string() const {

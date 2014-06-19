@@ -44,7 +44,7 @@ public:
 	 */
 	virtual pTerm get_argument() const = 0;
 
-	TermKind my_kind = APPLY;
+	TermKind my_kind = APPLY_KIND;
 };
 
 /// Shorthand for an apply pointer.

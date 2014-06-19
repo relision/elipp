@@ -34,7 +34,7 @@ TermModifier::substitute(std::unordered_map<std::string, pTerm>& map,
 	// Define the closure that instantiates variables as they are found.
 	auto closure = [map](pTerm term) -> pTerm {
 		switch (term->get_kind()) {
-		case VARIABLE: {
+		case VARIABLE_KIND: {
 			// See if this is a variable that can be replaced right now.  If so, we
 			// are done.  We don't need to consider the type, because we are going
 			// to get that from the replacement.
@@ -47,7 +47,7 @@ TermModifier::substitute(std::unordered_map<std::string, pTerm>& map,
 			break;
 		}
 
-		case TERM_VARIABLE: {
+		case TERM_VARIABLE_KIND: {
 			// See if this term variable can be replaced right now.  If so,
 			// then we have to construct a term literal, but in any case we
 			// are done.
@@ -93,7 +93,7 @@ TermModifier::rebuild(pTerm target,
 	// Now compute over the children and - if necessary - rebuild the
 	// term.
 	switch (target->get_kind()) {
-	case SYMBOL_LITERAL: {
+	case SYMBOL_LITERAL_KIND: {
 		pSymbolLiteral lit = CAST(SymbolLiteral, target);
 		if (changed) {
 			return fact_->get_symbol_literal(lit->get_loc(),
@@ -102,7 +102,7 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case STRING_LITERAL: {
+	case STRING_LITERAL_KIND: {
 		pStringLiteral lit = CAST(StringLiteral, target);
 		if (changed) {
 			return fact_->get_string_literal(lit->get_loc(),
@@ -111,7 +111,7 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case INTEGER_LITERAL: {
+	case INTEGER_LITERAL_KIND: {
 		pIntegerLiteral lit = CAST(IntegerLiteral, target);
 		if (changed) {
 			return fact_->get_integer_literal(lit->get_loc(),
@@ -120,7 +120,7 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case FLOAT_LITERAL: {
+	case FLOAT_LITERAL_KIND: {
 		pFloatLiteral lit = CAST(FloatLiteral, target);
 		if (changed) {
 			return fact_->get_float_literal(lit->get_loc(),
@@ -130,7 +130,7 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case BIT_STRING_LITERAL: {
+	case BIT_STRING_LITERAL_KIND: {
 		pBitStringLiteral lit = CAST(BitStringLiteral, target);
 		if (changed) {
 			return fact_->get_bit_string_literal(lit->get_loc(),
@@ -139,7 +139,7 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case BOOLEAN_LITERAL: {
+	case BOOLEAN_LITERAL_KIND: {
 		pBooleanLiteral lit = CAST(BooleanLiteral, target);
 		if (changed) {
 			return fact_->get_boolean_literal(lit->get_loc(),
@@ -148,13 +148,13 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case TERM_LITERAL: {
+	case TERM_LITERAL_KIND: {
 		pTermLiteral lit = CAST(TermLiteral, target);
 		// TODO Implement this.
 		break;
 	}
 
-	case VARIABLE: {
+	case VARIABLE_KIND: {
 		pVariable var = CAST(Variable, target);
 		pTerm guard = var->get_guard();
 		pTerm new_guard = rebuild(guard, closure);
@@ -165,7 +165,7 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case TERM_VARIABLE: {
+	case TERM_VARIABLE_KIND: {
 		pTermVariable var = CAST(TermVariable, target);
 		if (changed) {
 			return fact_->get_term_variable(var->get_loc(),
@@ -174,13 +174,13 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case BINDING: {
+	case BINDING_KIND: {
 		pBinding bind = CAST(Binding, target);
 		// TODO Implement this.
 		break;
 	}
 
-	case LAMBDA: {
+	case LAMBDA_KIND: {
 		pLambda lambda = CAST(Lambda, target);
 		pVariable par = lambda->get_parameter();
 		pTerm body = lambda->get_body();
@@ -193,7 +193,7 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case MAP_PAIR: {
+	case MAP_PAIR_KIND: {
 		pMapPair mp = CAST(MapPair, target);
 		pTerm lhs = mp->get_lhs();
 		pTerm rhs = mp->get_rhs();
@@ -208,25 +208,25 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case LIST: {
+	case LIST_KIND: {
 		pList list = CAST(List, target);
 		// TODO Implement this.
 		break;
 	}
 
-	case PROPERTY_SPECIFICATION: {
+	case PROPERTY_SPECIFICATION_KIND: {
 		pPropertySpecification spec = CAST(PropertySpecification, target);
 		// TODO Implement this.
 		break;
 	}
 
-	case SPECIAL_FORM: {
+	case SPECIAL_FORM_KIND: {
 		pSpecialForm sf = CAST(SpecialForm, target);
 		// TODO Implement this.
 		break;
 	}
 
-	case APPLY: {
+	case APPLY_KIND: {
 		pApply apply = CAST(Apply, target);
 		pTerm op = apply->get_operator();
 		pTerm arg = apply->get_argument();
@@ -238,7 +238,7 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case STATIC_MAP: {
+	case STATIC_MAP_KIND: {
 		pStaticMap map = CAST(StaticMap, target);
 		pTerm domain = map->get_domain();
 		pTerm codomain = map->get_codomain();
@@ -250,7 +250,7 @@ TermModifier::rebuild(pTerm target,
 		break;
 	}
 
-	case ROOT:
+	case ROOT_KIND:
 	default:
 		break;
 	} // Switch on kind.

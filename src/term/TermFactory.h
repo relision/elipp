@@ -81,7 +81,7 @@ public:
 	pSymbolLiteral ANY;			//< The wildcard.
 	pSymbolLiteral NONE;		//< Match nothing.
 	pSymbolLiteral MAP;			//< Simple access to the type for map pairs.
-	pSymbolLiteral SEQ;			//< Type for lists.
+	pSymbolLiteral SPECIAL_FORM;//< Simple access to the special form type.
 
 	//======================================================================
 	// Well-known literals.
@@ -196,6 +196,13 @@ public:
 
 	virtual pLambda get_lambda(Locus loc, pVariable parameter,
 			pTerm body) const = 0;
+
+	//======================================================================
+	// Make special forms.
+	//======================================================================
+
+	virtual pSpecialForm get_special_form(Locus loc, pTerm tag,
+			pTerm content) const = 0;
 
 	//======================================================================
 	// Make lists.

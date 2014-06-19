@@ -20,9 +20,9 @@
  * @endverbatim
  */
 
-#include "TermImpl.h"
-#include "term/ILambda.h"
-#include "Lazy.h"
+#include <basic/TermImpl.h>
+#include <ILambda.h>
+#include <Lazy.h>
 
 namespace elision {
 namespace term {
@@ -54,7 +54,7 @@ public:
 	}
 
 	inline TermKind get_kind() const {
-		return LAMBDA;
+		return LAMBDA_KIND;
 	}
 
 	inline std::string to_string() const {
