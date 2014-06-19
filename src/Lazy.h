@@ -3,7 +3,7 @@
 
 /**
  * @file
- * TODO: Describe purpose of file.
+ * Provide the ability to store a lazily-computed value.
  *
  * @author sprowell@gmail.com
  *
@@ -35,11 +35,11 @@ namespace elision {
  * To use this make an instance and pass the computation (or value).  This can
  * be a lambda.  The following is an example.
  *
- * ```cpp
+ * ~~~{.cpp}
  * auto val = Lazy<std::string>([](){
  *   return x->to_string() + "." + y->to_string();
  * })
- * ```
+ * ~~~
  *
  * Here the string computational cost (and the space required by the string)
  * are not used until the string is required.  This can happen in three ways.
@@ -61,7 +61,7 @@ public:
 	 * the value of the resulting instance (before assigning to it, for
 	 * example) results in a `runtime_error`.
 	 */
-	Lazy() : evaluator_([](){
+	Lazy() : evaluator_([]()->T {
 		throw std::runtime_error("Lazy value not set.");
 	}), have_value_(false) {
 		// Nothing to see here.
@@ -111,6 +111,38 @@ public:
 	}
 
 	/**
+	 * Get the value stored, and force its computation if necessary.
+	 * @return	The stored value.
+	 */
+	T& get() const {
+		if (!have_value_) {
+			value_ = evaluator_();
+			have_value_ = true;
+		}
+		return value_;
+	}
+
+	/**
+	 * Get the value stored, and force its computation if necessary.  This
+	 * allows it to be used where the end type is expected - so it is
+	 * computed implicitly.
+	 * @return	The stored value.
+	 */
+	operator T() const {
+		return get();
+	}
+
+	/**
+	 * Get the value stored, and force its computation if necessary.  This
+	 * allows it to be used via the usual dereference - so it is computed
+	 * implicitly.
+	 * @return	The stored value.
+	 */
+	T& operator*() const {
+		return get();
+	}
+
+	/**
 	 * Handle assignment to this lazy value.  This, combined with the
 	 * no-argument constructor, allows for reasonable use of this as a
 	 * object member.  The provided value is copied into this value, but
@@ -118,7 +150,7 @@ public:
 	 * @param	other	The other lazy value we are copying.
 	 * @return	This instance.
 	 */
-	Lazy<T>& operator=(const Lazy<T>& other) {
+	Lazy<T>& operator=(Lazy<T> const& other) {
 		evaluator_ = other.evaluator_;
 		have_value_ = false;
 		return *this;
@@ -126,8 +158,8 @@ public:
 
 private:
 	std::function<T()> evaluator_;
-	T value_;
-	bool have_value_;
+	mutable T value_;
+	mutable bool have_value_;
 };
 
 } /* namespace elision */
