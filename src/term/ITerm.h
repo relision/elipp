@@ -149,6 +149,18 @@ public:
 	virtual bool is_root() const = 0;
 
 	/**
+	 * Determine if this term is the literal true value.
+	 * @return	True if this term is the special literal true value.
+	 */
+	virtual bool is_true() const = 0;
+
+	/**
+	 * Determine if this term is the literal false value.
+	 * @return	True if this term is the special literal false value.
+	 */
+	virtual bool is_false() const = 0;
+
+	/**
 	 * Get the kind for this term.
 	 * @return	The term kind.
 	 */

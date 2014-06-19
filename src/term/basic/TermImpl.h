@@ -91,6 +91,16 @@ public:
 		return false;
 	}
 
+	/// Return whether this is the special true literal.  Default is NO.
+	inline virtual bool is_true() const {
+		return false;
+	}
+
+	/// Return whether this is the special false literal.  Default is NO.
+	inline virtual bool is_false() const {
+		return false;
+	}
+
 	/**
 	 * Compare this instance to another instance of the same class.  To
 	 * implement this make sure you first cast `other` to the correct class.

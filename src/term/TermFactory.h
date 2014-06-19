@@ -27,6 +27,7 @@
 #include "ILiteral.h"
 #include "IMapPair.h"
 #include "IPropertySpecification.h"
+#include "IPropertySpecificationBuilder.h"
 #include "ISpecialForm.h"
 #include "IStaticMap.h"
 #include "IVariable.h"
@@ -82,6 +83,7 @@ public:
 	pSymbolLiteral NONE;		//< Match nothing.
 	pSymbolLiteral MAP;			//< Simple access to the type for map pairs.
 	pSymbolLiteral SPECIAL_FORM;//< Simple access to the special form type.
+	pSymbolLiteral PROPERTIES;	//< Simple access to the type for property specs.
 
 	//======================================================================
 	// Well-known literals.
@@ -216,6 +218,18 @@ public:
 	//======================================================================
 
 	virtual pTerm apply(Locus loc, pTerm op, pTerm arg) const = 0;
+
+	//======================================================================
+	// Build property specifications.
+	//======================================================================
+
+	/**
+	 * Get a property specification builder instance to construct property
+	 * specifications.
+	 * @return	A new property specification builder.
+	 */
+	virtual std::unique_ptr<IPropertySpecificationBuilder>
+	get_property_specification_builder() const = 0;
 };
 
 } /* namespace term */

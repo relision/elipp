@@ -23,11 +23,13 @@
 #include "ListImpl.h"
 #include "LiteralImpl.h"
 #include "MapPairImpl.h"
-//#include "PropertySpecificationImpl.h"
+#include "PropertySpecificationImpl.h"
+#include "PropertySpecificationBuilderImpl.h"
 #include "SpecialFormImpl.h"
 #include "StaticMapImpl.h"
 #include "VariableImpl.h"
 #include "TermFactoryImpl.h"
+#include <memory>
 
 namespace elision {
 namespace term {
@@ -66,6 +68,8 @@ public:
 	inline bool is_meta_term() const { return false; }
 	inline Locus get_loc() const { return loc_; }
 	inline bool is_root() const { return true; }
+	inline bool is_true() const { return false; }
+	inline bool is_false() const { return false; }
 	inline TermKind get_kind() const { return ROOT_KIND; }
 
 protected:
@@ -107,6 +111,7 @@ TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()) {
 	INIT(NONE);
 	INIT(MAP);
 	INIT(SPECIAL_FORM);
+	INIT(PROPERTIES);
 	TRUE = get_boolean_literal(Loc::get_internal(), true, BOOLEAN);
 	FALSE = get_boolean_literal(Loc::get_internal(), false, BOOLEAN);
 }
@@ -267,7 +272,9 @@ TermFactoryImpl::get_list(Locus loc, pPropertySpecification spec,
 
 	// The real type for the list is deduced from the element specification in
 	// the property specification.
-	pTerm element_type = spec->get_membership().get_value_or(ANY);
+	boost::optional<pTerm> membership = spec->get_membership();
+	// The method get_value_or causes pain right now, so we avoid it.
+	pTerm element_type = membership ? membership.get() : ANY;
 	pTerm the_type = get_special_form(loc, LIST, element_type);
 	return MAKE(List, spec, elements, the_type);
 }
@@ -362,6 +369,13 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 
 	// No special handling.
 	return MAKE(Apply, op, arg, MAP);
+}
+
+std::unique_ptr<IPropertySpecificationBuilder>
+TermFactoryImpl::get_property_specification_builder() const {
+	// Make a new instance and return it.
+	return std::unique_ptr<IPropertySpecificationBuilder>(
+			new PropertySpecificationBuilderImpl(TRUE, FALSE, PROPERTIES));
 }
 
 } /* namespace basic */

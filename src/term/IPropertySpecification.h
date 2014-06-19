@@ -70,19 +70,19 @@ public:
 	 * Get any associativity specification.
 	 * @return	The associativity specification.
 	 */
-	virtual boost::optional<bool> get_associative() const = 0;
+	virtual boost::optional<pTerm> get_associative() const = 0;
 
 	/**
 	 * Get any commutativity specification.
 	 * @return	The commutativity specification.
 	 */
-	virtual boost::optional<bool> get_commutative() const = 0;
+	virtual boost::optional<pTerm> get_commutative() const = 0;
 
 	/**
 	 * Get any idempotency specification.
 	 * @return	The idempotency specification.
 	 */
-	virtual boost::optional<bool> get_idempotent() const = 0;
+	virtual boost::optional<pTerm> get_idempotent() const = 0;
 
 	/**
 	 * Get any absorber specification.
@@ -121,7 +121,7 @@ public:
 	 * constant, return it.  If it is not, return the default.
 	 * @return	The associativity, or the provided default.
 	 */
-	virtual bool check_identity(bool def) const = 0;
+	virtual bool check_idempotent(bool def) const = 0;
 
 	/**
 	 * Determine if an absorber is specified.

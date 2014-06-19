@@ -231,6 +231,14 @@ public:
 		return BOOLEAN_LITERAL_KIND;
 	}
 
+	inline bool is_true() const {
+		return value_;
+	}
+
+	inline bool is_false() const {
+		return !value_;
+	}
+
 private:
 	friend class TermFactoryImpl;
 	BooleanLiteralImpl(Locus the_loc, bool value, pTerm the_type);

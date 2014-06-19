@@ -87,6 +87,9 @@ public:
 
 	virtual pTerm apply(Locus loc, pTerm op, pTerm arg) const;
 
+	virtual std::unique_ptr<IPropertySpecificationBuilder>
+	get_property_specification_builder() const;
+
 private:
 	pTerm root_;
 	mutable std::unordered_map<std::string, pSymbolLiteral> known_roots_;
