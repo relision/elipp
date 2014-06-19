@@ -26,12 +26,10 @@ namespace basic {
 MapPairImpl::MapPairImpl(Locus the_loc, pTerm the_lhs, pTerm the_rhs,
 		pTerm the_guard, pTerm the_type) : TermImpl(the_loc, the_type),
 				lhs_(the_lhs), rhs_(the_rhs), guard_(the_guard) {
-}
-
-std::string
-MapPairImpl::to_string() const {
-	return lhs_->to_string() + " ->{ " + guard_->to_string() + " } " +
-			rhs_->to_string();
+	strval_ = [this]() {
+		return lhs_->to_string() + " ->{ " + guard_->to_string() + " } " +
+				rhs_->to_string();
+	};
 }
 
 } /* namespace basic */

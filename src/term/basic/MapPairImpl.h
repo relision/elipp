@@ -22,6 +22,7 @@
 
 #include "TermImpl.h"
 #include "term/IMapPair.h"
+#include <Lazy.h>
 
 namespace elision {
 namespace term {
@@ -62,7 +63,9 @@ public:
 		return MAP_PAIR;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 private:
 	friend class TermFactoryImpl;
@@ -71,6 +74,7 @@ private:
 	pTerm lhs_;
 	pTerm rhs_;
 	pTerm guard_;
+	Lazy<std::string> strval_;
 };
 
 } /* namespace basic */

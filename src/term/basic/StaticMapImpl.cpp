@@ -26,11 +26,9 @@ namespace basic {
 StaticMapImpl::StaticMapImpl(Locus the_loc, pTerm the_domain,
 		pTerm the_codomain, pTerm the_type) : TermImpl(the_loc, the_type),
 				domain_(the_domain), codomain_(the_codomain) {
-}
-
-std::string
-StaticMapImpl::to_string() const {
-	return domain_->to_string() + "=>" + codomain_->to_string();
+	strval_ = [this]() {
+		return domain_->to_string() + "=>" + codomain_->to_string();
+	};
 }
 
 } /* namespace basic */

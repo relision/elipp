@@ -22,6 +22,7 @@
 
 #include "TermImpl.h"
 #include "term/IStaticMap.h"
+#include <Lazy.h>
 
 namespace elision {
 namespace term {
@@ -56,7 +57,9 @@ public:
 		return STATIC_MAP;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 private:
 	friend class TermFactoryImpl;
@@ -64,6 +67,7 @@ private:
 			pTerm the_type);
 	pTerm domain_;
 	pTerm codomain_;
+	Lazy<std::string> strval_;
 };
 
 } /* namespace basic */

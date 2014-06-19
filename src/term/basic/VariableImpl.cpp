@@ -26,24 +26,20 @@ namespace basic {
 VariableImpl::VariableImpl(Locus the_loc, std::string the_name,
 		pTerm the_guard, pTerm the_type) : TermImpl(the_loc, the_type),
 				name_(the_name), guard_(the_guard) {
-}
-
-std::string
-VariableImpl::to_string() const {
-	return std::string("$") + elision::escape(name_, true) +
-			"{ " + guard_->to_string() + " }" +
-			WITH_TYPE(type_);
+	strval_ = [this]() {
+		return std::string("$") + elision::escape(name_, true) +
+				"{ " + guard_->to_string() + " }" +
+				WITH_TYPE(type_);
+	};
 }
 
 TermVariableImpl::TermVariableImpl(Locus the_loc, std::string the_name,
 		pTerm the_type) : TermImpl(the_loc, the_type),
 				name_(the_name) {
-}
-
-std::string
-TermVariableImpl::to_string() const {
-	return std::string("$") + elision::escape(name_, true) +
-			WITH_TYPE(type_);
+	strval_ = [this]() {
+		return std::string("$") + elision::escape(name_, true) +
+				WITH_TYPE(type_);
+	};
 }
 
 } /* namespace basic */

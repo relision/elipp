@@ -22,6 +22,7 @@
 
 #include "TermImpl.h"
 #include "term/IVariable.h"
+#include <Lazy.h>
 
 namespace elision {
 namespace term {
@@ -46,7 +47,9 @@ public:
 		return false;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 	inline bool is_equal(ITerm const& other) const {
 		auto oth = dynamic_cast<IVariable const*>(&other);
@@ -64,6 +67,7 @@ private:
 			pTerm the_type);
 	std::string const name_;
 	pTerm guard_;
+	Lazy<std::string> strval_;
 };
 
 
@@ -79,7 +83,9 @@ public:
 		return false;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 	inline bool is_equal(ITerm const& other) const {
 		auto oth = dynamic_cast<ITermVariable const*>(&other);
@@ -94,6 +100,7 @@ private:
 	friend class TermFactoryImpl;
 	TermVariableImpl(Locus the_loc, std::string the_name, pTerm the_type);
 	std::string const name_;
+	Lazy<std::string> strval_;
 };
 
 } /* namespace basic */

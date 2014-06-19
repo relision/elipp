@@ -22,6 +22,7 @@
 
 #include "TermImpl.h"
 #include "term/ILiteral.h"
+#include <Lazy.h>
 
 namespace elision {
 namespace term {
@@ -41,7 +42,9 @@ public:
 		return true;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 	inline bool is_equal(ITerm const& other) const {
 		auto oth = dynamic_cast<SymbolLiteralImpl const&>(other);
@@ -56,6 +59,7 @@ private:
 	friend class TermFactoryImpl;
 	SymbolLiteralImpl(Locus the_loc, std::string the_name, pTerm the_type);
 	std::string const name_;
+	Lazy<std::string> strval_;
 };
 
 
@@ -69,7 +73,9 @@ public:
 		return true;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 	inline bool is_equal(ITerm const& other) const {
 		auto oth = dynamic_cast<StringLiteralImpl const&>(other);
@@ -84,6 +90,7 @@ private:
 	friend class TermFactoryImpl;
 	StringLiteralImpl(Locus the_loc, std::string the_value, pTerm the_type);
 	std::string const value_;
+	Lazy<std::string> strval_;
 };
 
 
@@ -97,7 +104,9 @@ public:
 		return true;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 	inline bool is_equal(ITerm const& other) const {
 		auto oth = dynamic_cast<IntegerLiteralImpl const&>(other);
@@ -112,6 +121,7 @@ private:
 	friend class TermFactoryImpl;
 	IntegerLiteralImpl(Locus the_loc, eint_t the_value, pTerm the_type);
 	eint_t const value_;
+	Lazy<std::string> strval_;
 };
 
 
@@ -133,7 +143,9 @@ public:
 		return true;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 	inline bool is_equal(ITerm const& other) const {
 		// TODO Really should check the computed values somehow.
@@ -154,6 +166,7 @@ private:
 	eint_t const significand_;
 	eint_t const exponent_;
 	uint8_t const radix_;
+	Lazy<std::string> strval_;
 };
 
 
@@ -171,7 +184,9 @@ public:
 		return true;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 	inline bool is_equal(ITerm const& other) const {
 		auto oth = dynamic_cast<BitStringLiteralImpl const&>(other);
@@ -189,6 +204,7 @@ private:
 			pTerm the_type);
 	eint_t const bits_;
 	eint_t const length_;
+	Lazy<std::string> strval_;
 };
 
 
@@ -202,7 +218,9 @@ public:
 		return true;
 	}
 
-	virtual std::string to_string() const;
+	inline std::string to_string() const {
+		return strval_;
+	}
 
 	inline bool is_equal(ITerm const& other) const {
 		auto oth = dynamic_cast<BooleanLiteralImpl const&>(other);
@@ -217,6 +235,7 @@ private:
 	friend class TermFactoryImpl;
 	BooleanLiteralImpl(Locus the_loc, bool value, pTerm the_type);
 	bool const value_;
+	Lazy<std::string> strval_;
 };
 
 } /* namespace basic */
