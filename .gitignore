@@ -11,3 +11,4 @@ Debug
 Testing
 CTestTestfile.cmake
 *_tst
+test/iprofiler
