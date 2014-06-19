@@ -156,6 +156,20 @@ public:
 		return *this;
 	}
 
+	/**
+	 * Handle assignment to this lazy value.  This, combined with the
+	 * no-argument constructor, allows for reasonable use of this as a
+	 * object member.  The provided value is copied into this value, but
+	 * no computation is performed, and the value remains lazy.
+	 * @param	evaluator	A closure that generates the value.
+	 * @return	This instance.
+	 */
+	Lazy<T>& operator=(std::function<T()> evaluator) {
+		evaluator_ = evaluator;
+		have_value_ = false;
+		return *this;
+	}
+
 private:
 	std::function<T()> evaluator_;
 	mutable T value_;

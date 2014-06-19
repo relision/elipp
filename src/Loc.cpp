@@ -35,7 +35,7 @@ Loc::Loc(const std::string& source, unsigned int line, unsigned int column)
     pimpl_->source_ = source;
     pimpl_->line_ = line;
     pimpl_->column_ = column;
-    pimpl_->strval_ = Lazy<std::string>([this]() {
+    pimpl_->strval_ = [this]() {
         std::ostringstream str;
         if (this->pimpl_->source_.length() > 0) {
             str << this->pimpl_->source_ << ":"
@@ -44,14 +44,14 @@ Loc::Loc(const std::string& source, unsigned int line, unsigned int column)
         }
         std::string ret = str.str();
         return ret;
-    });
+    };
 }
 
 Loc::Loc(unsigned int line, unsigned int column) :pimpl_(new Impl) {
     pimpl_->source_ = "(console)";
     pimpl_->line_ = line;
     pimpl_->column_ = column;
-    pimpl_->strval_ = Lazy<std::string>([this]() {
+    pimpl_->strval_ = [this]() {
         std::ostringstream str;
         if (this->pimpl_->source_.length() > 0) {
             str << this->pimpl_->source_ << ":"
@@ -60,14 +60,14 @@ Loc::Loc(unsigned int line, unsigned int column) :pimpl_(new Impl) {
         }
         std::string ret = str.str();
         return ret;
-    });
+    };
 }
 
 Loc::Loc(Loc const& loc) {
     pimpl_->source_ = loc.pimpl_->source_;
     pimpl_->line_ = loc.pimpl_->line_;
     pimpl_->column_ = loc.pimpl_->column_;
-    pimpl_->strval_ = Lazy<std::string>([this]() {
+    pimpl_->strval_ = [this]() {
         std::ostringstream str;
         if (this->pimpl_->source_.length() > 0) {
             str << this->pimpl_->source_ << ":"
@@ -76,7 +76,7 @@ Loc::Loc(Loc const& loc) {
         }
         std::string ret = str.str();
         return ret;
-    });
+    };
 }
 
 Loc::~Loc() {}

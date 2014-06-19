@@ -25,12 +25,11 @@ namespace basic {
 
 LambdaImpl::LambdaImpl(Locus the_loc, pVariable the_parameter, pTerm the_body,
 		pTerm the_type) : TermImpl(the_loc, the_type),
-				parameter_(the_parameter), body_(the_body),
-				strval_([this](){
-					return "\\" + parameter_->to_string() + "." +
-							body_->to_string();
-				}){
-	// Nothing left to do.
+				parameter_(the_parameter), body_(the_body) {
+	strval_ = [this]() {
+		return "\\" + parameter_->to_string() + "." +
+				body_->to_string();
+	};
 }
 
 } /* namespace basic */

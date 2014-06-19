@@ -27,16 +27,21 @@ ListImpl::ListImpl(Locus the_loc, pPropertySpecification the_spec,
 		std::vector<pTerm>& the_elements, pTerm the_type) :
 			TermImpl(the_loc, the_type), properties_(the_spec),
 			elements_(the_elements) {
-}
-
-std::string
-ListImpl::to_string() const {
-	bool first = true;
-	std::string res = properties_->to_string() + "(";
-	for (auto i : elements_) {
-		res += (first ? "" : ", ") + i.get()->to_string();
-	} // Add all elements.
-	return res + ")";
+	strval_ = [this]() {
+		bool first = true;
+		std::string res = properties_->to_string() + "(";
+		for (auto i : elements_) {
+			res += (first ? "" : ", ") + i.get()->to_string();
+		} // Add all elements.
+		return res + ")";
+	};
+	constant_ = [this]() {
+		bool ret = true;
+		for (auto i : elements_) {
+			ret = ret && i.get()->is_constant();
+		} // Iterate over contents.
+		return ret;
+	};
 }
 
 } /* namespace basic */

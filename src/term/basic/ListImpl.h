@@ -20,6 +20,7 @@
  * @endverbatim
  */
 
+#include <Lazy.h>
 #include <basic/TermImpl.h>
 #include <IList.h>
 #include <vector>
@@ -49,11 +50,7 @@ public:
 	}
 
 	inline bool is_constant() const {
-		bool ret = true;
-		for (auto i : elements_) {
-			ret = ret && i.get()->is_constant();
-		} // Iterate over contents.
-		return ret;
+		return constant_;
 	}
 
 	inline bool is_equal(ITerm const& other) const {
@@ -67,7 +64,9 @@ public:
 		return LIST;
 	}
 
-	virtual std::string to_string() const;
+	virtual std::string to_string() const {
+		return strval_;
+	}
 
 private:
 	friend class TermFactoryImpl;
@@ -75,6 +74,8 @@ private:
 			std::vector<pTerm>& the_elements, pTerm the_type);
 	pPropertySpecification properties_;
 	std::vector<pTerm> elements_;
+	Lazy<std::string> strval_;
+	Lazy<bool> constant_;
 };
 
 } /* namespace basic */
