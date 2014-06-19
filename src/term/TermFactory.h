@@ -228,7 +228,7 @@ public:
 	 * specifications.
 	 * @return	A new property specification builder.
 	 */
-	virtual std::unique_ptr<IPropertySpecificationBuilder>
+	virtual std::unique_ptr<PropertySpecificationBuilder>
 	get_property_specification_builder() const = 0;
 };
 

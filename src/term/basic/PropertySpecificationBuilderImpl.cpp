@@ -38,7 +38,7 @@ PropertySpecificationBuilderImpl::get() {
 	return std::shared_ptr<IPropertySpecification const>(ret);
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::reset() {
 	loc_ = Loc::get_internal();
 	associative_ = boost::none;
@@ -50,138 +50,138 @@ PropertySpecificationBuilderImpl::reset() {
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_loc(Locus loc) {
 	loc_ = loc;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_associative(pTerm value) {
 	associative_ = value;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_associative(bool value) {
 	associative_ = value ? TRUE_ : FALSE_;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::clear_associative() {
 	associative_ = boost::none;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_associative(
 		boost::optional<pTerm> value) {
 	associative_ = value;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_commutative(pTerm value) {
 	commutative_ = value;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_commutative(bool value) {
 	commutative_ = value ? TRUE_ : FALSE_;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::clear_commutative() {
 	commutative_ = boost::none;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_commutative(
 		boost::optional<pTerm> value) {
 	commutative_ = value;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_idempotent(pTerm value) {
 	idempotent_ = value;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_idempotent(bool value) {
 	idempotent_ = value ? TRUE_ : FALSE_;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::clear_idempotent() {
 	idempotent_ = boost::none;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_idempotent(
 		boost::optional<pTerm> value) {
 	idempotent_ = value;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_absorber(pTerm value) {
 	absorber_ = value;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::clear_absorber() {
 	absorber_ = boost::none;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_absorber(
 		boost::optional<pTerm> value) {
 	absorber_ = value;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_identity(pTerm value) {
 	identity_ = value;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::clear_identity() {
 	identity_ = boost::none;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_identity(
 		boost::optional<pTerm> value) {
 	identity_ = value;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_membership(pTerm value) {
 	elements_ = value;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::clear_membership() {
 	elements_ = boost::none;
 	return this;
 }
 
-IPropertySpecificationBuilder *
+PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_membership(
 		boost::optional<pTerm> value) {
 	elements_ = value;

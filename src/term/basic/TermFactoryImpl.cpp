@@ -371,10 +371,10 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 	return MAKE(Apply, op, arg, MAP);
 }
 
-std::unique_ptr<IPropertySpecificationBuilder>
+std::unique_ptr<PropertySpecificationBuilder>
 TermFactoryImpl::get_property_specification_builder() const {
 	// Make a new instance and return it.
-	return std::unique_ptr<IPropertySpecificationBuilder>(
+	return std::unique_ptr<PropertySpecificationBuilder>(
 			new PropertySpecificationBuilderImpl(TRUE, FALSE, PROPERTIES));
 }
 

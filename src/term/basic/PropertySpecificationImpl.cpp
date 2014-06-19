@@ -82,12 +82,12 @@ PropertySpecificationImpl::PropertySpecificationImpl(
 		return ret;
 	};
 	constant_ = [this]() {
-		return associative_.get()->is_constant() &&
-				commutative_.get()->is_constant() &&
-				idempotent_.get()->is_constant() &&
-				absorber_.get()->is_constant() &&
-				identity_.get()->is_constant() &&
-				elements_.get()->is_constant();
+		return (associative_ ? associative_.get()->is_constant() : true) &&
+				(commutative_ ? commutative_.get()->is_constant() : true) &&
+				(idempotent_ ? idempotent_.get()->is_constant() : true) &&
+				(absorber_ ? absorber_.get()->is_constant() : true) &&
+				(identity_ ? identity_.get()->is_constant() : true) &&
+				(elements_ ? elements_.get()->is_constant() : true);
 	};
 }
 

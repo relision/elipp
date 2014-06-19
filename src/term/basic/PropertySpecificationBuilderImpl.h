@@ -26,47 +26,47 @@ namespace elision {
 namespace term {
 namespace basic {
 
-class PropertySpecificationBuilderImpl: public elision::term::IPropertySpecificationBuilder {
+class PropertySpecificationBuilderImpl: public elision::term::PropertySpecificationBuilder {
 public:
 	/// Deallocate this instance.
 	virtual ~PropertySpecificationBuilderImpl() = default;
 
 	virtual pPropertySpecification get();
-	virtual IPropertySpecificationBuilder * reset();
+	virtual PropertySpecificationBuilder * reset();
 
-	virtual IPropertySpecificationBuilder * set_loc(Locus loc);
+	virtual PropertySpecificationBuilder * set_loc(Locus loc);
 
-	virtual IPropertySpecificationBuilder * set_associative(pTerm value);
-	virtual IPropertySpecificationBuilder * set_associative(bool value);
-	virtual IPropertySpecificationBuilder * clear_associative();
-	virtual IPropertySpecificationBuilder * set_associative(
+	virtual PropertySpecificationBuilder * set_associative(pTerm value);
+	virtual PropertySpecificationBuilder * set_associative(bool value);
+	virtual PropertySpecificationBuilder * clear_associative();
+	virtual PropertySpecificationBuilder * set_associative(
 			boost::optional<pTerm> value);
 
-	virtual IPropertySpecificationBuilder * set_commutative(pTerm value);
-	virtual IPropertySpecificationBuilder * set_commutative(bool value);
-	virtual IPropertySpecificationBuilder * clear_commutative();
-	virtual IPropertySpecificationBuilder * set_commutative(
+	virtual PropertySpecificationBuilder * set_commutative(pTerm value);
+	virtual PropertySpecificationBuilder * set_commutative(bool value);
+	virtual PropertySpecificationBuilder * clear_commutative();
+	virtual PropertySpecificationBuilder * set_commutative(
 			boost::optional<pTerm> value);
 
-	virtual IPropertySpecificationBuilder * set_idempotent(pTerm value);
-	virtual IPropertySpecificationBuilder * set_idempotent(bool value);
-	virtual IPropertySpecificationBuilder * clear_idempotent();
-	virtual IPropertySpecificationBuilder * set_idempotent(
+	virtual PropertySpecificationBuilder * set_idempotent(pTerm value);
+	virtual PropertySpecificationBuilder * set_idempotent(bool value);
+	virtual PropertySpecificationBuilder * clear_idempotent();
+	virtual PropertySpecificationBuilder * set_idempotent(
 			boost::optional<pTerm> value);
 
-	virtual IPropertySpecificationBuilder * set_absorber(pTerm value);
-	virtual IPropertySpecificationBuilder * clear_absorber();
-	virtual IPropertySpecificationBuilder * set_absorber(
+	virtual PropertySpecificationBuilder * set_absorber(pTerm value);
+	virtual PropertySpecificationBuilder * clear_absorber();
+	virtual PropertySpecificationBuilder * set_absorber(
 			boost::optional<pTerm> value);
 
-	virtual IPropertySpecificationBuilder * set_identity(pTerm value);
-	virtual IPropertySpecificationBuilder * clear_identity();
-	virtual IPropertySpecificationBuilder * set_identity(
+	virtual PropertySpecificationBuilder * set_identity(pTerm value);
+	virtual PropertySpecificationBuilder * clear_identity();
+	virtual PropertySpecificationBuilder * set_identity(
 			boost::optional<pTerm> value);
 
-	virtual IPropertySpecificationBuilder * set_membership(pTerm value);
-	virtual IPropertySpecificationBuilder * clear_membership();
-	virtual IPropertySpecificationBuilder * set_membership(
+	virtual PropertySpecificationBuilder * set_membership(pTerm value);
+	virtual PropertySpecificationBuilder * clear_membership();
+	virtual PropertySpecificationBuilder * set_membership(
 			boost::optional<pTerm> value);
 
 private:

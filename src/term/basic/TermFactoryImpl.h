@@ -87,7 +87,7 @@ public:
 
 	virtual pTerm apply(Locus loc, pTerm op, pTerm arg) const;
 
-	virtual std::unique_ptr<IPropertySpecificationBuilder>
+	virtual std::unique_ptr<PropertySpecificationBuilder>
 	get_property_specification_builder() const;
 
 private:

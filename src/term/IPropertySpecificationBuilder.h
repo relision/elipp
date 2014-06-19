@@ -29,7 +29,7 @@ namespace term {
  * This is a class to construct property specifications.  These are complicated
  * objects that have many different components.
  */
-class IPropertySpecificationBuilder {
+class PropertySpecificationBuilder {
 public:
 	/**
 	 * Complete the property specification and return the result.  The builder
@@ -51,7 +51,7 @@ public:
 	 * Reset this property specification builder to the defaults.
 	 * @return	This property specification builder.
 	 */
-	virtual IPropertySpecificationBuilder * reset() = 0;
+	virtual PropertySpecificationBuilder * reset() = 0;
 
 	/**
 	 * Specify the associative property.  The provided term must have type
@@ -60,20 +60,20 @@ public:
 	 * @return	This property builder.
 	 * @throws	std::invalid_argument	The type is not `BOOLEAN`.
 	 */
-	virtual IPropertySpecificationBuilder * set_associative(pTerm value) = 0;
+	virtual PropertySpecificationBuilder * set_associative(pTerm value) = 0;
 
 	/**
 	 * Specify the associative property.
 	 * @param	value	The value for this property.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * set_associative(bool value) = 0;
+	virtual PropertySpecificationBuilder * set_associative(bool value) = 0;
 
 	/**
 	 * Reset the associative property to unspecified.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * clear_associative() = 0;
+	virtual PropertySpecificationBuilder * clear_associative() = 0;
 
 	/**
 	 * Explicitly set the associative property.  If the value is not
@@ -87,7 +87,7 @@ public:
 	 * @return	This property builder.
 	 * @throws	std::invalid_argument	The type is not `BOOLEAN`.
 	 */
-	virtual IPropertySpecificationBuilder * set_associative(
+	virtual PropertySpecificationBuilder * set_associative(
 			boost::optional<pTerm> value) = 0;
 
 	/**
@@ -97,20 +97,20 @@ public:
 	 * @return	This property builder.
 	 * @throws	std::invalid_argument	The type is not `BOOLEAN`.
 	 */
-	virtual IPropertySpecificationBuilder * set_commutative(pTerm value) = 0;
+	virtual PropertySpecificationBuilder * set_commutative(pTerm value) = 0;
 
 	/**
 	 * Specify the commutative property.
 	 * @param	value	The value for this property.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * set_commutative(bool value) = 0;
+	virtual PropertySpecificationBuilder * set_commutative(bool value) = 0;
 
 	/**
 	 * Reset the commutative property to unspecified.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * clear_commutative() = 0;
+	virtual PropertySpecificationBuilder * clear_commutative() = 0;
 
 	/**
 	 * Explicitly set the commutative property.  If the value is not
@@ -124,7 +124,7 @@ public:
 	 * @return	This property builder.
 	 * @throws	std::invalid_argument	The type is not `BOOLEAN`.
 	 */
-	virtual IPropertySpecificationBuilder * set_commutative(
+	virtual PropertySpecificationBuilder * set_commutative(
 			boost::optional<pTerm> value) = 0;
 
 	/**
@@ -134,20 +134,20 @@ public:
 	 * @return	This property builder.
 	 * @throws	std::invalid_argument	The type is not `BOOLEAN`.
 	 */
-	virtual IPropertySpecificationBuilder * set_idempotent(pTerm value) = 0;
+	virtual PropertySpecificationBuilder * set_idempotent(pTerm value) = 0;
 
 	/**
 	 * Specify the idempotent property.
 	 * @param	value	The value for this property.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * set_idempotent(bool value) = 0;
+	virtual PropertySpecificationBuilder * set_idempotent(bool value) = 0;
 
 	/**
 	 * Reset the idempotent property to unspecified.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * clear_idempotent() = 0;
+	virtual PropertySpecificationBuilder * clear_idempotent() = 0;
 
 	/**
 	 * Explicitly set the idempotent property.  If the value is not
@@ -161,7 +161,7 @@ public:
 	 * @return	This property builder.
 	 * @throws	std::invalid_argument	The type is not `BOOLEAN`.
 	 */
-	virtual IPropertySpecificationBuilder * set_idempotent(
+	virtual PropertySpecificationBuilder * set_idempotent(
 			boost::optional<pTerm> value) = 0;
 
 	/**
@@ -169,13 +169,13 @@ public:
 	 * @param	value	The value for this property.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * set_absorber(pTerm value) = 0;
+	virtual PropertySpecificationBuilder * set_absorber(pTerm value) = 0;
 
 	/**
 	 * Reset the absorber property to unspecified.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * clear_absorber() = 0;
+	virtual PropertySpecificationBuilder * clear_absorber() = 0;
 
 	/**
 	 * Explicitly set the absorber property.  If the value is not initialized,
@@ -183,7 +183,7 @@ public:
 	 * @param 	The value for the property.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * set_absorber(
+	virtual PropertySpecificationBuilder * set_absorber(
 			boost::optional<pTerm> value) = 0;
 
 	/**
@@ -191,13 +191,13 @@ public:
 	 * @param	value	The value for this property.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * set_identity(pTerm value) = 0;
+	virtual PropertySpecificationBuilder * set_identity(pTerm value) = 0;
 
 	/**
 	 * Reset the identity property to unspecified.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * clear_identity() = 0;
+	virtual PropertySpecificationBuilder * clear_identity() = 0;
 
 	/**
 	 * Explicitly set the identity property.  If the value is not initialized,
@@ -205,7 +205,7 @@ public:
 	 * @param 	The value for the property.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * set_identity(
+	virtual PropertySpecificationBuilder * set_identity(
 			boost::optional<pTerm> value) = 0;
 
 	/**
@@ -213,13 +213,13 @@ public:
 	 * @param	value	The value for this property.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * set_membership(pTerm value) = 0;
+	virtual PropertySpecificationBuilder * set_membership(pTerm value) = 0;
 
 	/**
 	 * Reset the membership property to unspecified.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * clear_membership() = 0;
+	virtual PropertySpecificationBuilder * clear_membership() = 0;
 
 	/**
 	 * Explicitly set the membership property.  If the value is not
@@ -228,7 +228,7 @@ public:
 	 * @param 	The value for the property.
 	 * @return	This property builder.
 	 */
-	virtual IPropertySpecificationBuilder * set_membership(
+	virtual PropertySpecificationBuilder * set_membership(
 			boost::optional<pTerm> value) = 0;
 };
 
