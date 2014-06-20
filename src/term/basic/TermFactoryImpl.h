@@ -21,6 +21,7 @@
  */
 
 #include "term/TermFactory.h"
+#include "term/TermModifier.h"
 #include "TermImpl.h"
 #include <unordered_map>
 #include <string>
@@ -93,6 +94,7 @@ public:
 private:
 	pTerm root_;
 	mutable std::unordered_map<std::string, pSymbolLiteral> known_roots_;
+	TermModifier modifier_{std::shared_ptr<TermFactory>(this)};
 };
 
 } /* namespace basic */
