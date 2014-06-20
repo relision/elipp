@@ -57,7 +57,7 @@ TermModifier::substitute(std::unordered_map<std::string, pTerm> const& map,
 			if (search != map.end()) {
 				// Found the variable.  Build a term literal around the
 				// replacement and return the result.
-//				return fact_->get_term_literal(tvar->get_loc(), search->second);
+				return fact_->get_term_literal(tvar->get_loc(), search->second);
 			}
 			break;
 		}
