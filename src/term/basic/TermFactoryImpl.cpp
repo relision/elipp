@@ -312,7 +312,8 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 	case BINDING_KIND: {
 		// Applying a binding replaces bound variables with their bound terms.
 		auto binding = std::dynamic_pointer_cast<IBinding const>(op);
-//		return argument->rewrite(binding);
+		auto map = binding->get_map().get();
+		return modifier_.substitute(*map, arg);
 		break;
 	}
 
@@ -348,12 +349,29 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 	case PROPERTY_SPECIFICATION_KIND: {
 		// Applying a property specification merges property specifications
 		// and modifies lists.
-//		if (argument.get_kind() == LIST) {
-//			auto list = std::dynamic_pointer_cast<IList const>(argument);
-//			auto ps = dynamic_pointer_cast<pPropertySpecification>(op);
-//			auto new_ps = list->get_property_specification()->merge(ps);
-//			return get_list(new_ps, list->get_elements());
-//		}
+		switch (arg->get_kind()) {
+		case LIST_KIND: {
+			auto list = std::dynamic_pointer_cast<IList const>(arg);
+			auto ps = std::dynamic_pointer_cast<IPropertySpecification const>(op);
+			auto psb = get_property_specification_builder();
+			auto newps = psb->override(list->get_property_specification())
+					->override(ps)->get();
+			std::vector<pTerm> elts = list->get_elements();
+			return get_list(op->get_loc(), newps, elts);
+			break;
+		}
+
+		case PROPERTY_SPECIFICATION_KIND: {
+			auto opspec = std::dynamic_pointer_cast<IPropertySpecification const>(op);
+			auto argspec = std::dynamic_pointer_cast<IPropertySpecification const>(arg);
+			auto psb = get_property_specification_builder();
+			return psb->override(argspec)->override(opspec)->get();
+			break;
+		}
+
+		default:
+			break;
+		}
 		break;
 	}
 
