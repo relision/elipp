@@ -28,7 +28,9 @@ namespace term {
 
 /**
  * The common public interface for all literals.  A literal represents a simple
- * constant term in Elision.  Other terms can also represent constants, as well.
+ * constant term in Elision.  Other terms can also represent constants, as well,
+ * but a literal is the "most primitive" form of constant manipulated by the
+ * system.
  */
 class ILiteral : public virtual ITerm {
 public:
@@ -75,7 +77,7 @@ typedef std::shared_ptr<IStringLiteral const> pStringLiteral;
 
 /**
  * Specify the public interface to an integer literal.  Elision integers are
- * (essentially) unbounded integers, similar to the "bit integer" classes in
+ * (essentially) unbounded integers, similar to the "big integer" classes in
  * some languages.
  */
 class IIntegerLiteral : public virtual ILiteral {
@@ -95,14 +97,18 @@ typedef std::shared_ptr<IIntegerLiteral const> pIntegerLiteral;
  * Specify the public interface to a floating point literal.  Elision floating
  * point literals are constructed from unbounded integers and are, essentially,
  * also unbounded.  A floating point literal is composed of three elements:
+ *
  *   - a @b significand @f$s@f$,
  *   - an @b exponent @f$e@f$, and
  *   - the base, or @b radix @f$r@f$.
+ *
  * These three values are combined to yield the value of the literal, which is
  * given by the equation:
+ *
  * @f[
  *     v = s \times {r^e}
  * @f]
+ *
  * This is actually pretty common.  For instance 5e2 (base 10) is 5 times 10
  * squared, or 500.  Here 5 is the significand, 2 is the exponent, and 10 is
  * the base.

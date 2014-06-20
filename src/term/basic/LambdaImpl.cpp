@@ -1,6 +1,6 @@
 /**
  * @file
- * Provide an implementation of lambdas.
+ * Provide an implementation of a lambda.
  *
  * @author sprowell@gmail.com
  *
@@ -23,12 +23,12 @@ namespace elision {
 namespace term {
 namespace basic {
 
-LambdaImpl::LambdaImpl(Locus the_loc, pVariable the_parameter, pTerm the_body,
-		pTerm the_type) : TermImpl(the_loc, the_type),
-				parameter_(the_parameter), body_(the_body) {
+LambdaImpl::LambdaImpl(Locus the_loc, pTerm the_lhs, pTerm the_rhs,
+		pTerm the_guard, pTerm the_type) : TermImpl(the_loc, the_type),
+				lhs_(the_lhs), rhs_(the_rhs), guard_(the_guard) {
 	strval_ = [this]() {
-		return "\\" + parameter_->to_string() + "." +
-				body_->to_string();
+		return lhs_->to_string() + " ->{ " + guard_->to_string() + " } " +
+				rhs_->to_string();
 	};
 }
 

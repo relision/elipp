@@ -22,7 +22,7 @@
 #include "LambdaImpl.h"
 #include "ListImpl.h"
 #include "LiteralImpl.h"
-#include "MapPairImpl.h"
+#include "LambdaImpl.h"
 #include "PropertySpecificationImpl.h"
 #include "PropertySpecificationBuilderImpl.h"
 #include "SpecialFormImpl.h"
@@ -114,6 +114,10 @@ TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()) {
 	INIT(PROPERTIES);
 	TRUE = get_boolean_literal(Loc::get_internal(), true, BOOLEAN);
 	FALSE = get_boolean_literal(Loc::get_internal(), false, BOOLEAN);
+
+	// Build a term modifier we can use later.
+//	auto self = std::shared_ptr<TermFactory>(this);
+//	modifier_ = std::unique_ptr<TermModifier>(new TermModifier(self));
 }
 
 pSymbolLiteral
@@ -223,33 +227,19 @@ TermFactoryImpl::get_static_map(
 	return MAKE(StaticMap, domain, codomain, MAP);
 }
 
-pMapPair
-TermFactoryImpl::get_map_pair(
+pLambda
+TermFactoryImpl::get_lambda(
 		Locus loc, pTerm lhs, pTerm rhs, pTerm guard) const {
 	NOTNULL(loc);
 	NOTNULL(lhs);
 	NOTNULL(rhs);
 	NOTNULL(guard);
 
-	// The type for a map pair has to be computed.  We do that here, and then
-	// we pass it to the constructor.  The type of the map is a static map from
+	// The type for a lambda has to be computed.  We do that here, and then we
+	// pass it to the constructor.  The type of the lambda is a static map from
 	// the type of the lhs to the type of the rhs.
 	pTerm type = get_static_map(loc, lhs->get_type(), rhs->get_type());
-	return MAKE(MapPair, lhs, rhs, guard, type);
-}
-
-pLambda
-TermFactoryImpl::get_lambda(
-		Locus loc, pVariable parameter, pTerm body) const {
-	NOTNULL(loc);
-	NOTNULL(parameter);
-	NOTNULL(body);
-
-	// The type for the lambda has to be computed.  We do that here, and then
-	// we pass it to the constructor.  The type of a lambda is a static map
-	// from the type of its parameter to the type of its body.
-	pTerm type = get_static_map(loc, parameter->get_type(), body->get_type());
-	return MAKE(Lambda, parameter, body, type);
+	return MAKE(Lambda, lhs, rhs, guard, type);
 }
 
 pSpecialForm
@@ -287,37 +277,15 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 
 	// Decide what to do based on the operator's kind.
 	switch (op->get_kind()) {
-	case LAMBDA_KIND: {
-		// Applying a lambda "curries" the lambda.
-		auto lambda = std::dynamic_pointer_cast<ILambda const>(op);
-
-		// If the lambda is constant or if the de Bruijn index of the body is
-		// zero, then the lambda body does not contain the parameter, and it is
-		// a constant.
-		if (lambda->get_de_bruijn_index() == 0) return lambda->get_body();
-
-//		// Match the lambda parameter against the argument.
-//		auto result = Matcher::match(lambda->get_parameter(), arg);
-//		if (!result) {
-//			// The lambda parameter does not match the argument.  This is an
-//			// error.
-//		} else {
-//			// The match succeeded.  Use the resulting bindings to rewrite the
-//			// body.
-//			return lambda->get_body()->rewrite(result->next_raw_bindings());
-//		}
-		break;
-	}
-
 	case BINDING_KIND: {
 		// Applying a binding replaces bound variables with their bound terms.
 		auto binding = std::dynamic_pointer_cast<IBinding const>(op);
 		auto map = binding->get_map().get();
-		return modifier_.substitute(*map, arg);
+		return modifier_->substitute(*map, arg);
 		break;
 	}
 
-	case MAP_PAIR_KIND: {
+	case LAMBDA_KIND: {
 		// Applying a map pair matches the pattern, checks the guard, and then
 		// yields any replacement.
 //		auto map_pair = std::dynamic_pointer_cast<IMapPair const>(op);
@@ -338,11 +306,11 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 
 	case LIST_KIND: {
 		// Applying a list concatenates lists.
-//		if (argument.get_kind() == LIST) {
-//			auto first = std::dynamic_pointer_cast<IList const>(op);
-//			auto second = std::dynamic_pointer_cast<IList const>(argument);
+		if (arg->get_kind() == LIST_KIND) {
+			auto first = std::dynamic_pointer_cast<IList const>(op);
+			auto second = std::dynamic_pointer_cast<IList const>(arg);
 //			return first->catenate(second);
-//		}
+		}
 		break;
 	}
 

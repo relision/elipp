@@ -38,10 +38,12 @@ namespace term {
  */
 class IBinding : public virtual ITerm {
 public:
+	/// Type for the map used and returned by a binding instance.
 	typedef std::unordered_map<std::string, pTerm> const map_t;
 
 	/**
-	 * Get the non-abstract content of this binding as a map.
+	 * Get the non-abstract content of this binding as a map.  The returned
+	 * map is copied.
 	 * @return	The concrete binds in this binding.
 	 */
 	virtual std::shared_ptr<map_t> get_map() const = 0;

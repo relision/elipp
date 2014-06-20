@@ -22,10 +22,9 @@
 
 #include "IApply.h"
 #include "IBinding.h"
-#include "ILambda.h"
 #include "IList.h"
 #include "ILiteral.h"
-#include "IMapPair.h"
+#include "ILambda.h"
 #include "IPropertySpecification.h"
 #include "IPropertySpecificationBuilder.h"
 #include "ISpecialForm.h"
@@ -191,18 +190,11 @@ public:
 			pTerm codomain) const = 0;
 
 	//======================================================================
-	// Make map pairs.
-	//======================================================================
-
-	virtual pMapPair get_map_pair(Locus loc, pTerm lhs, pTerm rhs,
-			pTerm guard) const = 0;
-
-	//======================================================================
 	// Make lambdas.
 	//======================================================================
 
-	virtual pLambda get_lambda(Locus loc, pVariable parameter,
-			pTerm body) const = 0;
+	virtual pLambda get_lambda(Locus loc, pTerm lhs, pTerm rhs,
+			pTerm guard) const = 0;
 
 	//======================================================================
 	// Make special forms.

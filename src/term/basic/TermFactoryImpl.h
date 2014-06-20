@@ -74,11 +74,8 @@ public:
 	virtual pStaticMap get_static_map(Locus loc, pTerm domain,
 			pTerm codomain) const;
 
-	virtual pMapPair get_map_pair(Locus loc, pTerm lhs, pTerm rhs,
+	virtual pLambda get_lambda(Locus loc, pTerm lhs, pTerm rhs,
 			pTerm guard) const;
-
-	virtual pLambda get_lambda(Locus loc, pVariable parameter,
-			pTerm body) const;
 
 	virtual pSpecialForm get_special_form(Locus loc, pTerm tag,
 			pTerm content) const;
@@ -94,7 +91,7 @@ public:
 private:
 	pTerm root_;
 	mutable std::unordered_map<std::string, pSymbolLiteral> known_roots_;
-	TermModifier modifier_{std::shared_ptr<TermFactory>(this)};
+	std::unique_ptr<TermModifier> modifier_{new TermModifier(*this)};
 };
 
 } /* namespace basic */

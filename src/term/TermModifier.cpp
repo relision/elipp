@@ -23,7 +23,7 @@ namespace elision {
 namespace term {
 namespace basic {
 
-TermModifier::TermModifier(std::shared_ptr<TermFactory> fact) : fact_(fact) {
+TermModifier::TermModifier(TermFactory const& fact) : fact_(fact) {
 	// Nothing to do.
 }
 
@@ -57,7 +57,7 @@ TermModifier::substitute(std::unordered_map<std::string, pTerm> const& map,
 			if (search != map.end()) {
 				// Found the variable.  Build a term literal around the
 				// replacement and return the result.
-				return fact_->get_term_literal(tvar->get_loc(), search->second);
+				return fact_.get_term_literal(tvar->get_loc(), search->second);
 			}
 			break;
 		}
@@ -97,7 +97,7 @@ TermModifier::rebuild(pTerm target,
 	case SYMBOL_LITERAL_KIND: {
 		pSymbolLiteral lit = CAST(SymbolLiteral, target);
 		if (changed) {
-			return fact_->get_symbol_literal(lit->get_loc(),
+			return fact_.get_symbol_literal(lit->get_loc(),
 					lit->get_name(), new_type);
 		}
 		break;
@@ -106,7 +106,7 @@ TermModifier::rebuild(pTerm target,
 	case STRING_LITERAL_KIND: {
 		pStringLiteral lit = CAST(StringLiteral, target);
 		if (changed) {
-			return fact_->get_string_literal(lit->get_loc(),
+			return fact_.get_string_literal(lit->get_loc(),
 					lit->get_value(), new_type);
 		}
 		break;
@@ -115,7 +115,7 @@ TermModifier::rebuild(pTerm target,
 	case INTEGER_LITERAL_KIND: {
 		pIntegerLiteral lit = CAST(IntegerLiteral, target);
 		if (changed) {
-			return fact_->get_integer_literal(lit->get_loc(),
+			return fact_.get_integer_literal(lit->get_loc(),
 					lit->get_value(), new_type);
 		}
 		break;
@@ -124,7 +124,7 @@ TermModifier::rebuild(pTerm target,
 	case FLOAT_LITERAL_KIND: {
 		pFloatLiteral lit = CAST(FloatLiteral, target);
 		if (changed) {
-			return fact_->get_float_literal(lit->get_loc(),
+			return fact_.get_float_literal(lit->get_loc(),
 					lit->get_significand(), lit->get_exponent(),
 					lit->get_radix(), new_type);
 		}
@@ -134,7 +134,7 @@ TermModifier::rebuild(pTerm target,
 	case BIT_STRING_LITERAL_KIND: {
 		pBitStringLiteral lit = CAST(BitStringLiteral, target);
 		if (changed) {
-			return fact_->get_bit_string_literal(lit->get_loc(),
+			return fact_.get_bit_string_literal(lit->get_loc(),
 					lit->get_bits(), lit->get_length(), new_type);
 		}
 		break;
@@ -143,7 +143,7 @@ TermModifier::rebuild(pTerm target,
 	case BOOLEAN_LITERAL_KIND: {
 		pBooleanLiteral lit = CAST(BooleanLiteral, target);
 		if (changed) {
-			return fact_->get_boolean_literal(lit->get_loc(),
+			return fact_.get_boolean_literal(lit->get_loc(),
 					lit->get_value(), new_type);
 		}
 		break;
@@ -160,7 +160,7 @@ TermModifier::rebuild(pTerm target,
 		pTerm guard = var->get_guard();
 		pTerm new_guard = rebuild(guard, closure);
 		if (changed || (guard != new_guard)) {
-			return fact_->get_variable(var->get_loc(),
+			return fact_.get_variable(var->get_loc(),
 					var->get_name(), new_guard, new_type);
 		}
 		break;
@@ -169,7 +169,7 @@ TermModifier::rebuild(pTerm target,
 	case TERM_VARIABLE_KIND: {
 		pTermVariable var = CAST(TermVariable, target);
 		if (changed) {
-			return fact_->get_term_variable(var->get_loc(),
+			return fact_.get_term_variable(var->get_loc(),
 					var->get_name(), new_type);
 		}
 		break;
@@ -182,20 +182,7 @@ TermModifier::rebuild(pTerm target,
 	}
 
 	case LAMBDA_KIND: {
-		pLambda lambda = CAST(Lambda, target);
-		pVariable par = lambda->get_parameter();
-		pTerm body = lambda->get_body();
-		pVariable new_par = CAST(Variable, rebuild(par, closure));
-		pTerm new_body = rebuild(body, closure);
-		if (changed || par != new_par || body != new_body) {
-			return fact_->get_lambda(lambda->get_loc(), new_par,
-					new_body);
-		}
-		break;
-	}
-
-	case MAP_PAIR_KIND: {
-		pMapPair mp = CAST(MapPair, target);
+		pLambda mp = CAST(Lambda, target);
 		pTerm lhs = mp->get_lhs();
 		pTerm rhs = mp->get_rhs();
 		pTerm guard = mp->get_guard();
@@ -204,7 +191,7 @@ TermModifier::rebuild(pTerm target,
 		pTerm new_guard = rebuild(guard, closure);
 		if (changed || lhs != new_lhs || rhs != new_rhs ||
 				guard != new_guard) {
-			return fact_->get_map_pair(mp->get_loc(), lhs, rhs, guard);
+			return fact_.get_lambda(mp->get_loc(), lhs, rhs, guard);
 		}
 		break;
 	}
@@ -234,7 +221,7 @@ TermModifier::rebuild(pTerm target,
 		pTerm new_op = rebuild(op, closure);
 		pTerm new_arg = rebuild(arg, closure);
 		if (changed || op != new_op || arg != new_arg) {
-			return fact_->apply(apply->get_loc(), op, arg);
+			return fact_.apply(apply->get_loc(), op, arg);
 		}
 		break;
 	}
@@ -246,7 +233,7 @@ TermModifier::rebuild(pTerm target,
 		pTerm new_domain = rebuild(domain, closure);
 		pTerm new_codomain = rebuild(codomain, closure);
 		if (changed || domain != new_domain || codomain != new_codomain) {
-			return fact_->get_static_map(map->get_loc(), domain, codomain);
+			return fact_.get_static_map(map->get_loc(), domain, codomain);
 		}
 		break;
 	}

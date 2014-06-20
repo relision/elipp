@@ -29,6 +29,9 @@ namespace term {
  * Define the public interface to an apply instance.  An apply consists of two
  * terms; a left term called the @b operator, and a right term called the
  * @b argument.
+ *
+ * An apply is constructed when one term is applied to another but no special
+ * case applies (such as an operator being applied to an argument).
  */
 class IApply : public virtual ITerm {
 public:
@@ -43,8 +46,6 @@ public:
 	 * @return The argument.
 	 */
 	virtual pTerm get_argument() const = 0;
-
-	TermKind my_kind = APPLY_KIND;
 };
 
 /// Shorthand for an apply pointer.

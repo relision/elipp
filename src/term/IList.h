@@ -29,6 +29,10 @@ namespace term {
 /**
  * A list consists of a collection of terms and an algebraic property
  * specification.
+ *
+ * Lists are the typical data structure in Elision.  Depending on the
+ * properties, they can represent sets, multisets, lists, or even perform
+ * the work of common operators such as Boolean 'and' and 'or'.
  */
 class IList : public virtual ITerm {
 public:

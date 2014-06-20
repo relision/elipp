@@ -3,7 +3,7 @@
 
 /**
  * @file
- * Define the interface for an implementation of lambdas.
+ * Define the interface to an implementation of a lambda.
  *
  * @author sprowell@gmail.com
  *
@@ -20,8 +20,8 @@
  * @endverbatim
  */
 
-#include <basic/TermImpl.h>
-#include <ILambda.h>
+#include "TermImpl.h"
+#include "term/ILambda.h"
 #include <Lazy.h>
 
 namespace elision {
@@ -35,22 +35,28 @@ class LambdaImpl: public ILambda, public TermImpl {
 public:
 	virtual ~LambdaImpl() = default;
 
-	inline pVariable get_parameter() const {
-		return parameter_;
+	inline pTerm get_lhs() const {
+		return lhs_;
 	}
 
-	inline pTerm get_body() const {
-		return body_;
+	inline pTerm get_rhs() const {
+		return rhs_;
+	}
+
+	inline pTerm get_guard() const {
+		return guard_;
 	}
 
 	inline bool is_constant() const {
-		return body_->is_constant();
+		return lhs_->is_constant() && rhs_->is_constant() &&
+				guard_->is_constant();
 	}
 
 	inline bool is_equal(ITerm const& other) const {
 		auto oth = dynamic_cast<ILambda const*>(&other);
-		return *get_parameter() == *oth->get_parameter() &&
-				*get_body() == *oth->get_body();
+		return *get_lhs() == *oth->get_lhs() &&
+				*get_rhs() == *oth->get_rhs() &&
+				*get_guard() == *oth->get_guard();
 	}
 
 	inline TermKind get_kind() const {
@@ -63,10 +69,11 @@ public:
 
 private:
 	friend class TermFactoryImpl;
-	LambdaImpl(Locus the_loc, pVariable the_parameter, pTerm the_body,
+	LambdaImpl(Locus the_loc, pTerm the_lhs, pTerm the_rhs, pTerm the_gaurd,
 			pTerm the_type);
-	pVariable parameter_;
-	pTerm body_;
+	pTerm lhs_;
+	pTerm rhs_;
+	pTerm guard_;
 	Lazy<std::string> strval_;
 };
 

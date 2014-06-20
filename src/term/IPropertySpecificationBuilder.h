@@ -31,6 +31,9 @@ namespace term {
  */
 class PropertySpecificationBuilder {
 public:
+	/// Deallocate this instance.
+	virtual ~PropertySpecificationBuilder() = default;
+
 	/**
 	 * Complete the property specification and return the result.  The builder
 	 * is reset at the end of this method, so it can be used to construct a new

@@ -21,31 +21,39 @@
  */
 
 #include "ITerm.h"
-#include "IVariable.h"
 
 namespace elision {
 namespace term {
 
 /**
- * The public interface to a lambda instance.  A lambda in Elision consists of
- * a single parameter and a body.  When the lambda is applied to another term
- * (the argument), then the argument (or subject) is matched against the
- * parameter (or pattern), yielding a binding (or an error).  The binding is
- * then applied to the body to yield a new term.
+ * Specify the public interface to a lambda.  A lambda consists of a left-hand
+ * side (lhs) and a right-hand side (rhs), and a guard.  The effect of applying
+ * a lambda to another term (the argument) is to match the argument (the
+ * subject) against the lhs (the pattern), giving a set of bindings.  The
+ * bidings are then applied to the guard.  If the guard evaluates to `true`,
+ * then the bindings are applied to the rhs to yield a new term.  If the
+ * argument does not match the lhs, or the guard does not evaluate to `true`,
+ * then no new term is generated.
  */
 class ILambda : public virtual ITerm {
 public:
 	/**
-	 * Get the lambda parameter.
-	 * @return	The lambda parameter.
+	 * Get the left hand side of this lambda.
+	 * @return	The left hand term.
 	 */
-	virtual pVariable get_parameter() const = 0;
+	virtual pTerm get_lhs() const = 0;
 
 	/**
-	 * Get the lambda body.
-	 * @return	The lambda body.
+	 * Get the right hand side of this lambda.
+	 * @return	The right hand side.
 	 */
-	virtual pTerm get_body() const = 0;
+	virtual pTerm get_rhs() const = 0;
+
+	/**
+	 * Get the guard for this lambda.
+	 * @return	The guard for this lambda.
+	 */
+	virtual pTerm get_guard() const = 0;
 };
 
 /// Shorthand for a lambda pointer.
@@ -53,5 +61,6 @@ typedef std::shared_ptr<ILambda const> pLambda;
 
 } /* namespace term */
 } /* namespace elision */
+
 
 #endif /* ILAMBDA_H_ */

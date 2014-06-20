@@ -20,8 +20,8 @@
  * @endverbatim
  */
 
-#include "ITerm.h"
-#include "TermFactory.h"
+#include <ITerm.h>
+#include <TermFactory.h>
 #include <functional>
 
 namespace elision {
@@ -41,7 +41,7 @@ public:
 	 * requires a term factory instance it can use.
 	 * @param fact	The term factory.
 	 */
-	TermModifier(std::shared_ptr<TermFactory> fact);
+	TermModifier(TermFactory const& fact);
 
 	/// Deallocate this instance.
 	virtual ~TermModifier() = default;
@@ -79,7 +79,7 @@ public:
 	pTerm rebuild(pTerm target, std::function<pTerm (pTerm)> closure) const;
 
 private:
-	std::shared_ptr<TermFactory const> fact_;
+	TermFactory const& fact_;
 };
 
 } /* namespace basic */

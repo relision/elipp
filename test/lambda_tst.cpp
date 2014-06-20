@@ -43,10 +43,10 @@ try {
 			fact->ANY);
 	pVariable y = fact->get_variable(Loc::get_internal(), "y", fact->TRUE,
 			fact->ANY);
-	pLambda l1 = fact->get_lambda(Loc::get_internal(), x, fact->TRUE);
-	pLambda l2 = fact->get_lambda(Loc::get(21, 17), xx, fact->TRUE);
-	pLambda l3 = fact->get_lambda(Loc::get_internal(), y, fact->TRUE);
-	pLambda l4 = fact->get_lambda(Loc::get_internal(), x, fact->FALSE);
+	pLambda l1 = fact->get_lambda(Loc::get_internal(), x, fact->TRUE, fact->TRUE);
+	pLambda l2 = fact->get_lambda(Loc::get(21, 17), xx, fact->TRUE, fact->TRUE);
+	pLambda l3 = fact->get_lambda(Loc::get_internal(), y, fact->TRUE, fact->TRUE);
+	pLambda l4 = fact->get_lambda(Loc::get_internal(), x, fact->FALSE, fact->TRUE);
 	ENDL("Done");
 
 	ENDL("Some lambdas"); PUSH;
@@ -54,8 +54,8 @@ try {
 	POP;
 
 	ENDL("Checking string cast"); PUSH;
-	VALIDATE(std::string(*l1), "\\$x{ true: BOOLEAN: ^ROOT }: "
-			"ANY: ^ROOT.true: BOOLEAN: ^ROOT", "1");
+	VALIDATE(std::string(*l1), "$x{ true: BOOLEAN: ^ROOT }: ANY: ^ROOT ->"
+			"{ true: BOOLEAN: ^ROOT } true: BOOLEAN: ^ROOT", "1");
 	POP;
 
 	ENDL("Checking equality and inequality"); PUSH;
