@@ -39,7 +39,7 @@ public:
 	/**
 	 * Make a new instance.  Because we may need to construct new terms, this
 	 * requires a term factory instance it can use.
-	 * @param fact	The term factoruy.
+	 * @param fact	The term factory.
 	 */
 	TermModifier(std::shared_ptr<TermFactory> fact);
 
@@ -56,7 +56,7 @@ public:
 	 * @return	The possibly-new term.  If the term is not modified, then the
 	 * 			same input pointer is returned.
 	 */
-	pTerm substitute(std::unordered_map<std::string, pTerm>& map,
+	pTerm substitute(std::unordered_map<std::string, pTerm> const& map,
 			pTerm target) const;
 
 	/**

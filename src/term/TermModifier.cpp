@@ -24,15 +24,16 @@ namespace term {
 namespace basic {
 
 TermModifier::TermModifier(std::shared_ptr<TermFactory> fact) : fact_(fact) {
+	// Nothing to do.
 }
 
 pTerm
-TermModifier::substitute(std::unordered_map<std::string, pTerm>& map,
+TermModifier::substitute(std::unordered_map<std::string, pTerm> const& map,
 		pTerm target) const {
 	NOTNULL(target);
 
 	// Define the closure that instantiates variables as they are found.
-	auto closure = [map](pTerm term) -> pTerm {
+	auto closure = [this, map](pTerm term) -> pTerm {
 		switch (term->get_kind()) {
 		case VARIABLE_KIND: {
 			// See if this is a variable that can be replaced right now.  If so, we
