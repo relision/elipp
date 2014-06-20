@@ -109,6 +109,8 @@ public:
 			Locus loc, eint_t bits, eint_t length, pTerm type) const = 0;
 	virtual pBooleanLiteral get_boolean_literal(
 			Locus loc, bool value, pTerm type) const = 0;
+	virtual pTermLiteral get_term_literal(
+			Locus loc, pTerm term) const = 0;
 
 	//======================================================================
 	// Make literals with the default type.
@@ -162,6 +164,9 @@ public:
 	}
 	pBooleanLiteral get_boolean_literal(bool value) const {
 		return get_boolean_literal(Loc::get_internal(), value);
+	}
+	pTermLiteral get_term_literal(pTerm term) const {
+		return get_term_literal(Loc::get_internal(), term);
 	}
 
 	//======================================================================

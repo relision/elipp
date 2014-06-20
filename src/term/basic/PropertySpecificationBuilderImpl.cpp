@@ -27,7 +27,6 @@ namespace basic {
 PropertySpecificationBuilderImpl::PropertySpecificationBuilderImpl(
 		pTerm TRUE, pTerm FALSE, pTerm type) : TRUE_(TRUE), FALSE_(FALSE),
 				type_(type) {
-	// Nothing else to do.
 }
 
 pPropertySpecification
@@ -52,7 +51,26 @@ PropertySpecificationBuilderImpl::reset() {
 
 PropertySpecificationBuilder *
 PropertySpecificationBuilderImpl::set_loc(Locus loc) {
+	NOTNULL(loc);
 	loc_ = loc;
+	return this;
+}
+
+PropertySpecificationBuilder *
+PropertySpecificationBuilderImpl::override(pPropertySpecification spec) {
+	NOTNULL(spec);
+	auto value = spec->get_associative();
+	if (value) set_associative(value);
+	value = spec->get_commutative();
+	if (value) set_commutative(value);
+	value = spec->get_idempotent();
+	if (value) set_idempotent(value);
+	value = spec->get_absorber();
+	if (value) set_absorber(value);
+	value = spec->get_identity();
+	if (value) set_identity(value);
+	value = spec->get_membership();
+	if (value) set_membership(value);
 	return this;
 }
 

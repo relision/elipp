@@ -54,6 +54,19 @@ public:
 	virtual PropertySpecificationBuilder * reset() = 0;
 
 	/**
+	 * Merge another property specification.  Anything that is specified in the
+	 * provided spec overrides what is already specified in this builder.  That
+	 * is, if associativity is set to true, and it is set to false in the
+	 * provided spec, then the result it to set associativity to false.  If
+	 * associativity is not specified in the provided spec, then it remains
+	 * set to true.
+	 * @param spec	The overriding specification.
+	 * @return	This property specification builder.
+	 */
+	virtual PropertySpecificationBuilder * override(
+			pPropertySpecification spec) = 0;
+
+	/**
 	 * Specify the associative property.  The provided term must have type
 	 * `BOOLEAN`, or a `invalid_argument` is thrown.
 	 * @param	value	The value for this property.

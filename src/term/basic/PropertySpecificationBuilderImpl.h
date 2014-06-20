@@ -36,6 +36,9 @@ public:
 
 	virtual PropertySpecificationBuilder * set_loc(Locus loc);
 
+	virtual PropertySpecificationBuilder * override(
+			pPropertySpecification spec);
+
 	virtual PropertySpecificationBuilder * set_associative(pTerm value);
 	virtual PropertySpecificationBuilder * set_associative(bool value);
 	virtual PropertySpecificationBuilder * clear_associative();

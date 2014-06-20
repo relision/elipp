@@ -365,7 +365,7 @@ TermFactoryImpl::apply(Locus loc, pTerm op, pTerm arg) const {
 	default: {
 		break;
 	}
-	}
+	} // End of switch.
 
 	// No special handling.
 	return MAKE(Apply, op, arg, MAP);
