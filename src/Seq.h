@@ -21,6 +21,7 @@
  */
 
 #include <vector>
+#include <cstddef>
 
 #define D(msg_m) std::cout << msg_m << std::flush;
 #define P(msg_m) std::cout << msg_m << std::flush << std::endl;
