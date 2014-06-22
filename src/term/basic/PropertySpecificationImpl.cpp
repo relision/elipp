@@ -71,13 +71,16 @@ PropertySpecificationImpl::PropertySpecificationImpl(
 			}
 		}
 		if (absorber_) {
-			ret += "B[" + absorber_.get()->to_string() + "]";
+			pTerm term = absorber_.get();
+			ret += "B[" + term->to_string() + "]";
 		}
 		if (identity_) {
-			ret += "D[" + identity_.get()->to_string() + "]";
+			pTerm term = identity_.get();
+			ret += "D[" + term->to_string() + "]";
 		}
 		if (elements_) {
-			ret += "E[" + elements_.get()->to_string() + "]";
+			pTerm term = elements_.get();
+			ret += "E[" + term->to_string() + "]";
 		}
 		return ret;
 	};

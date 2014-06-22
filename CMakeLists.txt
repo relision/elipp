@@ -19,7 +19,11 @@ if (POLICY CMP0042)
 endif()
 
 # Find Boost and include it.
-FIND_PACKAGE(Boost)
+set(Boost_USE_STATIC_LIBS OFF) 
+set(Boost_USE_MULTITHREADED ON)  
+set(Boost_USE_STATIC_RUNTIME OFF) 
+#find_package(Boost 1.45.0 COMPONENTS multiprecision thread) 
+FIND_PACKAGE(Boost REQUIRED COMPONENTS thread system)
 IF (Boost_FOUND)
     INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
     ADD_DEFINITIONS( "-DHAS_BOOST" )
@@ -79,7 +83,7 @@ include_directories( AFTER SYSTEM src src/term )
 
 # Build the core library.
 add_library( elision SHARED ${lib_sources} )
-target_link_libraries( elision )
+target_link_libraries( elision ${Boost_LIBRARIES} )
 
 # Build the command line executable.
 #add_executable( elision

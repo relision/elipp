@@ -22,6 +22,7 @@
 
 #include <functional>
 #include <stdexcept>
+#include <boost/thread/shared_mutex.hpp>
 
 namespace elision {
 
@@ -36,9 +37,9 @@ namespace elision {
  * be a lambda.  The following is an example.
  *
  * ~~~{.cpp}
- * auto val = Lazy<std::string>([](){
+ * Lazy<std::string> val = [](){
  *   return x->to_string() + "." + y->to_string();
- * })
+ * };
  * ~~~
  *
  * Here the string computational cost (and the space required by the string)
@@ -50,6 +51,8 @@ namespace elision {
  *
  * The result is a **reference** to the computed value, which remains held in
  * the instance until it is collected.
+ *
+ * These instances should be thread-safe.
  *
  * @param T	The type of the result.
  */
@@ -73,6 +76,16 @@ public:
 	 */
 	Lazy(std::function<T()> evaluator) :
 		evaluator_(evaluator), have_value_(false) {
+		// Nothing to do.
+	}
+
+	/**
+	 * Explicitly provide a copy constructor.
+	 * @param other	The other lazy value to copy.
+	 */
+	Lazy(Lazy<T> const& other) :
+		evaluator_(other.evaluator_), have_value_(false) {
+		// Nothing to do.
 	}
 
 	/// Deallocate this instance.
@@ -84,9 +97,9 @@ public:
 	 */
 	T& get() {
 		if (!have_value_) {
-			value_ = evaluator_();
-			have_value_ = true;
+			evaluate();
 		}
+		boost::shared_lock<boost::shared_mutex> lock(evaluator_lock_);
 		return value_;
 	}
 
@@ -116,9 +129,9 @@ public:
 	 */
 	T& get() const {
 		if (!have_value_) {
-			value_ = evaluator_();
-			have_value_ = true;
+			evaluate();
 		}
+		boost::shared_lock<boost::shared_mutex> lock(evaluator_lock_);
 		return value_;
 	}
 
@@ -151,6 +164,7 @@ public:
 	 * @return	This instance.
 	 */
 	Lazy<T>& operator=(Lazy<T> const& other) {
+		boost::lock_guard<boost::shared_mutex> lock(evaluator_lock_);
 		evaluator_ = other.evaluator_;
 		have_value_ = false;
 		return *this;
@@ -165,6 +179,7 @@ public:
 	 * @return	This instance.
 	 */
 	Lazy<T>& operator=(std::function<T()> evaluator) {
+		boost::lock_guard<boost::shared_mutex> lock(evaluator_lock_);
 		evaluator_ = evaluator;
 		have_value_ = false;
 		return *this;
@@ -174,6 +189,13 @@ private:
 	std::function<T()> evaluator_;
 	mutable T value_;
 	mutable bool have_value_;
+	mutable boost::shared_mutex evaluator_lock_;
+
+	void evaluate() const {
+		boost::lock_guard<boost::shared_mutex> lock(evaluator_lock_);
+		if (!have_value_) value_ = evaluator_();
+		have_value_ = true;
+	}
 };
 
 } /* namespace elision */
