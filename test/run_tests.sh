@@ -18,7 +18,7 @@ touch test.log
 # Try to enable memory leak detection.
 if [ "$(uname)" == "Darwin" ]; then
 	set DYLD_INSERT_LIBRARIES to /usr/lib/libgmalloc.dylib
-	if $(which iprofiler 2>&1 >/dev/null) ; then
+	if $(which iprofiler >/dev/null 2>&1) ; then
 		mkdir iprofiler
 		memory="iprofiler -leaks -d iprofiler"
 	else
@@ -44,7 +44,7 @@ if [ $( shopt -s nullglob ; set -- *_tst ; echo "$#" ) -le 0 ] ; then
 fi
 for file in *_tst ; do
     printf "Running test %-40s ... " $file
-    ./$file >>test.log
+    ./$file >>test.log 2>&1
     if (($? != 0)) ; then
         echo $failure
         fail=1
@@ -61,7 +61,7 @@ if [ ! -z "$memory" ] ; then
 	fi
 	for file in *_tst ; do
 	    printf "Running leak detection on %-27s ... " $file
-	    $memory ./$file >>test.log
+	    $memory ./$file >>test.log 2>&1
 	    if (($? != 0)) ; then
 	        echo $failure
 	        fail=1
