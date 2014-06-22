@@ -22,7 +22,10 @@
 
 #include <functional>
 #include <stdexcept>
-#include <boost/thread/shared_mutex.hpp>
+
+#ifdef USE_BOOST_THREADS
+#  include <boost/thread/shared_mutex.hpp>
+#endif
 
 namespace elision {
 
@@ -99,7 +102,9 @@ public:
 		if (!have_value_) {
 			evaluate();
 		}
+#ifdef USE_BOOST_THREADS
 		boost::shared_lock<boost::shared_mutex> lock(evaluator_lock_);
+#endif
 		return value_;
 	}
 
@@ -131,7 +136,9 @@ public:
 		if (!have_value_) {
 			evaluate();
 		}
+#ifdef USE_BOOST_THREADS
 		boost::shared_lock<boost::shared_mutex> lock(evaluator_lock_);
+#endif
 		return value_;
 	}
 
@@ -164,7 +171,9 @@ public:
 	 * @return	This instance.
 	 */
 	Lazy<T>& operator=(Lazy<T> const& other) {
-		boost::lock_guard<boost::shared_mutex> lock(evaluator_lock_);
+#ifdef USE_BOOST_THREADS
+		boost::shared_lock<boost::shared_mutex> lock(evaluator_lock_);
+#endif
 		evaluator_ = other.evaluator_;
 		have_value_ = false;
 		return *this;
@@ -179,7 +188,9 @@ public:
 	 * @return	This instance.
 	 */
 	Lazy<T>& operator=(std::function<T()> evaluator) {
-		boost::lock_guard<boost::shared_mutex> lock(evaluator_lock_);
+#ifdef USE_BOOST_THREADS
+		boost::shared_lock<boost::shared_mutex> lock(evaluator_lock_);
+#endif
 		evaluator_ = evaluator;
 		have_value_ = false;
 		return *this;
@@ -189,10 +200,14 @@ private:
 	std::function<T()> evaluator_;
 	mutable T value_;
 	mutable bool have_value_;
+#ifdef USE_BOOST_THREADS
 	mutable boost::shared_mutex evaluator_lock_;
+#endif
 
 	void evaluate() const {
-		boost::lock_guard<boost::shared_mutex> lock(evaluator_lock_);
+#ifdef USE_BOOST_THREADS
+		boost::shared_lock<boost::shared_mutex> lock(evaluator_lock_);
+#endif
 		if (!have_value_) value_ = evaluator_();
 		have_value_ = true;
 	}
