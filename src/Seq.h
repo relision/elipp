@@ -27,6 +27,14 @@
 
 namespace elision {
 
+template<typename T, typename Alloc>
+class Seq;
+
+template<typename T, typename Alloc>
+struct seq {
+	typedef std::shared_ptr<Seq<T, Alloc> const> type;
+};
+
 /**
  * Provide an immutable sequence data structure that has fast insertion and
  * deletion (creating new instances).
@@ -35,100 +43,23 @@ namespace elision {
  */
 template<typename T, typename Alloc = std::allocator<T> >
 class Seq {
-	/**
-	 * Store a sequence.  This is a common base class for all sequences.
-	 * @param U	The type of elements in the sequence.
+	/* A note on indexing.
+	 *
+	 * index  					what
+	 * 0      					backing.at(0)
+	 * 1      					backing.at(1)
+	 * ...
+	 * insert 					inserted.at(0)
+	 * insert+1					inserted.at(1)
+	 * ...
+	 * insert+inserted_length	backing.at(insert)
+	 * insert+inserted_length+1	backing.at(insert+1)
+	 * ...
+	 *
+	 * If index < insert then backing.at(index).
+	 * If index < insert+inserted_length then inserted.at(index-insert).
+	 * Otherwise inserted.at(index-inserted_length);
 	 */
-	template<typename U>
-	struct seq {
-		seq(size_t length) : length_(length) {
-			// Nothing to do.
-		}
-		virtual ~seq() {}
-		virtual U const& at(size_t index) const {
-			throw std::runtime_error("Seq<T>::seq::at not overridden properly");
-		}
-		virtual size_t size() const { return length_; }
-		size_t length_;
-	};
-
-	/**
-	 * Store a sequence backed by a vector.  The vector is copied into the
-	 * sequence.
-	 * @param U	The type of elements in the sequence.
-	 */
-	template<typename U>
-	struct vec_seq : public seq<U> {
-		vec_seq(std::vector<U> const& back) : seq<U>(back.size()), backing_(back) {}
-		std::vector<U> const backing_;	//< Elements in the sequence.
-		virtual U const& at(size_t index) const {
-			return backing_.at(index);
-		}
-	};
-
-	/**
-	 * Store a sequence with a single element omitted.  The sequence is passed
-	 * by pointer and is never freed by this struct.
-	 * @param U	The type of elements in the sequence.
-	 */
-	template<typename U>
-	struct omit_seq : public seq<U> {
-		omit_seq(seq<U> const* back, size_t omit) : backing_(back), omit_(omit),
-				seq<U>(back->size()) {}
-		seq<U> const* backing_;		//< Elements in the sequence.
-		size_t omit_;				//< Index of the element that is omitted.
-		virtual U const& at(size_t index) const {
-			return (index < omit_) ? backing_->at(index) : backing_->at(index+1);
-		}
-	};
-
-	/**
-	 * Store a sequence with another sequence inserted into it.  The sequences
-	 * are passed by pointer and are never freed by this struct.
-	 * @param U	The type of elements in the sequence.
-	 */
-	template<typename U>
-	struct insert_seq : public seq<U> {
-		insert_seq(seq<U> const* back, size_t insert, seq<U> const* other) :
-				backing_(back), insert_(insert), inserted_(other),
-				seq<U>(back->size() + other->size()),
-				inserted_length_(other->size()) {}
-		seq<U> const* backing_;		//< Elements in the main sequence.
-		size_t insert_;				//< First index of inserted elements.
-		seq<U> const* inserted_;	//< Inserted elements.
-		size_t inserted_length_;	//< Total sequence length.
-		virtual U const& at(size_t index) const {
-			/* A note on indexing.
-			 *
-			 * index  					what
-			 * 0      					backing.at(0)
-			 * 1      					backing.at(1)
-			 * ...
-			 * insert 					inserted.at(0)
-			 * insert+1					inserted.at(1)
-			 * ...
-			 * insert+inserted_length	backing.at(insert)
-			 * insert+inserted_length+1	backing.at(insert+1)
-			 * ...
-			 *
-			 * If index < insert then backing.at(index).
-			 * If index < insert+inserted_length then inserted.at(index-insert).
-			 * Otherwise inserted.at(index-inserted_length);
-			 */
-
-			// If the index is less than the start of the inserted elements,
-			// then return directly from backing.
-			if (index < insert_) return backing_->at(index);
-			// If the index is at or past the insertion point, but not past
-			// the end of the inserted sequence, then return from the inserted
-			// sequence.
-			if (index < insert_+inserted_length_)
-				return inserted_->at(index - insert_);
-			// The index is past the end of the inserted sequence.  Return from
-			// the original backing sequence.
-			return backing_->at(index - inserted_length_);
-		}
-	};
 
 public:
 	typedef typename Alloc::const_reference const_reference;
@@ -140,10 +71,24 @@ public:
 
 private:
 	allocator_type alloc_;		//< Allocator for elements of the sequence.
-	std::unique_ptr<seq<T> const> data_;		//< The data held in this sequence.
-	// The data_ pointer is owned by this instance, and is explicitly deleted
-	// in the destructor.  Note that it was allocated in the constructor to
-	// hold whatever was passed in.
+	size_t length_;				//< Length of sequence.
+	std::function<T (size_t)> fetch_ = [](size_t index) -> T {
+		throw new std::logic_error("fetch uninitialized");
+	};
+
+	/**
+	 * Make a new instance, with a single element omitted.  Constant time.
+	 * @param backing	The elements of the sequence.
+	 * @param omit		Zero-based index of the element to omit.
+	 * @param alloc		Allocator for the elements.
+	 * @throws std::range_error	The index is out of range.
+	 */
+	Seq(typename seq<T,Alloc>::type backing, size_t omit, Alloc const& alloc=Alloc()) :
+			alloc_(alloc), length_(backing->size()) {
+		fetch_ = [backing, omit](size_t pos) {
+			return pos < omit ? backing->at(pos) : backing->at(pos + 1);
+		};
+	}
 
 public:
 	class const_iterator;
@@ -153,44 +98,19 @@ public:
 	 * @param backing	The elements of the sequence.  The vector is copied.
 	 * @param alloc		Allocator for the elements.
 	 */
-	Seq(std::vector<T> const& backing, Alloc const& alloc=Alloc()) :
-			alloc_(alloc), data_(new vec_seq<T>(backing)) {
-		// Nothing to do.
-	}
-
-	/**
-	 * Make a new instance, with a single element omitted.  Constant time.
-	 * @param backing	The elements of the sequence.
-	 * @param index		Zero-based index of the element to omit.
-	 * @param alloc		Allocator for the elements.
-	 * @throws std::range_error	The index is out of range.
-	 */
-	Seq(Seq<T> const& backing, size_t index, Alloc const& alloc=Alloc()) :
-			alloc_(alloc), data_(new omit_seq<T>(backing.data_, index)) {
-		// Nothing to do.
-	}
-
-	/**
-	 * Make a new instance that inserts one sequence into another.  Constant
-	 * time.
-	 * @param backing	The elements of the primary sequence.
-	 * @param start		Zero-based index of the first inserted element.
-	 * @param other		The sequence to insert.
-	 * @param alloc		Allocator for the elements.
-	 * @throws std::range_error	The index is out of range.
-	 */
-	Seq(Seq<T> const& backing, size_t start, Seq<T> const& other,
-			Alloc const& alloc=Alloc()) : alloc_(alloc),
-					data_(new insert_seq<T>(backing.data_, start, other)) {
-		// Nothing to do.
+	Seq(std::vector<T> const backing, Alloc const& alloc=Alloc()) :
+			alloc_(alloc), length_(backing.size()) {
+		fetch_ = [backing](size_t pos) {
+			return backing.at(pos);
+		};
 	}
 
 	/**
 	 * Copy construct a new instance.
 	 * @param that		The sequence to copy.
 	 */
-	Seq(Seq<T> const& that) : alloc_(that.alloc_),
-			data_{std::unique_ptr<seq<T> const>(that.data_)} {
+	Seq(typename seq<T,Alloc>::type that) : alloc_(that->alloc_), length_(that->length_),
+			fetch_(that->fetch) {
 		// Nothing to do.
 	}
 
@@ -198,10 +118,24 @@ public:
 	 * Make a new empty sequence.
 	 * @param alloc		Allocator for the elements.
 	 */
-	Seq(Alloc const& alloc = Alloc());
+	Seq(Alloc const& alloc = Alloc()) : alloc_(alloc), length_(0) {
+		fetch_ = [](size_t pos) {
+			throw new std::range_error("index out of range");
+		};
+	}
+
+	/**
+	 * Make a new repeating sequence.
+	 * @param n			Number of elements.
+	 * @param x			The element to repeat.
+	 * @param alloc		The allocator.
+	 */
 	Seq(size_type n, T const& x, Alloc const& alloc=Alloc()) : alloc_(alloc),
-			data_(vec_seq<T>(std::vector<T>(n, x, alloc))) {
-		// Nothing to do.
+			length_(n) {
+		auto vec = std::shared_ptr<std::vector<T> >(new std::vector<T>(n, x, alloc));
+		fetch_ = [vec](size_t pos) {
+			return vec->at(pos);
+		};
 	}
 
 	/**
@@ -212,13 +146,16 @@ public:
 	 */
 	template<typename InputIter>
 	Seq(InputIter first, InputIter last, Alloc const& alloc = Alloc()) :
-			alloc_(alloc), data_(new vec_seq<T>(std::vector<T>(first, last, alloc))) {
-		// Nothing to do.
+			alloc_(alloc), length_(0) {
+		auto vec = std::shared_ptr<std::vector<T> >(new std::vector<T>(first,last, alloc));
+		length_ = vec->size();
+		fetch_ = [vec](size_t pos) {
+			return vec->at(pos);
+		};
 	}
 
 	/// Deallocate this instance.
 	virtual ~Seq() {
-		//delete data_;
 		clear();
 	}
 
@@ -232,13 +169,13 @@ public:
 	 * Get an iterator pointing to the first element of the sequence.
 	 * @return	Iterator to first element.
 	 */
-	const_iterator begin() const { return const_iterator(0, data_); }
+	const_iterator begin() const { return const_iterator(0, fetch_); }
 
 	/**
 	 * Get an iterator pointing one past the last element of the sequence.
 	 * @return	Iterator just past the end of the sequence.
 	 */
-	const_iterator end() const { return const_iterator(data_->size(), data_); }
+	const_iterator end() const { return const_iterator(length_, fetch_); }
 
 	/**
 	 * Get an element from the sequence.
@@ -246,7 +183,7 @@ public:
 	 * @return	The requested element.
 	 * @throws std::range_error	The index is out of bounds.
 	 */
-	T const& at(size_t index) const { return data_->at(index); }
+	T const& at(size_t index) const { return fetch_(index); }
 
 	/**
 	 * Clear the content of this sequence.
@@ -264,7 +201,7 @@ public:
 	 * Get the number of elements in this sequence.
 	 * @return	The number of elements in this sequence.
 	 */
-	size_type size() const { return data_->size(); }
+	size_type size() const { return length_; }
 
 	/**
 	 * Construct a new sequence from this sequence, omitting the specified
@@ -278,18 +215,18 @@ public:
 		return ret;
 	}
 
-	/**
-	 * Construct a new sequence from this sequence by inserting all elements
-	 * of another sequence into this one.
-	 * @param start		Zero-based index of the first inserted element.
-	 * @param data		The sequence ot insert.
-	 * @return	The new sequence.
-	 * @throws std::range_error		The index if out of bounds.
-	 */
-	Seq<T> insert(size_t start, Seq<T> const& data) const {
-		Seq<T> ret(*this, start, data);
-		return ret;
-	}
+//	/**
+//	 * Construct a new sequence from this sequence by inserting all elements
+//	 * of another sequence into this one.
+//	 * @param start		Zero-based index of the first inserted element.
+//	 * @param data		The sequence ot insert.
+//	 * @return	The new sequence.
+//	 * @throws std::range_error		The index if out of bounds.
+//	 */
+//	Seq<T> insert(size_t start, Seq<T> const& data) const {
+//		Seq<T> ret(*this, start, data);
+//		return ret;
+//	}
 
 	/**
 	 * Get the elements of this sequence as a new vector that is constructed
@@ -313,13 +250,14 @@ public:
 		 * @param data		The sequence.  This is passed as a pointer, and is
 		 * 					never freed by this object.
 		 */
-		const_iterator(size_t pos, seq<T> const* elts) : pos_(pos), elts_(elts) {
+		const_iterator(size_t pos, std::function<T (size_t)> fetch) :
+				pos_(pos), fetch_(fetch) {
 			// Nothing to do.
 		}
 		const_iterator & operator++() { ++pos_; return *this; }
 		const_iterator & operator++(int) { ++pos_; return *this; }
-		T const& operator*() const { return elts_->at(pos_); }
-		T const* operator->() const { return &elts_->at(pos_); }
+		T const& operator*() const { return fetch_(pos_); }
+		T const* operator->() const { return &fetch_(pos_); }
 		bool operator==(const_iterator const& other) const {
 			return pos_ == other.pos_;
 		}
@@ -329,7 +267,7 @@ public:
 
 	private:
 		size_t pos_;
-		seq<T> const* elts_;
+		std::function<T (size_t)> fetch_;
 	};
 };
 
