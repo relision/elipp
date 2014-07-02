@@ -135,6 +135,10 @@ public:
 		return PROPERTY_SPECIFICATION_KIND;
 	}
 
+	inline unsigned int get_depth() const {
+		return depth_;
+	}
+
 private:
 	friend class PropertySpecificationBuilderImpl;
 	PropertySpecificationImpl(Locus the_loc,
@@ -153,6 +157,7 @@ private:
 	boost::optional<pTerm> elements_;
 	Lazy<std::string> strval_;
 	Lazy<bool> constant_;
+	Lazy<unsigned int> depth_;
 };
 
 } /* namespace basic */

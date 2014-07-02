@@ -38,6 +38,34 @@ PropertySpecificationImpl::PropertySpecificationImpl(
 				absorber_(the_absorber),
 				identity_(the_identity),
 				elements_(the_elements) {
+	depth_ = [this]() {
+		unsigned int depth = the_type->get_depth();
+		if (associative_) {
+			pTerm value = *associative_;
+			depth = std::max(depth, value->get_depth());
+		}
+		if (commutative_) {
+			pTerm value = *commutative_;
+			depth = std::max(depth, value->get_depth());
+		}
+		if (idempotent_) {
+			pTerm value = *idempotent_;
+			depth = std::max(depth, value->get_depth());
+		}
+		if (absorber_) {
+			pTerm term = absorber_.get();
+			depth = std::max(depth, term->get_depth());
+		}
+		if (identity_) {
+			pTerm term = identity_.get();
+			depth = std::max(depth, term->get_depth());
+		}
+		if (elements_) {
+			pTerm term = elements_.get();
+			depth = std::max(depth, term->get_depth());
+		}
+		return depth + 1;
+	};
 	strval_ = [this]() {
 		std::string ret = "%";
 		if (associative_) {

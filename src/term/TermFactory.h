@@ -180,7 +180,7 @@ public:
 	//======================================================================
 
 	virtual pTermVariable get_term_variable(Locus loc, std::string name,
-			pTerm type) const = 0;
+			pTerm term_type) const = 0;
 
 	//======================================================================
 	// Make static maps.

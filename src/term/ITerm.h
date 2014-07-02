@@ -109,10 +109,15 @@ public:
 	virtual unsigned int get_de_bruijn_index() const = 0;
 
     /**
-     * Get the depth of this term.  Literals have depth zero, as do variables.
-     * The depth of the term is independent of its type.  When a term contains
-     * another term, the depth is one plus the maximum depth of the contained
-     * terms.
+     * Get the depth of this term.  The depth of the root is zero; otherwise
+     * the depth is one plus the maximum depth of all child terms, with a few
+     * exceptions noted below.
+     *
+     * Depth is used in matching, with the intent that if the pattern depth
+     * exceeds the subject depth, no match is possible.  For this reason the
+     * depth of the type is included, but the depth of guards (for variables
+     * and lambdas) is not.
+     *
      * @return	The depth of the term.
      */
 	virtual unsigned int get_depth() const = 0;

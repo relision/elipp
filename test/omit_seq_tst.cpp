@@ -91,8 +91,8 @@ try {
 
 END_ITEM(build)
 
-//START_ITEM(omit)
-//
+START_ITEM(omit)
+
 //try {
 //	ENDL("Omitting second element"); PUSH;
 //	auto s1 = os1.omit(1);
@@ -107,8 +107,8 @@ END_ITEM(build)
 //	ENDL("Caught an exception: " << e.what());
 //	FAIL_ITEM(omit, "");
 //}
-//
-//END_ITEM(omit)
+
+END_ITEM(omit)
 
 START_ITEM(mix)
 

@@ -68,6 +68,10 @@ public:
 		return strval_;
 	}
 
+	inline unsigned int get_depth() const {
+		return depth_;
+	}
+
 private:
 	friend class TermFactoryImpl;
 	ListImpl(Locus the_loc, pPropertySpecification the_spec,
@@ -76,6 +80,7 @@ private:
 	std::vector<pTerm> elements_;
 	Lazy<std::string> strval_;
 	Lazy<bool> constant_;
+	Lazy<unsigned int> depth_;
 };
 
 } /* namespace basic */

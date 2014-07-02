@@ -61,6 +61,11 @@ public:
 		return strval_;
 	}
 
+	inline unsigned int get_depth() const {
+		return std::max(get_type()->get_depth(), operator_->get_depth(),
+				argument_->get_depth()) + 1;
+	}
+
 private:
 	friend class TermFactoryImpl;
 	ApplyImpl(Locus the_loc, pTerm op, pTerm argument, pTerm the_type);

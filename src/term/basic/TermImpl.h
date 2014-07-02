@@ -68,10 +68,8 @@ public:
 		return 0;
 	}
 
-	/// Return the default of zero.  Override if you need to.
-	inline virtual unsigned int get_depth() const {
-		return 0;
-	}
+	/// Subclasses must provide an implementation.
+	inline virtual unsigned int get_depth() const = 0;
 
 	/// Return the default of false.  Override if you need to.
 	inline virtual bool is_meta_term() const {

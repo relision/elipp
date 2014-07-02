@@ -67,6 +67,14 @@ public:
 	 * @return	The variable name.
 	 */
 	virtual std::string const get_name() const = 0;
+
+	/**
+	 * Get the underlying type for this term variable.  Term variables are
+	 * allowed to bind (or construct) term literals, and those have an
+	 * underlying type.  This is the allowed underlying type.
+	 * @return	The allowed term type.
+	 */
+	virtual pTerm get_term_type() const = 0;
 };
 
 /// Shorthand for a variable pointer.

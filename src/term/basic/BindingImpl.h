@@ -60,12 +60,17 @@ public:
 		return strval_;
 	}
 
+	inline unsigned int get_depth() const {
+		return depth_;
+	}
+
 private:
 	friend class TermFactoryImpl;
 	BindingImpl(Locus the_loc, map_t* map, pTerm type);
 	std::shared_ptr<map_t> const map_;
 	Lazy<std::string> strval_;
 	Lazy<bool> constant_;
+	Lazy<unsigned int> depth_;
 };
 
 } /* namespace basic */

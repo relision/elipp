@@ -42,6 +42,13 @@ ListImpl::ListImpl(Locus the_loc, pPropertySpecification the_spec,
 		} // Iterate over contents.
 		return ret;
 	};
+	depth_ = [this]() {
+		unsigned int depth = the_type->get_depth();
+		for (auto i : elements_) {
+			depth = std::max(depth, i.get()->get_depth());
+		} // Get the depth.
+		return depth + 1;
+	};
 }
 
 } /* namespace basic */

@@ -193,10 +193,6 @@ TermFactoryImpl::get_term_literal(
 		Locus loc, pTerm term) const {
 	NOTNULL(loc);
 	NOTNULL(term);
-
-	// Keep this around.
-	static pTerm TERM =
-			get_symbol_literal(Loc::get_internal(), "TERM", SYMBOL);
 	return MAKE(TermLiteral, term,
 			get_special_form(Loc::get_internal(), TERM, term->get_type()));
 }
@@ -212,10 +208,11 @@ TermFactoryImpl::get_variable(
 
 pTermVariable
 TermFactoryImpl::get_term_variable(
-		Locus loc, std::string name, pTerm type) const {
+		Locus loc, std::string name, pTerm term_type) const {
 	NOTNULL(loc);
-	NOTNULL(type);
-	return MAKE(TermVariable, name, type);
+	NOTNULL(term_type);
+	return MAKE(TermVariable, name, term_type,
+			get_special_form(Loc::get_internal(), TERM, term_type));
 }
 
 pStaticMap

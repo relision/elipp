@@ -34,8 +34,8 @@ VariableImpl::VariableImpl(Locus the_loc, std::string the_name,
 }
 
 TermVariableImpl::TermVariableImpl(Locus the_loc, std::string the_name,
-		pTerm the_type) : TermImpl(the_loc, the_type),
-				name_(the_name) {
+		pTerm term_type, pTerm the_type) : TermImpl(the_loc, the_type),
+				name_(the_name), term_type_(term_type) {
 	strval_ = [this]() {
 		return std::string("$") + elision::escape(name_, true) +
 				WITH_TYPE(type_);

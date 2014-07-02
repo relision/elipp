@@ -85,45 +85,49 @@ TermModifier::rebuild(pTerm target,
 
 	// The target did not get replaced immediately so now we have to
 	// descend into the type and the children.  We use this method to
-	// potentially rebuild all of them.
-
-	// Compute a possibly new type.
-	pTerm new_type = rebuild(target->get_type(), closure);
-	bool changed = (target->get_type() != new_type);
+	// rebuild all of them, potentially.
 
 	// Now compute over the children and - if necessary - rebuild the
 	// term.
 	switch (target->get_kind()) {
 	case SYMBOL_LITERAL_KIND: {
-		pSymbolLiteral lit = CAST(SymbolLiteral, target);
-		if (changed) {
-			return fact_.get_symbol_literal(lit->get_loc(),
-					lit->get_name(), new_type);
+		// Compute a possibly new type.
+		pTerm new_type = rebuild(target->get_type(), closure);
+		if ((target->get_type() != new_type)) {
+			pSymbolLiteral lit = CAST(SymbolLiteral, target);
+			return fact_.get_symbol_literal(lit->get_loc(), lit->get_name(),
+					new_type);
 		}
 		break;
 	}
 
 	case STRING_LITERAL_KIND: {
-		pStringLiteral lit = CAST(StringLiteral, target);
-		if (changed) {
-			return fact_.get_string_literal(lit->get_loc(),
-					lit->get_value(), new_type);
+		// Compute a possibly new type.
+		pTerm new_type = rebuild(target->get_type(), closure);
+		if ((target->get_type() != new_type)) {
+			pStringLiteral lit = CAST(StringLiteral, target);
+			return fact_.get_string_literal(lit->get_loc(), lit->get_value(),
+					new_type);
 		}
 		break;
 	}
 
 	case INTEGER_LITERAL_KIND: {
-		pIntegerLiteral lit = CAST(IntegerLiteral, target);
-		if (changed) {
-			return fact_.get_integer_literal(lit->get_loc(),
-					lit->get_value(), new_type);
+		// Compute a possibly new type.
+		pTerm new_type = rebuild(target->get_type(), closure);
+		if ((target->get_type() != new_type)) {
+			pIntegerLiteral lit = CAST(IntegerLiteral, target);
+			return fact_.get_integer_literal(lit->get_loc(), lit->get_value(),
+					new_type);
 		}
 		break;
 	}
 
 	case FLOAT_LITERAL_KIND: {
-		pFloatLiteral lit = CAST(FloatLiteral, target);
-		if (changed) {
+		// Compute a possibly new type.
+		pTerm new_type = rebuild(target->get_type(), closure);
+		if ((target->get_type() != new_type)) {
+			pFloatLiteral lit = CAST(FloatLiteral, target);
 			return fact_.get_float_literal(lit->get_loc(),
 					lit->get_significand(), lit->get_exponent(),
 					lit->get_radix(), new_type);
@@ -132,8 +136,10 @@ TermModifier::rebuild(pTerm target,
 	}
 
 	case BIT_STRING_LITERAL_KIND: {
-		pBitStringLiteral lit = CAST(BitStringLiteral, target);
-		if (changed) {
+		// Compute a possibly new type.
+		pTerm new_type = rebuild(target->get_type(), closure);
+		if ((target->get_type() != new_type)) {
+			pBitStringLiteral lit = CAST(BitStringLiteral, target);
 			return fact_.get_bit_string_literal(lit->get_loc(),
 					lit->get_bits(), lit->get_length(), new_type);
 		}
@@ -141,36 +147,46 @@ TermModifier::rebuild(pTerm target,
 	}
 
 	case BOOLEAN_LITERAL_KIND: {
-		pBooleanLiteral lit = CAST(BooleanLiteral, target);
-		if (changed) {
-			return fact_.get_boolean_literal(lit->get_loc(),
-					lit->get_value(), new_type);
+		// Compute a possibly new type.
+		pTerm new_type = rebuild(target->get_type(), closure);
+		if ((target->get_type() != new_type)) {
+			pBooleanLiteral lit = CAST(BooleanLiteral, target);
+			return fact_.get_boolean_literal(lit->get_loc(), lit->get_value(),
+					new_type);
 		}
 		break;
 	}
 
 	case TERM_LITERAL_KIND: {
 		pTermLiteral lit = CAST(TermLiteral, target);
-		// TODO Implement this.
+		pTerm term = lit->get_term();
+		pTerm new_term = rebuild(term, closure);
+		if (new_term != term) {
+			return fact_.get_term_literal(lit->get_loc(), new_term);
+		}
 		break;
 	}
 
 	case VARIABLE_KIND: {
+		// Compute a possibly new type.
+		pTerm new_type = rebuild(target->get_type(), closure);
 		pVariable var = CAST(Variable, target);
 		pTerm guard = var->get_guard();
 		pTerm new_guard = rebuild(guard, closure);
-		if (changed || (guard != new_guard)) {
-			return fact_.get_variable(var->get_loc(),
-					var->get_name(), new_guard, new_type);
+		if ((target->get_type() != new_type) || (guard != new_guard)) {
+			return fact_.get_variable(var->get_loc(), var->get_name(),
+					new_guard, new_type);
 		}
 		break;
 	}
 
 	case TERM_VARIABLE_KIND: {
 		pTermVariable var = CAST(TermVariable, target);
-		if (changed) {
-			return fact_.get_term_variable(var->get_loc(),
-					var->get_name(), new_type);
+		pTerm term_type = var->get_term_type();
+		pTerm new_term_type = rebuild(term_type, closure);
+		if (term_type != new_term_type) {
+			return fact_.get_term_variable(var->get_loc(), var->get_name(),
+					new_term_type);
 		}
 		break;
 	}
@@ -189,9 +205,8 @@ TermModifier::rebuild(pTerm target,
 		pTerm new_lhs = rebuild(lhs, closure);
 		pTerm new_rhs = rebuild(rhs, closure);
 		pTerm new_guard = rebuild(guard, closure);
-		if (changed || lhs != new_lhs || rhs != new_rhs ||
-				guard != new_guard) {
-			return fact_.get_lambda(mp->get_loc(), lhs, rhs, guard);
+		if (lhs != new_lhs || rhs != new_rhs || guard != new_guard) {
+			return fact_.get_lambda(mp->get_loc(), new_lhs, new_rhs, new_guard);
 		}
 		break;
 	}
@@ -210,7 +225,13 @@ TermModifier::rebuild(pTerm target,
 
 	case SPECIAL_FORM_KIND: {
 		pSpecialForm sf = CAST(SpecialForm, target);
-		// TODO Implement this.
+		pTerm tag = sf->get_tag();
+		pTerm content = sf->get_content();
+		pTerm new_tag = rebuild(tag, closure);
+		pTerm new_content = rebuild(content, closure);
+		if (tag != new_tag || content != new_content) {
+			return fact_.get_special_form(sf->get_loc(), new_tag, new_content);
+		}
 		break;
 	}
 
@@ -220,7 +241,7 @@ TermModifier::rebuild(pTerm target,
 		pTerm arg = apply->get_argument();
 		pTerm new_op = rebuild(op, closure);
 		pTerm new_arg = rebuild(arg, closure);
-		if (changed || op != new_op || arg != new_arg) {
+		if (op != new_op || arg != new_arg) {
 			return fact_.apply(apply->get_loc(), op, arg);
 		}
 		break;
@@ -232,7 +253,7 @@ TermModifier::rebuild(pTerm target,
 		pTerm codomain = map->get_codomain();
 		pTerm new_domain = rebuild(domain, closure);
 		pTerm new_codomain = rebuild(codomain, closure);
-		if (changed || domain != new_domain || codomain != new_codomain) {
+		if (domain != new_domain || codomain != new_codomain) {
 			return fact_.get_static_map(map->get_loc(), domain, codomain);
 		}
 		break;

@@ -58,6 +58,11 @@ public:
 		return strval_;
 	}
 
+	inline unsigned int get_depth() const {
+		return std::max(get_type()->get_depth(), tag_->get_depth(),
+				content_->get_depth()) + 1;
+	}
+
 private:
 	friend class TermFactoryImpl;
 	SpecialFormImpl(Locus the_loc, pTerm the_tag, pTerm the_content,

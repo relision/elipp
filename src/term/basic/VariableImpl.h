@@ -61,6 +61,10 @@ public:
 		return VARIABLE_KIND;
 	}
 
+	inline unsigned int get_depth() const {
+		return get_type()->get_depth();
+	}
+
 private:
 	friend class TermFactoryImpl;
 	VariableImpl(Locus the_loc, std::string the_name, pTerm the_guard,
@@ -77,6 +81,10 @@ public:
 
 	inline virtual std::string const get_name() const {
 		return name_;
+	}
+
+	inline virtual pTerm const get_term_type() const {
+		return term_type_;
 	}
 
 	inline virtual bool is_constant() const {
@@ -96,10 +104,16 @@ public:
 		return TERM_VARIABLE_KIND;
 	}
 
+	inline unsigned int get_depth() const {
+		return get_type()->get_depth();
+	}
+
 private:
 	friend class TermFactoryImpl;
-	TermVariableImpl(Locus the_loc, std::string the_name, pTerm the_type);
+	TermVariableImpl(Locus the_loc, std::string the_name, pTerm term_type,
+			pTerm the_type);
 	std::string const name_;
+	pTerm term_type_;
 	Lazy<std::string> strval_;
 };
 

@@ -55,11 +55,22 @@ public:
 		return SYMBOL_LITERAL_KIND;
 	}
 
+	inline unsigned int get_depth() const {
+		return get_type()->get_depth();
+	}
+
 private:
 	friend class TermFactoryImpl;
 	SymbolLiteralImpl(Locus the_loc, std::string the_name, pTerm the_type);
 	std::string const name_;
 	Lazy<std::string> strval_;
+};
+
+
+template <> struct std::hash<ISymbolLiteral> {
+size_t operator()(const elision::term::ISymbolLiteral & sym) const {
+  return std::hash(sym.get_name()) * 31 + std::hash(sym.get_type());
+}
 };
 
 
@@ -84,6 +95,10 @@ public:
 
 	inline TermKind get_kind() const {
 		return STRING_LITERAL_KIND;
+	}
+
+	inline unsigned int get_depth() const {
+		return get_type()->get_depth();
 	}
 
 private:
@@ -115,6 +130,10 @@ public:
 
 	inline TermKind get_kind() const {
 		return INTEGER_LITERAL_KIND;
+	}
+
+	inline unsigned int get_depth() const {
+		return get_type()->get_depth();
 	}
 
 private:
@@ -159,6 +178,10 @@ public:
 		return FLOAT_LITERAL_KIND;
 	}
 
+	inline unsigned int get_depth() const {
+		return get_type()->get_depth();
+	}
+
 private:
 	friend class TermFactoryImpl;
 	FloatLiteralImpl(Locus the_loc, eint_t the_significand, eint_t the_exponent,
@@ -196,6 +219,10 @@ public:
 
 	inline TermKind get_kind() const {
 		return BIT_STRING_LITERAL_KIND;
+	}
+
+	inline unsigned int get_depth() const {
+		return get_type()->get_depth();
 	}
 
 private:
@@ -239,6 +266,10 @@ public:
 		return !value_;
 	}
 
+	inline unsigned int get_depth() const {
+		return get_type()->get_depth();
+	}
+
 private:
 	friend class TermFactoryImpl;
 	BooleanLiteralImpl(Locus the_loc, bool value, pTerm the_type);
@@ -268,6 +299,10 @@ public:
 
 	inline TermKind get_kind() const {
 		return TERM_LITERAL_KIND;
+	}
+
+	inline unsigned int get_depth() const {
+		return std::max(get_type()->get_depth(), get_term()->get_depth());
 	}
 
 private:
