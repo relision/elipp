@@ -83,6 +83,7 @@ public:
 	pSymbolLiteral MAP;			//< Simple access to the type for map pairs.
 	pSymbolLiteral SPECIAL_FORM;//< Simple access to the special form type.
 	pSymbolLiteral PROPERTIES;	//< Simple access to the type for property specs.
+	pSymbolLiteral TERM;		//< Simple access to the term marker.
 
 	//======================================================================
 	// Well-known literals.

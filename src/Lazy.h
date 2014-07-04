@@ -91,6 +91,14 @@ public:
 		// Nothing to do.
 	}
 
+	/**
+	 * Permit non-lazy initialization.
+	 * @param value	The non-lazy value to initialize this.
+	 */
+	Lazy(T value) : have_value_(true), value_(value) {
+		// Nothing to do.
+	}
+
 	/// Deallocate this instance.
 	virtual ~Lazy() = default;
 
@@ -193,6 +201,24 @@ public:
 #endif
 		evaluator_ = evaluator;
 		have_value_ = false;
+		return *this;
+	}
+
+	/**
+	 * Allow assigning a non-lazy value.  This permits directly assigning the
+	 * value when you have been forced to compute it by some other means.
+	 * @param	value	The value.
+	 * @return	This instance.
+	 */
+	Lazy<T>& operator=(T value) {
+#ifdef USE_BOOST_THREADS
+		boost::shared_lock<boost::shared_mutex> lock(evaluator_lock_);
+#endif
+		evaluator_ = []()->T {
+			throw std::runtime_error("Lazy value not set.");
+		};
+		have_value_ = true;
+		value_ = value;
 		return *this;
 	}
 

@@ -92,8 +92,6 @@ private:
 	pTerm root_;
 	mutable std::unordered_map<std::string, pSymbolLiteral> known_roots_;
 	std::unique_ptr<TermModifier> modifier_{new TermModifier(*this)};
-	static pTerm TERM =
-			get_symbol_literal(Loc::get_internal(), "TERM", SYMBOL);
 
 };
 

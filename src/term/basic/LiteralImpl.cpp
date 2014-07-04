@@ -19,6 +19,7 @@
 
 #include "LiteralImpl.h"
 #include <boost/lexical_cast.hpp>
+#include <boost/functional/hash.hpp>
 
 namespace elision {
 namespace term {
@@ -33,6 +34,15 @@ SymbolLiteralImpl::SymbolLiteralImpl(Locus the_loc, std::string the_name,
 	strval_ = [this]() {
 		return elision::escape(name_, true) + WITH_TYPE(type_);
 	};
+	depth_ = [this, the_type]() {
+		return the_type->get_depth() + 1;
+	};
+	hash_ = [this]() {
+		return boost::hash<std::string>()(name_);
+	};
+	other_hash_ = [this]() {
+		return other_hash_combine(std::hash<std::string>()(name_), type_);
+	};
 }
 
 //======================================================================
@@ -43,6 +53,15 @@ StringLiteralImpl::StringLiteralImpl(Locus the_loc, std::string the_value,
 		pTerm the_type) : TermImpl(the_loc, the_type), value_(the_value) {
 	strval_ = [this]() {
 		return elision::escape(value_, false) + WITH_TYPE(type_);
+	};
+	depth_ = [this, the_type]() {
+		return the_type->get_depth() + 1;
+	};
+	hash_ = [this]() {
+		return boost::hash<std::string>()(value_);
+	};
+	other_hash_ = [this]() {
+		return other_hash_combine(std::hash<std::string>()(value_), type_);
 	};
 }
 
@@ -55,6 +74,16 @@ IntegerLiteralImpl::IntegerLiteralImpl(Locus the_loc, eint_t the_value,
 	strval_ = [this]() {
 		return elision::eint_to_string(value_,
 				elision::preferred_radix, true) + WITH_TYPE(type_);
+	};
+	depth_ = [this, the_type]() {
+		return the_type->get_depth() + 1;
+	};
+	hash_ = [this]() {
+		return boost::hash<std::string>()(strval_);
+	};
+	other_hash_ = [this]() {
+		size_t hash = std::hash<std::string>()(strval_);
+		return other_hash_combine(hash, type_);
 	};
 }
 
@@ -80,6 +109,16 @@ FloatLiteralImpl::FloatLiteralImpl(Locus the_loc, eint_t the_significand,
 				elision::eint_to_string(exponent_, radix_, true) +
 				WITH_TYPE(type_);
 	};
+	depth_ = [this, the_type]() {
+		return the_type->get_depth() + 1;
+	};
+	hash_ = [this]() {
+		return boost::hash<std::string>()(strval_);
+	};
+	other_hash_ = [this]() {
+		size_t hash = std::hash<std::string>()(strval_);
+		return other_hash_combine(hash, type_);
+	};
 }
 
 //======================================================================
@@ -94,6 +133,16 @@ BitStringLiteralImpl::BitStringLiteralImpl(Locus the_loc, eint_t the_bits,
 				elision::eint_to_string(length_, 10, true) +
 				WITH_TYPE(type_);
 	};
+	depth_ = [this, the_type]() {
+		return the_type->get_depth() + 1;
+	};
+	hash_ = [this]() {
+		return boost::hash<std::string>()(strval_);
+	};
+	other_hash_ = [this]() {
+		size_t hash = std::hash<std::string>()(strval_);
+		return other_hash_combine(hash, type_);
+	};
 }
 
 //======================================================================
@@ -105,6 +154,17 @@ BooleanLiteralImpl::BooleanLiteralImpl(Locus the_loc, bool the_value,
 	strval_ = [this]() {
 		return std::string(value_ ? "true" : "false") + WITH_TYPE(type_);
 	};
+	depth_ = [this, the_type]() {
+		return the_type->get_depth() + 1;
+	};
+	hash_ = [this]() {
+		size_t hash = value_ ? 1 : 0;
+		return hash_combine(hash, type_);
+	};
+	other_hash_ = [this]() {
+		size_t hash = value_ ? 18 : 23;
+		return other_hash_combine(hash, type_);
+	};
 }
 
 //======================================================================
@@ -115,6 +175,15 @@ TermLiteralImpl::TermLiteralImpl(Locus the_loc, pTerm the_term,
 		pTerm the_type) : TermImpl(the_loc, the_type), term_(the_term) {
 	strval_ = [this]() {
 		return "<" + term_->to_string() + ">";
+	};
+	depth_ = [this, the_type]() {
+		return std::max(term_->get_depth(), the_type->get_depth()) + 1;
+	};
+	hash_ = [this]() {
+		return hash_combine(term_->get_hash(), type_);
+	};
+	other_hash_ = [this]() {
+		return other_hash_combine(term_->get_other_hash(), type_);
 	};
 }
 

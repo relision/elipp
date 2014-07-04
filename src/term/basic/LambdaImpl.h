@@ -67,11 +67,6 @@ public:
 		return strval_;
 	}
 
-	inline unsigned int get_depth() const {
-		return std::max(get_type()->get_depth(), lhs_->get_depth(),
-				rhs_->get_depth()) + 1;
-	}
-
 private:
 	friend class TermFactoryImpl;
 	LambdaImpl(Locus the_loc, pTerm the_lhs, pTerm the_rhs, pTerm the_gaurd,

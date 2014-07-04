@@ -135,10 +135,6 @@ public:
 		return PROPERTY_SPECIFICATION_KIND;
 	}
 
-	inline unsigned int get_depth() const {
-		return depth_;
-	}
-
 private:
 	friend class PropertySpecificationBuilderImpl;
 	PropertySpecificationImpl(Locus the_loc,

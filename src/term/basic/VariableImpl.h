@@ -61,10 +61,6 @@ public:
 		return VARIABLE_KIND;
 	}
 
-	inline unsigned int get_depth() const {
-		return get_type()->get_depth();
-	}
-
 private:
 	friend class TermFactoryImpl;
 	VariableImpl(Locus the_loc, std::string the_name, pTerm the_guard,
@@ -83,7 +79,7 @@ public:
 		return name_;
 	}
 
-	inline virtual pTerm const get_term_type() const {
+	inline virtual pTerm get_term_type() const {
 		return term_type_;
 	}
 
@@ -102,10 +98,6 @@ public:
 
 	inline TermKind get_kind() const {
 		return TERM_VARIABLE_KIND;
-	}
-
-	inline unsigned int get_depth() const {
-		return get_type()->get_depth();
 	}
 
 private:

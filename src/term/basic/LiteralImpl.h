@@ -55,22 +55,11 @@ public:
 		return SYMBOL_LITERAL_KIND;
 	}
 
-	inline unsigned int get_depth() const {
-		return get_type()->get_depth();
-	}
-
 private:
 	friend class TermFactoryImpl;
 	SymbolLiteralImpl(Locus the_loc, std::string the_name, pTerm the_type);
 	std::string const name_;
 	Lazy<std::string> strval_;
-};
-
-
-template <> struct std::hash<ISymbolLiteral> {
-size_t operator()(const elision::term::ISymbolLiteral & sym) const {
-  return std::hash(sym.get_name()) * 31 + std::hash(sym.get_type());
-}
 };
 
 

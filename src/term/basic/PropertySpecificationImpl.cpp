@@ -38,8 +38,8 @@ PropertySpecificationImpl::PropertySpecificationImpl(
 				absorber_(the_absorber),
 				identity_(the_identity),
 				elements_(the_elements) {
-	depth_ = [this]() {
-		unsigned int depth = the_type->get_depth();
+	depth_ = [this, the_type]() {
+		depth_type depth = the_type->get_depth();
 		if (associative_) {
 			pTerm value = *associative_;
 			depth = std::max(depth, value->get_depth());
@@ -119,6 +119,26 @@ PropertySpecificationImpl::PropertySpecificationImpl(
 				(absorber_ ? absorber_.get()->is_constant() : true) &&
 				(identity_ ? identity_.get()->is_constant() : true) &&
 				(elements_ ? elements_.get()->is_constant() : true);
+	};
+	hash_ = [this]() {
+		size_t hash = 0;
+		if (associative_) hash = hash_combine(hash, associative_.get());
+		if (commutative_) hash = hash_combine(hash, commutative_.get());
+		if (idempotent_) hash = hash_combine(hash, idempotent_.get());
+		if (absorber_) hash = hash_combine(hash, absorber_.get());
+		if (identity_) hash = hash_combine(hash, identity_.get());
+		if (elements_) hash = hash_combine(hash, elements_.get());
+		return hash;
+	};
+	other_hash_ = [this]() {
+		size_t hash = 171;
+		if (elements_) hash = other_hash_combine(hash, elements_.get());
+		if (identity_) hash = other_hash_combine(hash, identity_.get());
+		if (absorber_) hash = other_hash_combine(hash, absorber_.get());
+		if (idempotent_) hash = other_hash_combine(hash, idempotent_.get());
+		if (commutative_) hash = other_hash_combine(hash, commutative_.get());
+		if (associative_) hash = other_hash_combine(hash, associative_.get());
+		return hash;
 	};
 }
 
