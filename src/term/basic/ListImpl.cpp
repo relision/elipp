@@ -42,7 +42,7 @@ ListImpl::ListImpl(Locus the_loc, pPropertySpecification the_spec,
 		} // Iterate over contents.
 		return ret;
 	};
-	depth_ = [this]() {
+	depth_ = [this, the_type]() {
 		unsigned int depth = the_type->get_depth();
 		for (auto i : elements_) {
 			depth = std::max(depth, i.get()->get_depth());

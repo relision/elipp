@@ -38,7 +38,7 @@ PropertySpecificationImpl::PropertySpecificationImpl(
 				absorber_(the_absorber),
 				identity_(the_identity),
 				elements_(the_elements) {
-	depth_ = [this]() {
+	depth_ = [this, the_type]() {
 		unsigned int depth = the_type->get_depth();
 		if (associative_) {
 			pTerm value = *associative_;

@@ -67,13 +67,6 @@ private:
 };
 
 
-template <> struct std::hash<ISymbolLiteral> {
-size_t operator()(const elision::term::ISymbolLiteral & sym) const {
-  return std::hash(sym.get_name()) * 31 + std::hash(sym.get_type());
-}
-};
-
-
 class StringLiteralImpl : public IStringLiteral, public TermImpl {
 public:
 	inline std::string const get_value() const {

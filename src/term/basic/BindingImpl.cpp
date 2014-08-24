@@ -43,7 +43,7 @@ BindingImpl::BindingImpl(Locus loc, BindingImpl::map_t* map, pTerm type) :
 		} // Check constancy over all pairs.
 		return ret;
 	};
-	depth_ = [this]() {
+	depth_ = [this, type]() {
 		unsigned int depth = type->get_depth();
 		for (auto elt : *map_) {
 			depth = std::max(depth, elt.second->get_depth());
