@@ -71,6 +71,8 @@ public:
 	inline bool is_true() const { return false; }
 	inline bool is_false() const { return false; }
 	inline TermKind get_kind() const { return ROOT_KIND; }
+	inline size_t get_hash() const { return 1; }
+	inline size_t get_other_hash() const { return 0xcafebabe; }
 
 protected:
 	inline bool is_equal(ITerm const& other) const {
@@ -112,6 +114,7 @@ TermFactoryImpl::TermFactoryImpl() : root_(RootTerm::fetch()) {
 	INIT(MAP);
 	INIT(SPECIAL_FORM);
 	INIT(PROPERTIES);
+	TERM = get_symbol_literal(Loc::get_internal(), "TERM", SYMBOL);
 	TRUE = get_boolean_literal(Loc::get_internal(), true, BOOLEAN);
 	FALSE = get_boolean_literal(Loc::get_internal(), false, BOOLEAN);
 

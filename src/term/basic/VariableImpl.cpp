@@ -18,6 +18,7 @@
  */
 
 #include <basic/VariableImpl.h>
+#include <boost/functional/hash.hpp>
 
 namespace elision {
 namespace term {
@@ -31,6 +32,17 @@ VariableImpl::VariableImpl(Locus the_loc, std::string the_name,
 				"{ " + guard_->to_string() + " }" +
 				WITH_TYPE(type_);
 	};
+	depth_ = [this]() {
+		return type_->get_depth() + 1;
+	};
+	hash_ = [this]() {
+		size_t hash = boost::hash<std::string>()(name_);
+		return hash_combine(hash, type_);
+	};
+	other_hash_ = [this]() {
+		size_t hash = std::hash<std::string>()(name_);
+		return other_hash_combine(hash, type_);
+	};
 }
 
 TermVariableImpl::TermVariableImpl(Locus the_loc, std::string the_name,
@@ -39,6 +51,17 @@ TermVariableImpl::TermVariableImpl(Locus the_loc, std::string the_name,
 	strval_ = [this]() {
 		return std::string("$") + elision::escape(name_, true) +
 				WITH_TYPE(type_);
+	};
+	depth_ = [this]() {
+		return type_->get_depth() + 1;
+	};
+	hash_ = [this]() {
+		size_t hash = boost::hash<std::string>()(name_);
+		return hash_combine(hash, type_);
+	};
+	other_hash_ = [this]() {
+		size_t hash = std::hash<std::string>()(name_);
+		return other_hash_combine(hash, type_);
 	};
 }
 

@@ -20,7 +20,9 @@
  * @endverbatim
  */
 
+#include <cstdarg>
 #include "term/ITerm.h"
+#include "Lazy.h"
 
 namespace elision {
 namespace term {
@@ -64,12 +66,14 @@ public:
 	virtual std::string to_string() const = 0;
 
 	/// Return the default of zero.  Override if you need to.
-	inline virtual unsigned int get_de_bruijn_index() const {
+	inline virtual debruijn_type get_de_bruijn_index() const {
 		return 0;
 	}
 
 	/// Subclasses must provide an implementation.
-	inline virtual unsigned int get_depth() const = 0;
+	inline depth_type get_depth() const {
+		return depth_;
+	}
 
 	/// Return the default of false.  Override if you need to.
 	inline virtual bool is_meta_term() const {
@@ -110,9 +114,61 @@ public:
 	 */
 	virtual bool is_equal(ITerm const& other) const = 0;
 
+	inline size_t get_hash() const {
+		return hash_;
+	}
+
+	inline size_t get_other_hash() const {
+		return other_hash_;
+	}
+
+protected:
 	pTerm type_;
 	Locus loc_;
+	Lazy<size_t> hash_;
+	Lazy<size_t> other_hash_;
+	Lazy<depth_type> depth_;
 };
+
+inline size_t hash_value(TermImpl const& term) {
+	return term.get_hash();
+}
+
+/**
+ * Combine the hashes of two terms into a single hash value.
+ * @param seed	Initial hash value.
+ * @param term	The term to combine.
+ * @return	The computed hash value.
+ */
+size_t hash_combine(size_t seed, pTerm term);
+
+/**
+ * Combine the other hashes of two terms into a single hash value.
+ * @param seed	Initial other hash value.
+ * @param term	The term to combine.
+ * @return	The computed other hash value.
+ */
+size_t other_hash_combine(size_t seed, pTerm term);
+
+/**
+ * Combine the hashes of two terms into a single hash value.
+ * @param seed	Initial hash value.
+ * @param term	The term to combine.
+ * @return	The computed hash value.
+ */
+inline size_t hash_combine(pTerm seed, pTerm term) {
+	return hash_combine(seed->get_hash(), term);
+}
+
+/**
+ * Combine the other hashes of two terms into a single hash value.
+ * @param seed	Initial other hash value.
+ * @param term	The term to combine.
+ * @return	The computed other hash value.
+ */
+inline size_t other_hash_combine(pTerm seed, pTerm term) {
+	return other_hash_combine(seed->get_hash(), term);
+}
 
 } /* namespace basic */
 } /* namespace term */

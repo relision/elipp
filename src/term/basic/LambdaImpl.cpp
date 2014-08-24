@@ -30,6 +30,17 @@ LambdaImpl::LambdaImpl(Locus the_loc, pTerm the_lhs, pTerm the_rhs,
 		return lhs_->to_string() + " ->{ " + guard_->to_string() + " } " +
 				rhs_->to_string();
 	};
+	depth_ = [this, the_type]() {
+		// Depth does not depend on the guard.
+		return std::max(lhs_->get_depth(),
+				std::max(rhs_->get_depth(), the_type->get_depth())) + 1;
+	};
+	hash_ = [this]() {
+		return hash_combine(lhs_, rhs_);
+	};
+	other_hash_ = [this]() {
+		return other_hash_combine(lhs_, rhs_);
+	};
 }
 
 } /* namespace basic */

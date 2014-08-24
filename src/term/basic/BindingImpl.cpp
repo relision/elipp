@@ -36,20 +36,20 @@ BindingImpl::BindingImpl(Locus loc, BindingImpl::map_t* map, pTerm type) :
 		ret += " }";
 		return ret;
 	};
-	constant_ = [this]() {
-		bool ret = true;
-		for (auto entry : *map_) {
-			ret = ret && entry.second->is_constant();
-		} // Check constancy over all pairs.
-		return ret;
-	};
-	depth_ = [this, type]() {
-		unsigned int depth = type->get_depth();
-		for (auto elt : *map_) {
-			depth = std::max(depth, elt.second->get_depth());
-		} // Find deepest element.
-		return depth + 1;
-	};
+	bool is_constant = true;
+	unsigned int depth = 0;
+	size_t hash = 0;
+	size_t other_hash = 1;
+	for (auto entry : *map_) {
+		is_constant = is_constant && entry.second->is_constant();
+		depth = std::max(depth, entry.second->get_depth());
+		hash = hash_combine(hash, entry.second);
+		other_hash = hash_combine(other_hash, entry.second);
+	} // Loop over all entries.
+	constant_ = is_constant;
+	hash_ = hash;
+	other_hash_ = other_hash;
+	depth_ = depth + 1;
 }
 
 std::shared_ptr<BindingImpl::map_t>

@@ -55,10 +55,6 @@ public:
 		return SYMBOL_LITERAL_KIND;
 	}
 
-	inline unsigned int get_depth() const {
-		return get_type()->get_depth();
-	}
-
 private:
 	friend class TermFactoryImpl;
 	SymbolLiteralImpl(Locus the_loc, std::string the_name, pTerm the_type);

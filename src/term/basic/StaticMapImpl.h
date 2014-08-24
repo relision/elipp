@@ -61,11 +61,6 @@ public:
 		return strval_;
 	}
 
-	inline unsigned int get_depth() const {
-		return std::max(get_type()->get_depth(), domain_->get_depth(),
-				codomain_->get_depth()) + 1;
-	}
-
 private:
 	friend class TermFactoryImpl;
 	StaticMapImpl(Locus the_loc, pTerm the_domain, pTerm the_codomain,

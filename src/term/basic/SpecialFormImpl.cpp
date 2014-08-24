@@ -29,6 +29,16 @@ SpecialFormImpl::SpecialFormImpl(Locus the_loc, pTerm the_tag,
 	strval_ = [this]() {
 		return "{: " + tag_->to_string() + " " + content_->to_string() + " :}";
 	};
+	depth_ = [this]() {
+		return std::max(get_type()->get_depth(),
+				std::max(tag_->get_depth(), content_->get_depth())) + 1;
+	};
+	hash_ = [this]() {
+		return hash_combine(hash_combine(tag_, content_), type_);
+	};
+	other_hash_ = [this]() {
+		return other_hash_combine(other_hash_combine(type_, content_), tag_);
+	};
 }
 
 } /* namespace basic */

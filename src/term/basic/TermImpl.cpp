@@ -27,10 +27,30 @@ TermImpl::TermImpl(pTerm the_type) : type_(the_type), loc_(Loc::get_internal()) 
 	NOTNULL(the_type);
 }
 
+size_t hash_combine(size_t seed1, size_t seed2) {
+	size_t ret = seed1;
+	ret ^= seed2 + 0x9e3779b9 + (ret << 6) + (ret >> 2);
+	return ret;
+}
+
+size_t other_hash_combine(size_t seed1, size_t seed2) {
+	size_t ret = seed1;
+	ret ^= seed2 + 0x9b9773e9 + (ret << 7) + (ret >> 1);
+	return ret;
+}
+
 TermImpl::TermImpl(Locus the_loc, pTerm the_type) :
 	type_(the_type), loc_(the_loc) {
 	NOTNULL(the_loc);
 	NOTNULL(the_type);
+}
+
+size_t hash_combine(size_t seed, pTerm head) {
+	return hash_combine(seed, head->get_hash());
+}
+
+size_t other_hash_combine(size_t seed, pTerm head) {
+	return other_hash_combine(seed, head->get_other_hash());
 }
 
 } /* namespace basic */

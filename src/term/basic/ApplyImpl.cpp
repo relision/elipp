@@ -35,7 +35,19 @@ ApplyImpl::ApplyImpl(Locus the_loc, pTerm the_operator, pTerm the_argument,
 		return this->operator_->to_string() + "." +
 			this->argument_->to_string();
 	};
+	hash_ = [this]() {
+		return hash_combine(argument_, operator_);
+	};
+	other_hash_ = [this]() {
+		return other_hash_combine(operator_, argument_);
+	};
+	depth_ = [this, the_type]() {
+		depth_type depth = std::max(operator_->get_depth(),
+				argument_->get_depth());
+		return std::max(depth, the_type->get_depth()) + 1;
+	};
 }
+
 
 } /* namespace basic */
 } /* namespace term */

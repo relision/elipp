@@ -29,6 +29,16 @@ StaticMapImpl::StaticMapImpl(Locus the_loc, pTerm the_domain,
 	strval_ = [this]() {
 		return domain_->to_string() + "=>" + codomain_->to_string();
 	};
+	depth_ = [this]() {
+		return std::max(get_type()->get_depth(),
+				std::max(domain_->get_depth(), codomain_->get_depth())) + 1;
+	};
+	hash_ = [this]() {
+		return hash_combine(domain_, codomain_);
+	};
+	other_hash_ = [this]() {
+		return other_hash_combine(codomain_, domain_);
+	};
 }
 
 } /* namespace basic */

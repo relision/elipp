@@ -35,20 +35,20 @@ ListImpl::ListImpl(Locus the_loc, pPropertySpecification the_spec,
 		} // Add all elements.
 		return res + ")";
 	};
-	constant_ = [this]() {
-		bool ret = true;
-		for (auto i : elements_) {
-			ret = ret && i.get()->is_constant();
-		} // Iterate over contents.
-		return ret;
-	};
-	depth_ = [this, the_type]() {
-		unsigned int depth = the_type->get_depth();
-		for (auto i : elements_) {
-			depth = std::max(depth, i.get()->get_depth());
-		} // Get the depth.
-		return depth + 1;
-	};
+	bool constant = true;
+	unsigned int depth = std::max(the_type->get_depth(), the_spec->get_depth());
+	size_t hash = hash_combine(the_type, the_spec);
+	size_t other_hash = hash_combine(the_type, the_spec);
+	for (auto elt : elements_) {
+		constant = constant && elt.get()->is_constant();
+		depth = std::max(depth, elt.get()->get_depth());
+		hash = hash_combine(hash, elt);
+		other_hash = other_hash_combine(other_hash, elt);
+	} // Iterate over contents.
+	constant_ = constant;
+	depth_ = depth;
+	hash_ = hash;
+	other_hash_ = other_hash;
 }
 
 } /* namespace basic */

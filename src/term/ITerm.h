@@ -63,6 +63,12 @@ public:
  */
 class ITerm {
 public:
+	/// The type to use for the depth of a term.
+	typedef unsigned int depth_type;
+
+	/// The type to use for indices.
+	typedef unsigned int debruijn_type;
+
 	/// Deallocate this instance.
 	virtual ~ITerm() = default;
 
@@ -95,6 +101,20 @@ public:
 		return to_string();
 	}
 
+	/**
+	 * Return the hash code for this particular term.  Terms that are equal
+	 * have equal hash codes.
+	 * @return	The hash code.
+	 */
+	virtual size_t get_hash() const = 0;
+
+	/**
+	 * Return the other hash code for this particular term.  Terms that are
+	 * equal have equal other hash codes.
+	 * @return 	The other hash code.
+	 */
+	virtual size_t get_other_hash() const = 0;
+
     /**
      * Get the de Bruijn index of this term.
      *
@@ -106,7 +126,7 @@ public:
      * index of zero.  Otherwise the index will be positive.
      * @return	The De Bruijn index of this term.
      */
-	virtual unsigned int get_de_bruijn_index() const = 0;
+	virtual debruijn_type get_de_bruijn_index() const = 0;
 
     /**
      * Get the depth of this term.  The depth of the root is zero; otherwise
@@ -120,7 +140,7 @@ public:
      *
      * @return	The depth of the term.
      */
-	virtual unsigned int get_depth() const = 0;
+	virtual depth_type get_depth() const = 0;
 
     /**
      * Determine if this is a metaterm or not.  A term is a metaterm if it
