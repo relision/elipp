@@ -77,6 +77,32 @@
 /// Path separator character as C string.  Where is this defined?
 #define PATHSEP "/"
 
+/**
+ * Cast the provided pointer to a pointer of the appropriate type.  This uses
+ * a dynamic cast, so it is checked.
+ * @param type_m	The type to which to cast.
+ * @param ptr_m		The pointer to cast.
+ */
+#define PCAST(type_m, ptr_m) \
+	dynamic_cast<type_m const *>(ptr_m)
+
+/**
+ * Cast the provided reference to a pointer of the appropriate type.  This uses
+ * a dynamic cast, so it is checked.
+ * @param type_m	The type to which to cast.
+ * @param ptr_m		The pointer to cast.
+ */
+#define CAST(type_m, ref_m) \
+	dynamic_cast<type_m const *>(& ref_m)
+
+/**
+ * Cast a term (that is typically passed as a shared pointer) to another term
+ * type using a dynamic cast.
+ * @param type_m	The new type.
+ * @param term_m	The term.
+ */
+#define TERM_CAST(type_m, term_m) \
+	std::dynamic_pointer_cast<type_m const>(term_m)
 
 /**
  * This is the namespace for all Elision-specific code.  It includes types,

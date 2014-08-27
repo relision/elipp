@@ -28,7 +28,7 @@ TermModifier::TermModifier(TermFactory const& fact) : fact_(fact) {
 }
 
 pTerm
-TermModifier::substitute(std::unordered_map<std::string, pTerm> const& map,
+TermModifier::substitute(std::map<std::string, pTerm> const& map,
 		pTerm target) const {
 	NOTNULL(target);
 
@@ -39,7 +39,7 @@ TermModifier::substitute(std::unordered_map<std::string, pTerm> const& map,
 			// See if this is a variable that can be replaced right now.  If so, we
 			// are done.  We don't need to consider the type, because we are going
 			// to get that from the replacement.
-			pVariable var = CAST(Variable, term);
+			pVariable var = CAST(IVariable, term);
 			auto search = map.find(var->get_name());
 			if (search != map.end()) {
 				// Found this variable, so replace it now.
@@ -52,7 +52,7 @@ TermModifier::substitute(std::unordered_map<std::string, pTerm> const& map,
 			// See if this term variable can be replaced right now.  If so,
 			// then we have to construct a term literal, but in any case we
 			// are done.
-			pTermVariable tvar = CAST(TermVariable, term);
+			pTermVariable tvar = CAST(ITermVariable, term);
 			auto search = map.find(tvar->get_name());
 			if (search != map.end()) {
 				// Found the variable.  Build a term literal around the
@@ -94,7 +94,7 @@ TermModifier::rebuild(pTerm target,
 		// Compute a possibly new type.
 		pTerm new_type = rebuild(target->get_type(), closure);
 		if ((target->get_type() != new_type)) {
-			pSymbolLiteral lit = CAST(SymbolLiteral, target);
+			pSymbolLiteral lit = CAST(ISymbolLiteral, target);
 			return fact_.get_symbol_literal(lit->get_loc(), lit->get_name(),
 					new_type);
 		}
@@ -105,7 +105,7 @@ TermModifier::rebuild(pTerm target,
 		// Compute a possibly new type.
 		pTerm new_type = rebuild(target->get_type(), closure);
 		if ((target->get_type() != new_type)) {
-			pStringLiteral lit = CAST(StringLiteral, target);
+			pStringLiteral lit = CAST(IStringLiteral, target);
 			return fact_.get_string_literal(lit->get_loc(), lit->get_value(),
 					new_type);
 		}
@@ -116,7 +116,7 @@ TermModifier::rebuild(pTerm target,
 		// Compute a possibly new type.
 		pTerm new_type = rebuild(target->get_type(), closure);
 		if ((target->get_type() != new_type)) {
-			pIntegerLiteral lit = CAST(IntegerLiteral, target);
+			pIntegerLiteral lit = CAST(IIntegerLiteral, target);
 			return fact_.get_integer_literal(lit->get_loc(), lit->get_value(),
 					new_type);
 		}
@@ -127,7 +127,7 @@ TermModifier::rebuild(pTerm target,
 		// Compute a possibly new type.
 		pTerm new_type = rebuild(target->get_type(), closure);
 		if ((target->get_type() != new_type)) {
-			pFloatLiteral lit = CAST(FloatLiteral, target);
+			pFloatLiteral lit = CAST(IFloatLiteral, target);
 			return fact_.get_float_literal(lit->get_loc(),
 					lit->get_significand(), lit->get_exponent(),
 					lit->get_radix(), new_type);
@@ -139,7 +139,7 @@ TermModifier::rebuild(pTerm target,
 		// Compute a possibly new type.
 		pTerm new_type = rebuild(target->get_type(), closure);
 		if ((target->get_type() != new_type)) {
-			pBitStringLiteral lit = CAST(BitStringLiteral, target);
+			pBitStringLiteral lit = CAST(IBitStringLiteral, target);
 			return fact_.get_bit_string_literal(lit->get_loc(),
 					lit->get_bits(), lit->get_length(), new_type);
 		}
@@ -150,7 +150,7 @@ TermModifier::rebuild(pTerm target,
 		// Compute a possibly new type.
 		pTerm new_type = rebuild(target->get_type(), closure);
 		if ((target->get_type() != new_type)) {
-			pBooleanLiteral lit = CAST(BooleanLiteral, target);
+			pBooleanLiteral lit = CAST(IBooleanLiteral, target);
 			return fact_.get_boolean_literal(lit->get_loc(), lit->get_value(),
 					new_type);
 		}
@@ -158,7 +158,7 @@ TermModifier::rebuild(pTerm target,
 	}
 
 	case TERM_LITERAL_KIND: {
-		pTermLiteral lit = CAST(TermLiteral, target);
+		pTermLiteral lit = CAST(ITermLiteral, target);
 		pTerm term = lit->get_term();
 		pTerm new_term = rebuild(term, closure);
 		if (new_term != term) {
@@ -170,7 +170,7 @@ TermModifier::rebuild(pTerm target,
 	case VARIABLE_KIND: {
 		// Compute a possibly new type.
 		pTerm new_type = rebuild(target->get_type(), closure);
-		pVariable var = CAST(Variable, target);
+		pVariable var = CAST(IVariable, target);
 		pTerm guard = var->get_guard();
 		pTerm new_guard = rebuild(guard, closure);
 		if ((target->get_type() != new_type) || (guard != new_guard)) {
@@ -181,7 +181,7 @@ TermModifier::rebuild(pTerm target,
 	}
 
 	case TERM_VARIABLE_KIND: {
-		pTermVariable var = CAST(TermVariable, target);
+		pTermVariable var = CAST(ITermVariable, target);
 		pTerm term_type = var->get_term_type();
 		pTerm new_term_type = rebuild(term_type, closure);
 		if (term_type != new_term_type) {
@@ -192,13 +192,13 @@ TermModifier::rebuild(pTerm target,
 	}
 
 	case BINDING_KIND: {
-		pBinding bind = CAST(Binding, target);
+		pBinding bind = CAST(IBinding, target);
 		// TODO Implement this.
 		break;
 	}
 
 	case LAMBDA_KIND: {
-		pLambda mp = CAST(Lambda, target);
+		pLambda mp = CAST(ILambda, target);
 		pTerm lhs = mp->get_lhs();
 		pTerm rhs = mp->get_rhs();
 		pTerm guard = mp->get_guard();
@@ -212,19 +212,19 @@ TermModifier::rebuild(pTerm target,
 	}
 
 	case LIST_KIND: {
-		pList list = CAST(List, target);
+		pList list = CAST(IList, target);
 		// TODO Implement this.
 		break;
 	}
 
 	case PROPERTY_SPECIFICATION_KIND: {
-		pPropertySpecification spec = CAST(PropertySpecification, target);
+		pPropertySpecification spec = CAST(IPropertySpecification, target);
 		// TODO Implement this.
 		break;
 	}
 
 	case SPECIAL_FORM_KIND: {
-		pSpecialForm sf = CAST(SpecialForm, target);
+		pSpecialForm sf = CAST(ISpecialForm, target);
 		pTerm tag = sf->get_tag();
 		pTerm content = sf->get_content();
 		pTerm new_tag = rebuild(tag, closure);
@@ -236,7 +236,7 @@ TermModifier::rebuild(pTerm target,
 	}
 
 	case APPLY_KIND: {
-		pApply apply = CAST(Apply, target);
+		pApply apply = CAST(IApply, target);
 		pTerm op = apply->get_operator();
 		pTerm arg = apply->get_argument();
 		pTerm new_op = rebuild(op, closure);
@@ -248,7 +248,7 @@ TermModifier::rebuild(pTerm target,
 	}
 
 	case STATIC_MAP_KIND: {
-		pStaticMap map = CAST(StaticMap, target);
+		pStaticMap map = CAST(IStaticMap, target);
 		pTerm domain = map->get_domain();
 		pTerm codomain = map->get_codomain();
 		pTerm new_domain = rebuild(domain, closure);

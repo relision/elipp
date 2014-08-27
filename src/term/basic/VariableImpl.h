@@ -52,9 +52,22 @@ public:
 	}
 
 	inline bool is_equal(ITerm const& other) const {
-		auto oth = dynamic_cast<IVariable const*>(&other);
+		auto oth = CAST(IVariable, other);
 		return get_name() == oth->get_name() &&
-				*get_guard() == *oth->get_guard();
+				get_guard() == oth->get_guard() &&
+				get_type() == oth->get_type();
+	}
+
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(IVariable, other);
+		if (get_name() < oth->get_name()) return true;
+		else if (oth->get_name() < get_name()) return false;
+		else if (get_guard() < oth->get_guard()) return true;
+		else if (oth->get_guard() < get_guard()) return false;
+		else return get_type() < oth->get_type();
 	}
 
 	inline TermKind get_kind() const {
@@ -92,8 +105,18 @@ public:
 	}
 
 	inline bool is_equal(ITerm const& other) const {
-		auto oth = dynamic_cast<ITermVariable const*>(&other);
-		return get_name() == oth->get_name();
+		auto oth = CAST(ITermVariable, other);
+		return get_name() == oth->get_name() &&
+				get_type() == oth->get_type();
+	}
+
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(ITermVariable, other);
+		return get_name() < oth->get_name() &&
+				get_type() < oth->get_type();
 	}
 
 	inline TermKind get_kind() const {

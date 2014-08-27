@@ -1,6 +1,6 @@
 /**
  * @file
- * TODO: Describe purpose of file.
+ * Provide an implementation of a binding atom.
  *
  * @author sprowell@gmail.com
  *
@@ -18,7 +18,6 @@
  */
 
 #include "BindingImpl.h"
-#include <unordered_map>
 
 namespace elision {
 namespace term {

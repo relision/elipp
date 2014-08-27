@@ -21,8 +21,7 @@
  */
 
 #include "ITerm.h"
-#include <unordered_map>
-#include <unordered_set>
+#include <map>
 
 namespace elision {
 namespace term {
@@ -39,7 +38,7 @@ namespace term {
 class IBinding : public virtual ITerm {
 public:
 	/// Type for the map used and returned by a binding instance.
-	typedef std::unordered_map<std::string, pTerm> const map_t;
+	typedef std::map<std::string, pTerm> const map_t;
 
 	/**
 	 * Get the non-abstract content of this binding as a map.  The returned

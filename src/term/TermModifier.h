@@ -23,6 +23,7 @@
 #include <ITerm.h>
 #include <TermFactory.h>
 #include <functional>
+#include <map>
 
 namespace elision {
 namespace term {
@@ -56,7 +57,7 @@ public:
 	 * @return	The possibly-new term.  If the term is not modified, then the
 	 * 			same input pointer is returned.
 	 */
-	pTerm substitute(std::unordered_map<std::string, pTerm> const& map,
+	pTerm substitute(std::map<std::string, pTerm> const& map,
 			pTerm target) const;
 
 	/**

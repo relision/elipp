@@ -53,6 +53,16 @@ public:
 				*get_codomain() == *oth->get_codomain();
 	}
 
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(IStaticMap, other);
+		if (get_domain() < oth->get_domain()) return true;
+		else if (oth->get_domain() < get_domain()) return false;
+		else return get_codomain() < oth->get_codomain();
+	}
+
 	inline TermKind get_kind() const {
 		return STATIC_MAP_KIND;
 	}

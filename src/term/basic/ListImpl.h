@@ -68,6 +68,18 @@ public:
 		return strval_;
 	}
 
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(IList, other);
+		if (get_property_specification() < oth->get_property_specification())
+			return true;
+		else if (oth->get_property_specification() < get_property_specification())
+			return false;
+		else return get_elements() < oth->get_elements();
+	}
+
 private:
 	friend class TermFactoryImpl;
 	ListImpl(Locus the_loc, pPropertySpecification the_spec,

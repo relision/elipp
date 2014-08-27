@@ -1,6 +1,6 @@
 /**
  * @file
- * TODO: Describe purpose of file.
+ * Implement a term factory.
  *
  * @author sprowell@gmail.com
  *
@@ -73,6 +73,9 @@ public:
 	inline TermKind get_kind() const { return ROOT_KIND; }
 	inline size_t get_hash() const { return 1; }
 	inline size_t get_other_hash() const { return 0xcafebabe; }
+	inline bool operator<(ITerm const& other) const {
+		return get_kind() < other.get_kind();
+	}
 
 protected:
 	inline bool is_equal(ITerm const& other) const {

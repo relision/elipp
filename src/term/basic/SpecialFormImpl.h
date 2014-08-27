@@ -58,6 +58,14 @@ public:
 		return strval_;
 	}
 
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() < other.get_kind()) return true;
+		auto oth = CAST(ISpecialForm, other);
+		if (get_tag() < oth->get_tag()) return true;
+		else if (oth->get_tag() < get_tag()) return false;
+		else return (get_content() < oth->get_content());
+	}
+
 private:
 	friend class TermFactoryImpl;
 	SpecialFormImpl(Locus the_loc, pTerm the_tag, pTerm the_content,

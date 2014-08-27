@@ -60,6 +60,19 @@ public:
 		return strval_;
 	}
 
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(IBinding, other);
+		// We have to compare all the items in the map.  This is complicated
+		// by the fact that the maps may have different keys, and we have to
+		// compare keys in a specific order.  So first we have to sort the
+		// keys, and then compare the keys in lexicographic order.  Fortunately
+		// this is how C++ stores its maps.  Hooray! (?)
+		return *map_ < *(oth->get_map());
+	}
+
 private:
 	friend class TermFactoryImpl;
 	BindingImpl(Locus the_loc, map_t* map, pTerm type);

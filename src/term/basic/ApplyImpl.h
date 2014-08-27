@@ -48,9 +48,9 @@ public:
 	}
 
 	inline bool is_equal(ITerm const& other) const {
-		auto oth = dynamic_cast<IApply const*>(&other);
-		return *get_operator() == *oth->get_operator() &&
-				*get_argument() == *oth->get_argument();
+		auto oth = CAST(IApply, other);
+		return get_operator() == oth->get_operator() &&
+				get_argument() == oth->get_argument();
 	}
 
 	inline TermKind get_kind() const {
@@ -59,6 +59,16 @@ public:
 
 	virtual std::string to_string() const {
 		return strval_;
+	}
+
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(IApply, other);
+		if (get_operator() < oth->get_operator()) return true;
+		else if (oth->get_operator() < get_operator()) return false;
+		else return get_argument() < oth->get_argument();
 	}
 
 private:

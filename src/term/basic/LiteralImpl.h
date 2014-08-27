@@ -47,12 +47,26 @@ public:
 	}
 
 	inline bool is_equal(ITerm const& other) const {
-		auto oth = dynamic_cast<SymbolLiteralImpl const&>(other);
-		return get_name() == oth.get_name();
+		auto oth = CAST(ISymbolLiteral, other);
+		return get_name() == oth->get_name() &&
+				get_type() == oth->get_type();
+	}
+
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(ISymbolLiteral, other);
+		return get_name() < oth->get_name() ||
+				get_type() < oth->get_type();
 	}
 
 	inline TermKind get_kind() const {
 		return SYMBOL_LITERAL_KIND;
+	}
+
+	inline unsigned int get_depth() const {
+		return get_type()->get_depth();
 	}
 
 private:
@@ -78,8 +92,18 @@ public:
 	}
 
 	inline bool is_equal(ITerm const& other) const {
-		auto oth = dynamic_cast<StringLiteralImpl const&>(other);
-		return get_value() == oth.get_value();
+		auto oth = CAST(IStringLiteral, other);
+		return get_value() == oth->get_value() &&
+				get_type() == oth->get_type();
+	}
+
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(IStringLiteral, other);
+		return get_value() < oth->get_value() ||
+				get_type() < oth->get_type();
 	}
 
 	inline TermKind get_kind() const {
@@ -113,8 +137,18 @@ public:
 	}
 
 	inline bool is_equal(ITerm const& other) const {
-		auto oth = dynamic_cast<IntegerLiteralImpl const&>(other);
-		return get_value() == oth.get_value();
+		auto oth = CAST(IIntegerLiteral, other);
+		return get_value() == oth->get_value() &&
+				get_type() == oth->get_type();
+	}
+
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(IIntegerLiteral, other);
+		return get_value() < oth->get_value() ||
+				get_type() < oth->get_type();
 	}
 
 	inline TermKind get_kind() const {
@@ -157,10 +191,23 @@ public:
 
 	inline bool is_equal(ITerm const& other) const {
 		// TODO Really should check the computed values somehow.
-		auto oth = dynamic_cast<FloatLiteralImpl const&>(other);
-		return (get_significand() == oth.get_significand()) &&
-				(get_exponent() == oth.get_exponent()) &&
-				(get_radix() == oth.get_radix());
+		auto oth = CAST(IFloatLiteral, other);
+		return (get_significand() == oth->get_significand()) &&
+				(get_exponent() == oth->get_exponent()) &&
+				(get_radix() == oth->get_radix()) &&
+				(get_type() == oth->get_type());
+	}
+
+	inline bool operator<(ITerm const& other) const {
+		// TODO Really should be comparing the actual values here.
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(IFloatLiteral, other);
+		return (get_significand() < oth->get_significand()) ||
+				(get_exponent() < oth->get_exponent()) ||
+				(get_radix() < oth->get_radix()) ||
+				(get_type() < oth->get_type());
 	}
 
 	inline TermKind get_kind() const {
@@ -201,9 +248,20 @@ public:
 	}
 
 	inline bool is_equal(ITerm const& other) const {
-		auto oth = dynamic_cast<BitStringLiteralImpl const&>(other);
-		return (get_bits() == oth.get_bits()) &&
-				(get_length() == oth.get_length());
+		auto oth = CAST(IBitStringLiteral, other);
+		return (get_bits() == oth->get_bits()) &&
+				(get_length() == oth->get_length()) &&
+				(get_type() == oth->get_type());
+	}
+
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(IBitStringLiteral, other);
+		return get_bits() < oth->get_bits() ||
+				get_length() < oth->get_length() ||
+				get_type() < oth->get_type();
 	}
 
 	inline TermKind get_kind() const {
@@ -239,8 +297,18 @@ public:
 	}
 
 	inline bool is_equal(ITerm const& other) const {
-		auto oth = dynamic_cast<BooleanLiteralImpl const&>(other);
-		return get_value() == oth.get_value();
+		auto oth = CAST(IBooleanLiteral, other);
+		return get_value() == oth->get_value() &&
+				get_type() == oth->get_type();
+	}
+
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(IBooleanLiteral, other);
+		return get_value() < oth->get_value() ||
+				get_type() < oth->get_type();
 	}
 
 	inline TermKind get_kind() const {
@@ -284,6 +352,14 @@ public:
 	inline bool is_equal(ITerm const& other) const {
 		auto oth = dynamic_cast<TermLiteralImpl const&>(other);
 		return get_term() == oth.get_term();
+	}
+
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(ITermLiteral, other);
+		return get_term() < oth->get_term();
 	}
 
 	inline TermKind get_kind() const {

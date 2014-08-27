@@ -67,6 +67,18 @@ public:
 		return strval_;
 	}
 
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() != other.get_kind()) {
+			return get_kind() < other.get_kind();
+		}
+		auto oth = CAST(ILambda, other);
+		if (get_lhs() < oth->get_lhs()) return true;
+		else if (oth->get_lhs() < get_lhs()) return false;
+		else if (get_rhs() < oth->get_rhs()) return true;
+		else if (oth->get_rhs() < get_rhs()) return false;
+		else return get_guard() < oth->get_guard();
+	}
+
 private:
 	friend class TermFactoryImpl;
 	LambdaImpl(Locus the_loc, pTerm the_lhs, pTerm the_rhs, pTerm the_gaurd,

@@ -118,13 +118,29 @@ public:
 	}
 
 	inline bool is_equal(ITerm const& other) const {
-		auto oth = dynamic_cast<IPropertySpecification const*>(&other);
+		auto oth = CAST(IPropertySpecification, other);
 		return associative_ == oth->get_associative() &&
 				commutative_ == oth->get_commutative() &&
 				idempotent_ == oth->get_idempotent() &&
 				absorber_ == oth->get_absorber() &&
 				identity_ == oth->get_identity() &&
 				elements_ == oth->get_membership();
+	}
+
+	inline bool operator<(ITerm const& other) const {
+		if (get_kind() < other.get_kind()) return true;
+		auto oth = CAST(IPropertySpecification, other);
+		if (get_associative() < oth->get_associative()) return true;
+		else if (oth->get_associative() < get_associative()) return false;
+		else if (get_commutative() < oth->get_commutative()) return true;
+		else if (oth->get_commutative() < get_commutative()) return false;
+		else if (get_idempotent() < oth->get_idempotent()) return true;
+		else if (oth->get_idempotent() < get_idempotent()) return false;
+		else if (get_absorber() < oth->get_absorber()) return true;
+		else if (oth->get_absorber() < get_absorber()) return false;
+		else if (get_identity() < oth->get_identity()) return true;
+		else if (oth->get_identity() < get_identity()) return false;
+		else return (get_membership() < oth->get_membership());
 	}
 
 	inline std::string to_string() const {

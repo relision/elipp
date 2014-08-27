@@ -26,9 +26,6 @@
 namespace elision {
 namespace term {
 
-#define CAST(type_m, ptr_m) \
-	std::dynamic_pointer_cast<I ## type_m const>(ptr_m)
-
 /**
  * The term kind is used to avoid relying on dynamic type information,
  * which can be costly (like `dynamic_cast`).
@@ -192,6 +189,24 @@ public:
 	virtual TermKind get_kind() const = 0;
 
 	/**
+	 * Order two terms.
+	 * @param other	The other term.
+	 * @return	True iff this term is less than the provided term.
+	 */
+	virtual bool operator<(ITerm const& other) const = 0;
+
+	/**
+	 * Perform "fast equality" checking of this term against the provided
+	 * term.  Fast equality checking uses the hash codes of the two terms.
+	 * @param other	The other term to compare this to.
+	 * @return	True iff the two terms hash equally, and false otherwise.
+	 */
+	bool feq(ITerm const& other) const {
+		return get_hash() == other.get_hash() &&
+				get_other_hash() == other.get_other_hash();
+	}
+
+	/**
 	 * Equality test for terms that delegates to the term-centric is_equal
 	 * method.
 	 * @param first		First term.
@@ -225,5 +240,13 @@ private:
 
 } /* namespace term */
 } /* namespace elision */
+
+namespace std {
+template <> struct hash<elision::term::ITerm> {
+	size_t operator()(elision::term::ITerm const& term) const {
+      return term.get_hash();
+    }
+};
+} /* namespace std */
 
 #endif /* ITERM_H_ */
