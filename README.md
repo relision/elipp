@@ -1,4 +1,9 @@
 # README
+
+**Do not get excited; this is likely to be abandoned.  We are probably
+going to switch most of the development effort to the version in
+Rust.**
+
 [![Build Status](https://drone.io/github.com/sprowell/elipp/status.png)](https://drone.io/github.com/sprowell/elipp/latest)
 
 ## About
