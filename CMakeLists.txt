@@ -40,7 +40,7 @@ ENDIF()
 find_program(CTEST_MEMORYCHECK_COMMAND NAMES valgrind)
 
 # Specify the list of source files to use for the core library here.
-FILE(GLOB_RECURSE lib_sources RELATIVE ${CMAKE_HOME_DIRECTORY} src/*.cpp)
+FILE(GLOB_RECURSE lib_sources RELATIVE ${CMAKE_HOME_DIRECTORY} src/*.cpp src/*.c)
 
 # Specify the list of tests to complile.
 FILE(GLOB_RECURSE tests RELATIVE ${CMAKE_HOME_DIRECTORY} test/*_tst.cpp)

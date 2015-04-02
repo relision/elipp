@@ -24,12 +24,30 @@ namespace match {
 
 Result::Result() {
 	// TODO Auto-generated constructor stub
-
 }
 
 Result::~Result() {
 	// TODO Auto-generated destructor stub
 }
+
+bool
+Result::have_match() const {
+	return false;
+}
+
+Result::const_iterator::const_iterator() {
+}
+
+Result::const_iterator
+Result::begin() const {
+	return *(new Result::const_iterator());
+}
+
+Result::const_iterator
+Result::end() const {
+	return *(new Result::const_iterator());
+}
+
 
 } /* namespace match */
 } /* namespace elision */

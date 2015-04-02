@@ -43,7 +43,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.arguments</key>
-					<value>-j8</value>
+					<value></value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildLocation</key>
@@ -109,11 +109,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>[Subprojects]</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>[Targets]</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -124,67 +119,37 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[lib] elision/</name>
+			<name>[Targets]/[exe] test/eint_tst</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[lib] elision/Source Files</name>
+			<name>[Targets]/[exe] test/lambda_tst</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[lib] elision/Source Files/ElisionException.cpp</name>
-			<type>1</type>
-			<location>/Users/ysp/SpiderOak Hive/workspace/elipp/src/ElisionException.cpp</location>
-		</link>
-		<link>
-			<name>[Targets]/[lib] elision/Source Files/Loc.cpp</name>
-			<type>1</type>
-			<location>/Users/ysp/SpiderOak Hive/workspace/elipp/src/Loc.cpp</location>
-		</link>
-		<link>
-			<name>[Targets]/[lib] elision/Source Files/LiteralImpl.cpp</name>
-			<type>1</type>
-			<location>/Users/ysp/SpiderOak Hive/workspace/elipp/src/term/basic/LiteralImpl.cpp</location>
-		</link>
-		<link>
-			<name>[Targets]/[lib] elision/Source Files/TermFactoryImpl.cpp</name>
-			<type>1</type>
-			<location>/Users/ysp/SpiderOak Hive/workspace/elipp/src/term/basic/TermFactoryImpl.cpp</location>
-		</link>
-		<link>
-			<name>[Targets]/[lib] elision/Source Files/TermImpl.cpp</name>
-			<type>1</type>
-			<location>/Users/ysp/SpiderOak Hive/workspace/elipp/src/term/basic/TermImpl.cpp</location>
-		</link>
-		<link>
-			<name>[Targets]/[lib] elision/Source Files/ITerm.cpp</name>
-			<type>1</type>
-			<location>/Users/ysp/SpiderOak Hive/workspace/elipp/src/term/ITerm.cpp</location>
-		</link>
-		<link>
-			<name>[Targets]/[lib] elision/Source Files/util.cpp</name>
-			<type>1</type>
-			<location>/Users/ysp/SpiderOak Hive/workspace/elipp/src/util.cpp</location>
-		</link>
-		<link>
-			<name>[Targets]/[lib] elision/Header Files</name>
+			<name>[Targets]/[exe] test/literal_tst</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[lib] elision/CMake Rules</name>
+			<name>[Targets]/[exe] test/loc_tst</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[lib] elision/Resources</name>
+			<name>[Targets]/[exe] test/omit_seq_tst</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[lib] elision/Object Files</name>
+			<name>[Targets]/[exe] test/static_map_tst</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] test/variable_tst</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>

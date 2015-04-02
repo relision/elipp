@@ -56,20 +56,6 @@ public:
 	 */
 	typedef elision::term::IBinding::map_t map_t;
 
-	class const_iterator;
-
-	/**
-	 * Get an iterator pointing to the first match, if any.
-	 * @return	An iterator.
-	 */
-	virtual const_iterator begin() const;
-
-	/**
-	 * Get an iterator pointing past the last match, if any.
-	 * @return	An iterator.
-	 */
-	virtual const_iterator end() const;
-
 	/**
 	 * Implement an iterator over matches.
 	 */
@@ -90,6 +76,18 @@ public:
 
 	private:
 	};
+
+	/**
+	 * Get an iterator pointing to the first match, if any.
+	 * @return	An iterator.
+	 */
+	virtual const_iterator begin() const;
+
+	/**
+	 * Get an iterator pointing past the last match, if any.
+	 * @return	An iterator.
+	 */
+	virtual const_iterator end() const;
 
 private:
 	friend class Matcher;
