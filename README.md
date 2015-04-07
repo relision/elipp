@@ -1,8 +1,6 @@
 # README
 
-**Do not get excited; this is likely to be abandoned.  We are probably
-going to switch most of the development effort to the version in
-Rust.**
+**There are two parallel efforts!  We are building the system in C++ (that's this project) but also in Rust.  [Rust?][rust]  Yes, see here: [relision][relision].**
 
 [![Build Status](https://drone.io/github.com/sprowell/elipp/status.png)](https://drone.io/github.com/sprowell/elipp/latest)
 
@@ -66,3 +64,5 @@ What do **I** do?  On the Mac I do this (since I use Eclipse):
 [ubuntu]: http://www.ubuntu.com/
 [graphviz]: http://www.graphviz.org/
 [linenoise]: https://github.com/antirez/linenoise
+[rust]: https://rust-lang.org
+[relision]: https://github.com/relision
